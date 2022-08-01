@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.view.KeyEvent;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
@@ -81,7 +82,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void backToEntrance() {
         Intent intent = new Intent(this, EntranceActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
+        finish();
     }
 
     private static final int PERMISSION_REQ_ID = 22;
@@ -142,6 +145,8 @@ public class MainActivity extends AppCompatActivity {
         mRtcEngine.setupRemoteVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, uid));
     }
 
+
+    /*
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -149,4 +154,11 @@ public class MainActivity extends AppCompatActivity {
         mRtcEngine.leaveChannel();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mRtcEngine.stopPreview();
+        mRtcEngine.leaveChannel();
+    }
+     */
 }
