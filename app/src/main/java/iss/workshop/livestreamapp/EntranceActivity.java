@@ -90,6 +90,7 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
             intent.putExtra("clientRole", Constants.CLIENT_ROLE_AUDIENCE);
         }
 
+
         startActivity(intent);
     }
 }

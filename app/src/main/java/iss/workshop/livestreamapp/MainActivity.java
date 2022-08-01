@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     // Fill the channel name.
     private String channelName;// = "Test Channel";
     // Fill the temp token generated on Agora Console.
-    private String token = "006813f22ea50924b43ae8488edb975d02cIAAvJMoy2ZPbToYHNYLsEWiTMcQsOe2jLgvS73/vWAgwfdc7RNwAAAAAEACGukDPj3jnYgEAAQCMeOdi";
+    private String token = "006813f22ea50924b43ae8488edb975d02cIAC3+YgFfcpYE/hSflpwtx8QcAvURoeFkzxH7dsVxMW8H9c7RNwAAAAAEACOhaHHftfoYgEAAQB41+hi";
 
     private RtcEngine mRtcEngine;
 
