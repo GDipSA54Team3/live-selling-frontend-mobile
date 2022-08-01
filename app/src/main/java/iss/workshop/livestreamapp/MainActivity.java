@@ -5,10 +5,14 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.view.SurfaceView;
+import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import io.agora.rtc2.Constants;
 import io.agora.rtc2.IRtcEngineEventHandler;
@@ -19,14 +23,17 @@ import io.agora.rtc2.ChannelMediaOptions;
 
 public class MainActivity extends AppCompatActivity {
 
+    // maybe pass these information as intent when opened?
     // Fill the App ID of your project generated on Agora Console.
-    private String appId = "813f22ea50924b43ae8488edb975d02c";
+    private String appId; // = "813f22ea50924b43ae8488edb975d02c";
     // Fill the channel name.
-    private String channelName = "Test Channel";
+    private String channelName;// = "Test Channel";
     // Fill the temp token generated on Agora Console.
-    private String token = "006813f22ea50924b43ae8488edb975d02cIADRJOVjXUHELNJdyGwxlpOArNOtenRN0TsDkMeQS/4mJtc7RNwAAAAAEACGukDPFxzmYgEAAQAWHOZi";
+    private String token = "006813f22ea50924b43ae8488edb975d02cIAAvJMoy2ZPbToYHNYLsEWiTMcQsOe2jLgvS73/vWAgwfdc7RNwAAAAAEACGukDPj3jnYgEAAQCMeOdi";
 
     private RtcEngine mRtcEngine;
+
+    private int clientRole;
 
     private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() {
         @Override
@@ -47,10 +54,34 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Intent streamDetails = getIntent();
+        appId = streamDetails.getStringExtra("appID");
+        channelName = streamDetails.getStringExtra("channelName");
+        clientRole = streamDetails.getIntExtra("clientRole", 0);
+
+        TextView txtName = (TextView) findViewById(R.id.channel_name);
+        txtName.setText(channelName);
+
         if (checkSelfPermission(REQUESTED_PERMISSIONS[0], PERMISSION_REQ_ID) &&
                 checkSelfPermission(REQUESTED_PERMISSIONS[1], PERMISSION_REQ_ID)) {
             initializeAndJoinChannel();
         }
+
+        Button btnLeaveChannel = (Button) findViewById(R.id.buttonView);
+        btnLeaveChannel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mRtcEngine.stopPreview();
+                mRtcEngine.leaveChannel();
+                backToEntrance();
+            }
+        });
+    }
+
+
+    private void backToEntrance() {
+        Intent intent = new Intent(this, EntranceActivity.class);
+        startActivity(intent);
     }
 
     private static final int PERMISSION_REQ_ID = 22;
@@ -92,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
         ChannelMediaOptions options = new ChannelMediaOptions();
         // Set the client role as BROADCASTER or AUDIENCE according to the scenario.
-        options.clientRoleType = Constants.CLIENT_ROLE_BROADCASTER;
+        options.clientRoleType = clientRole;
         // For the Interactive Live Streaming Standard scenario, the user level of an audience member needs to be AUDIENCE_LATENCY_LEVEL_LOW_LATENCY.
         options.audienceLatencyLevel = Constants.AUDIENCE_LATENCY_LEVEL_LOW_LATENCY;
         // For a live streaming scenario, set the channel profile as BROADCASTING.
