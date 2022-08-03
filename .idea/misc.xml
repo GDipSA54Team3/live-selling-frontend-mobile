@@ -3,9 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android/LiveStreamApp/app/src/main/res/drawable/ic_bottom_menu_background.xml" value="0.107" />
+        <entry key="..\:/Android/LiveStreamApp/app/src/main/res/layout/activity_channel_profile.xml" value="0.1" />
         <entry key="..\:/Android/LiveStreamApp/app/src/main/res/layout/activity_entrance.xml" value="0.22282608695652173" />
         <entry key="..\:/Android/LiveStreamApp/app/src/main/res/layout/activity_extrance.xml" value="0.22282608695652173" />
         <entry key="..\:/Android/LiveStreamApp/app/src/main/res/layout/activity_main.xml" value="0.152" />
+        <entry key="..\:/Android/LiveStreamApp/app/src/main/res/layout/channelrow.xml" value="0.22282608695652173" />
+        <entry key="..\:/Android/LiveStreamApp/app/src/main/res/layout/fragment_bottom_menu.xml" value="0.12962962962962962" />
+        <entry key="..\:/Android/LiveStreamApp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1265625" />
       </map>
     </option>
   </component>

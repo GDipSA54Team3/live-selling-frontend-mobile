@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.view.KeyEvent;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.os.Bundle;
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     // Fill the channel name.
     private String channelName;// = "Test Channel";
     // Fill the temp token generated on Agora Console.
-    private String token = "006813f22ea50924b43ae8488edb975d02cIAC3+YgFfcpYE/hSflpwtx8QcAvURoeFkzxH7dsVxMW8H9c7RNwAAAAAEACOhaHHftfoYgEAAQB41+hi";
+    private String token = "006813f22ea50924b43ae8488edb975d02cIAAxDRKS4ib/zZjrP5mLezB9zE+BMB+yGXmuPBf3zjYT+eQQT+IAAAAAEACGukDPSVTrYgEAAQBGVOti";
 
     private String numberOfViewers;
     private String streamerImage;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private RtcEngine mRtcEngine;
 
     private int clientRole;
+    private long streamId;
 
     private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() {
         //this is the code that is run when a buyer enters the stream
@@ -63,10 +65,14 @@ public class MainActivity extends AppCompatActivity {
         Intent streamDetails = getIntent();
         appId = streamDetails.getStringExtra("appID");
         channelName = streamDetails.getStringExtra("channelName");
+        streamId = streamDetails.getLongExtra("streamId", 0);
         clientRole = streamDetails.getIntExtra("clientRole", 0);
 
         TextView txtName = (TextView) findViewById(R.id.channel_name);
         txtName.setText(channelName);
+
+        TextView streamStatus = findViewById(R.id.stream_status);
+        streamStatus.setVisibility(View.INVISIBLE);
 
         if (checkSelfPermission(REQUESTED_PERMISSIONS[0], PERMISSION_REQ_ID) &&
                 checkSelfPermission(REQUESTED_PERMISSIONS[1], PERMISSION_REQ_ID)) {
@@ -128,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Pass the SurfaceView object to Agora so that it renders the local video.
         mRtcEngine.setupLocalVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, 0));
+
 
         ChannelMediaOptions options = new ChannelMediaOptions();
         // Set the client role as BROADCASTER or AUDIENCE according to the scenario.
