@@ -32,11 +32,16 @@ public class MainActivity extends AppCompatActivity {
     // Fill the temp token generated on Agora Console.
     private String token = "006813f22ea50924b43ae8488edb975d02cIAC3+YgFfcpYE/hSflpwtx8QcAvURoeFkzxH7dsVxMW8H9c7RNwAAAAAEACOhaHHftfoYgEAAQB41+hi";
 
+    private String numberOfViewers;
+    private String streamerImage;
+
     private RtcEngine mRtcEngine;
 
     private int clientRole;
 
     private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() {
+        //this is the code that is run when a buyer enters the stream
+        //any ui activities will be run here
         @Override
         // Listen for the remote host joining the channel to get the uid of the host.
         public void onUserJoined(int uid, int elapsed) {
@@ -118,9 +123,9 @@ public class MainActivity extends AppCompatActivity {
         mRtcEngine.startPreview();
 
         FrameLayout container = findViewById(R.id.local_video_view_container);
-        // Create a SurfaceView object and add it as a child to the FrameLayout.
         SurfaceView surfaceView = new SurfaceView (getBaseContext());
         container.addView(surfaceView);
+
         // Pass the SurfaceView object to Agora so that it renders the local video.
         mRtcEngine.setupLocalVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, 0));
 
@@ -138,27 +143,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupRemoteVideo(int uid) {
-        FrameLayout container = findViewById(R.id.remote_video_view_container);
+        FrameLayout container = findViewById(R.id.local_video_view_container);
         SurfaceView surfaceView = new SurfaceView (getBaseContext());
         surfaceView.setZOrderMediaOverlay(true);
         container.addView(surfaceView);
         mRtcEngine.setupRemoteVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, uid));
     }
 
-
-    /*
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mRtcEngine.stopPreview();
-        mRtcEngine.leaveChannel();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mRtcEngine.stopPreview();
-        mRtcEngine.leaveChannel();
-    }
-     */
 }
