@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     // Fill the channel name.
     private String channelName;// = "Test Channel";
     // Fill the temp token generated on Agora Console.
-    private String token = "006813f22ea50924b43ae8488edb975d02cIAAxDRKS4ib/zZjrP5mLezB9zE+BMB+yGXmuPBf3zjYT+eQQT+IAAAAAEACGukDPSVTrYgEAAQBGVOti";
+    private String token; // = "006813f22ea50924b43ae8488edb975d02cIAAxDRKS4ib/zZjrP5mLezB9zE+BMB+yGXmuPBf3zjYT+eQQT+IAAAAAEACGukDPSVTrYgEAAQBGVOti";
 
     private String numberOfViewers;
     private String streamerImage;
@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         appId = streamDetails.getStringExtra("appID");
         channelName = streamDetails.getStringExtra("channelName");
         streamId = streamDetails.getLongExtra("streamId", 0);
+        token = streamDetails.getStringExtra("token");
         clientRole = streamDetails.getIntExtra("clientRole", 0);
 
         TextView txtName = (TextView) findViewById(R.id.channel_name);
@@ -133,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
         container.addView(surfaceView);
 
         // Pass the SurfaceView object to Agora so that it renders the local video.
-        mRtcEngine.setupLocalVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, 0));
+        //mRtcEngine.setupLocalVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, 0));
 
 
         ChannelMediaOptions options = new ChannelMediaOptions();
@@ -143,6 +144,11 @@ public class MainActivity extends AppCompatActivity {
         options.audienceLatencyLevel = Constants.AUDIENCE_LATENCY_LEVEL_LOW_LATENCY;
         // For a live streaming scenario, set the channel profile as BROADCASTING.
         options.channelProfile = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING;
+
+        if (options.clientRoleType == Constants.CLIENT_ROLE_BROADCASTER){
+            mRtcEngine.setupLocalVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, 0));
+        }
+        // Pass the SurfaceView object to Agora so that it renders the local video.
 
         // Join the channel with a temp token.
         // You need to specify the user ID yourself, and ensure that it is unique in the channel.

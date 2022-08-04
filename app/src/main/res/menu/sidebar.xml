@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="HardcodedText">
+
+    <item
+        android:id="@+id/nav_home"
+        android:title="Home" />
+
+    <item
+        android:id="@+id/nav_favorites"
+        android:title="Favorites" />
+
+    <item
+        android:id="@+id/nav_purchases"
+        android:title="My Purchases" />
+
+    <item
+        android:id="@+id/nav_streams"
+        android:title="My Streams" />
+
+    <item
+        android:id="@+id/nav_products"
+        android:title="My Products" />
+
+    <item
+        android:id="@+id/nav_dashboard"
+        android:title="Dashboard" />
+
+    <item
+        android:id="@+id/nav_orders"
+        android:title="My Orders" />
+
+    <item
+        android:id="@+id/nav_logout"
+        android:title="Logout" />
+
+</menu>

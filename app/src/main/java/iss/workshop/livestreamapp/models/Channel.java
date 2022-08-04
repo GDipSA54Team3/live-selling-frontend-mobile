@@ -16,5 +16,4 @@ public class Channel {
     private Bitmap profilePic;
     private String token;
     private List<Product> products;
-
 }

@@ -18,6 +18,8 @@ public interface IStreamDetails {
     default Channel generateChannel(){
         Channel channel = new Channel();
         channel.setName("Channel A");
+        //change this item for token generation
+        channel.setToken("006813f22ea50924b43ae8488edb975d02cIAAxDRKS4ib/zZjrP5mLezB9zE+BMB+yGXmuPBf3zjYT+eQQT+IAAAAAEACGukDPSVTrYgEAAQBGVOti");
         //add other setters for testing
         return channel;
     };
