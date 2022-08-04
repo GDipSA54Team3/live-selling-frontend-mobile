@@ -7,9 +7,11 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.os.Bundle;
@@ -21,6 +23,7 @@ import io.agora.rtc2.RtcEngine;
 import io.agora.rtc2.RtcEngineConfig;
 import io.agora.rtc2.video.VideoCanvas;
 import io.agora.rtc2.ChannelMediaOptions;
+import iss.workshop.livestreamapp.services.FetchStreamLog;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,18 +33,19 @@ public class MainActivity extends AppCompatActivity {
     // Fill the channel name.
     private String channelName;// = "Test Channel";
     // Fill the temp token generated on Agora Console.
-    private String token = "006813f22ea50924b43ae8488edb975d02cIAC3+YgFfcpYE/hSflpwtx8QcAvURoeFkzxH7dsVxMW8H9c7RNwAAAAAEACOhaHHftfoYgEAAQB41+hi";
+    private String token; // = "006813f22ea50924b43ae8488edb975d02cIAAxDRKS4ib/zZjrP5mLezB9zE+BMB+yGXmuPBf3zjYT+eQQT+IAAAAAEACGukDPSVTrYgEAAQBGVOti";
 
     private String numberOfViewers;
     private String streamerImage;
+    private TextView streamStatus;
 
     private RtcEngine mRtcEngine;
 
     private int clientRole;
+    private long streamId;
+    private Thread dataThread;
 
-    private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() {
-        //this is the code that is run when a buyer enters the stream
-        //any ui activities will be run here
+    private IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() {
         @Override
         // Listen for the remote host joining the channel to get the uid of the host.
         public void onUserJoined(int uid, int elapsed) {
@@ -53,6 +57,26 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+
+        @Override
+        public void onRemoteVideoStats(RemoteVideoStats stats) {
+            super.onRemoteVideoStats(stats);
+
+        }
+
+        /*
+        @Override
+        public void onUserOffline(int uid, int reason) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.i("agora","User offline, uid: " + (uid & 0xFFFFFFFFL));
+                    //onRemoteUserLeft();
+                }
+            });
+        }
+
+         */
     };
 
     @Override
@@ -60,13 +84,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         Intent streamDetails = getIntent();
         appId = streamDetails.getStringExtra("appID");
         channelName = streamDetails.getStringExtra("channelName");
+        streamId = streamDetails.getLongExtra("streamId", 0);
+        token = streamDetails.getStringExtra("token");
         clientRole = streamDetails.getIntExtra("clientRole", 0);
 
-        TextView txtName = (TextView) findViewById(R.id.channel_name);
+        TextView txtName = findViewById(R.id.channel_name);
         txtName.setText(channelName);
+
+        streamStatus = findViewById(R.id.stream_status);
+        streamStatus.setVisibility(View.INVISIBLE);
+
+
 
         if (checkSelfPermission(REQUESTED_PERMISSIONS[0], PERMISSION_REQ_ID) &&
                 checkSelfPermission(REQUESTED_PERMISSIONS[1], PERMISSION_REQ_ID)) {
@@ -77,20 +110,16 @@ public class MainActivity extends AppCompatActivity {
         btnLeaveChannel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, FetchStreamLog.class);
+                stopService(intent);
+
                 mRtcEngine.stopPreview();
                 mRtcEngine.leaveChannel();
-                backToEntrance();
+                finish();
             }
         });
     }
 
-
-    private void backToEntrance() {
-        Intent intent = new Intent(this, EntranceActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        startActivity(intent);
-        finish();
-    }
 
     private static final int PERMISSION_REQ_ID = 22;
     private static final String[] REQUESTED_PERMISSIONS = {
@@ -122,12 +151,11 @@ public class MainActivity extends AppCompatActivity {
         // Start local preview.
         mRtcEngine.startPreview();
 
+        //mRtcEventHandler.onUserJoined();
+
         FrameLayout container = findViewById(R.id.local_video_view_container);
         SurfaceView surfaceView = new SurfaceView (getBaseContext());
         container.addView(surfaceView);
-
-        // Pass the SurfaceView object to Agora so that it renders the local video.
-        mRtcEngine.setupLocalVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, 0));
 
         ChannelMediaOptions options = new ChannelMediaOptions();
         // Set the client role as BROADCASTER or AUDIENCE according to the scenario.
@@ -136,6 +164,21 @@ public class MainActivity extends AppCompatActivity {
         options.audienceLatencyLevel = Constants.AUDIENCE_LATENCY_LEVEL_LOW_LATENCY;
         // For a live streaming scenario, set the channel profile as BROADCASTING.
         options.channelProfile = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING;
+
+        if (options.clientRoleType == Constants.CLIENT_ROLE_BROADCASTER){
+            mRtcEngine.setupLocalVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, 0));
+
+            //start fetching of stream log
+            Intent intent = new Intent(MainActivity.this, FetchStreamLog.class);
+            intent.setAction("send_messages");
+            intent.putExtra("duration", 5);
+            startService(intent);
+
+        } else {
+            streamStatus.setText("Stream is not ongoing. Please wait for the next stream.");
+            streamStatus.setVisibility(View.VISIBLE);
+        }
+        // Pass the SurfaceView object to Agora so that it renders the local video.
 
         // Join the channel with a temp token.
         // You need to specify the user ID yourself, and ensure that it is unique in the channel.
