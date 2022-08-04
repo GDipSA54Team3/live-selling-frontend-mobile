@@ -21,6 +21,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LiveStreamApp"
         tools:targetApi="31">
+        <service
+            android:name=".services.ConnectToAPI"
+            android:enabled="true"
+            android:exported="true"></service>
+        <service
+            android:name=".services.FetchStreamLog"
+            android:enabled="true"
+            android:exported="true" />
+
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
