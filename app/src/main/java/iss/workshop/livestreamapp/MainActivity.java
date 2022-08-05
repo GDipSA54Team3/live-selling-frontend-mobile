@@ -5,17 +5,26 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.os.Bundle;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import io.agora.rtc2.Constants;
 import io.agora.rtc2.IRtcEngineEventHandler;
@@ -23,9 +32,14 @@ import io.agora.rtc2.RtcEngine;
 import io.agora.rtc2.RtcEngineConfig;
 import io.agora.rtc2.video.VideoCanvas;
 import io.agora.rtc2.ChannelMediaOptions;
+import iss.workshop.livestreamapp.adapters.ChStreamAdapter;
+import iss.workshop.livestreamapp.adapters.ProductsListAdapter;
+import iss.workshop.livestreamapp.interfaces.IStreamDetails;
+import iss.workshop.livestreamapp.models.Stream;
+import iss.workshop.livestreamapp.models.User;
 import iss.workshop.livestreamapp.services.FetchStreamLog;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements IStreamDetails {
 
     // maybe pass these information as intent when opened?
     // Fill the App ID of your project generated on Agora Console.
@@ -34,16 +48,21 @@ public class MainActivity extends AppCompatActivity {
     private String channelName;// = "Test Channel";
     // Fill the temp token generated on Agora Console.
     private String token; // = "006813f22ea50924b43ae8488edb975d02cIAAxDRKS4ib/zZjrP5mLezB9zE+BMB+yGXmuPBf3zjYT+eQQT+IAAAAAEACGukDPSVTrYgEAAQBGVOti";
-
+    private Stream currStream;
     private String numberOfViewers;
     private String streamerImage;
     private TextView streamStatus;
 
     private RtcEngine mRtcEngine;
 
+    //audience or host
     private int clientRole;
-    private long streamId;
-    private Thread dataThread;
+
+    //current user logged in
+    private User user;
+
+    //button that shows the products
+    private Button showProducts;
 
     private IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() {
         @Override
@@ -84,38 +103,51 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
+        //getting intent details
         Intent streamDetails = getIntent();
-        appId = streamDetails.getStringExtra("appID");
+        appId = getAppID();
         channelName = streamDetails.getStringExtra("channelName");
-        streamId = streamDetails.getLongExtra("streamId", 0);
+        //streamId = streamDetails.getLongExtra("streamId", 0);
         token = streamDetails.getStringExtra("token");
         clientRole = streamDetails.getIntExtra("clientRole", 0);
-
+        currStream = (Stream) streamDetails.getSerializableExtra("streamObj");
+        user = (User) streamDetails.getSerializableExtra("user");
+        //Toast.makeText(this, currStream.getName(), Toast.LENGTH_SHORT).show();
         TextView txtName = findViewById(R.id.channel_name);
         txtName.setText(channelName);
 
+        //hide top bar
+        getSupportActionBar().hide();
+
         streamStatus = findViewById(R.id.stream_status);
         streamStatus.setVisibility(View.INVISIBLE);
-
-
 
         if (checkSelfPermission(REQUESTED_PERMISSIONS[0], PERMISSION_REQ_ID) &&
                 checkSelfPermission(REQUESTED_PERMISSIONS[1], PERMISSION_REQ_ID)) {
             initializeAndJoinChannel();
         }
 
-        Button btnLeaveChannel = (Button) findViewById(R.id.buttonView);
+
+        //setting listener to leave channel
+        Button btnLeaveChannel = findViewById(R.id.leave_channel);
         btnLeaveChannel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, FetchStreamLog.class);
                 stopService(intent);
-
                 mRtcEngine.stopPreview();
                 mRtcEngine.leaveChannel();
                 finish();
+            }
+        });
+
+        //setting listener to viewing products
+        showProducts = findViewById(R.id.open_product_list);
+
+        showProducts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openProductDialog();
             }
         });
     }
@@ -167,7 +199,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (options.clientRoleType == Constants.CLIENT_ROLE_BROADCASTER){
             mRtcEngine.setupLocalVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, 0));
-
             //start fetching of stream log
             Intent intent = new Intent(MainActivity.this, FetchStreamLog.class);
             intent.setAction("send_messages");
@@ -175,14 +206,19 @@ public class MainActivity extends AppCompatActivity {
             startService(intent);
 
         } else {
-            streamStatus.setText("Stream is not ongoing. Please wait for the next stream.");
-            streamStatus.setVisibility(View.VISIBLE);
+            boolean hostIsInside = true;
+            if (!hostIsInside){
+                streamStatus.setText("Stream is not ongoing. Please wait for the next stream.");
+                streamStatus.setVisibility(View.VISIBLE);
+            }
+            //check if host is inside. if not, run the
+
         }
         // Pass the SurfaceView object to Agora so that it renders the local video.
 
         // Join the channel with a temp token.
         // You need to specify the user ID yourself, and ensure that it is unique in the channel.
-        mRtcEngine.joinChannel(token, channelName, 0, options);
+        mRtcEngine.joinChannel(token, channelName, user.getId(), options);
     }
 
     private void setupRemoteVideo(int uid) {
@@ -191,6 +227,24 @@ public class MainActivity extends AppCompatActivity {
         surfaceView.setZOrderMediaOverlay(true);
         container.addView(surfaceView);
         mRtcEngine.setupRemoteVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, uid));
+    }
+
+    private void openProductDialog(){
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.product_list_layout);
+
+        ListView productsListing = dialog.findViewById(R.id.products_list);
+        if (productsListing.getAdapter() == null){
+            ProductsListAdapter prodAdapter = new ProductsListAdapter(this, currStream.getProducts());
+            productsListing.setAdapter(prodAdapter);
+        }
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, (int) (getResources().getDisplayMetrics().heightPixels*0.60));
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
 }
