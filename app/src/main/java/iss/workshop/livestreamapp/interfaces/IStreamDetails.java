@@ -5,8 +5,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import iss.workshop.livestreamapp.models.Channel;
+import iss.workshop.livestreamapp.models.Product;
 import iss.workshop.livestreamapp.models.Stream;
 
 public interface IStreamDetails {
@@ -35,9 +37,30 @@ public interface IStreamDetails {
         stream1.setDescription("This is the first stream for " + channel.getName());
         stream1.setStartDate(LocalDateTime.now());
 
+        //generate product objects
+        Product product1 = new Product();
+        product1.setName("Apple");
+        Product product2 = new Product();
+        product2.setName("Banana");
+        Product product3 = new Product();
+        product3.setName("Orange");
+        Product product4 = new Product();
+        product4.setName("Watermelon");
+        Product product5 = new Product();
+        product5.setName("Basket");
+        Product product6 = new Product();
+        product6.setName("Shoe");
+
+        stream1.getProducts().add(product1);
+        stream1.getProducts().add(product2);
+        stream1.getProducts().add(product3);
+        stream1.getProducts().add(product4);
+        stream1.getProducts().add(product5);
+        stream1.getProducts().add(product6);
+
         Stream stream2 = new Stream();
 
-        stream1.setId(2);
+        stream2.setId(2);
         stream2.setChannel(channel);
         stream2.setName("Second Stream");
         stream2.setDescription("This is the second stream for " + channel.getName());
@@ -45,7 +68,7 @@ public interface IStreamDetails {
 
         Stream stream3 = new Stream();
 
-        stream1.setId(3);
+        stream3.setId(3);
         stream3.setChannel(channel);
         stream3.setName("Third Stream");
         stream3.setDescription("This is the third stream for " + channel.getName());
@@ -55,5 +78,9 @@ public interface IStreamDetails {
         streams.add(stream2);
         streams.add(stream3);
         return streams;
+    }
+
+    default String generateUserId(){
+        return UUID.randomUUID().toString();
     }
 }

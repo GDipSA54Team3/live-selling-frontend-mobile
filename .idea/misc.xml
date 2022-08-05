@@ -3,15 +3,22 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android/LiveStreamApp/app/src/main/res/drawable/dialog_bg.xml" value="0.107" />
+        <entry key="..\:/Android/LiveStreamApp/app/src/main/res/drawable/ic_baseline_shopping_bag_24.xml" value="0.2005" />
+        <entry key="..\:/Android/LiveStreamApp/app/src/main/res/drawable/ic_baseline_shopping_cart_24.xml" value="0.2005" />
         <entry key="..\:/Android/LiveStreamApp/app/src/main/res/drawable/ic_bottom_menu_background.xml" value="0.107" />
+        <entry key="..\:/Android/LiveStreamApp/app/src/main/res/drawable/ic_shopping_bag.xml" value="0.107" />
         <entry key="..\:/Android/LiveStreamApp/app/src/main/res/layout/activity_channel_profile.xml" value="0.1" />
         <entry key="..\:/Android/LiveStreamApp/app/src/main/res/layout/activity_entrance.xml" value="0.22282608695652173" />
         <entry key="..\:/Android/LiveStreamApp/app/src/main/res/layout/activity_extrance.xml" value="0.22282608695652173" />
         <entry key="..\:/Android/LiveStreamApp/app/src/main/res/layout/activity_login.xml" value="0.12" />
-        <entry key="..\:/Android/LiveStreamApp/app/src/main/res/layout/activity_main.xml" value="0.109375" />
+        <entry key="..\:/Android/LiveStreamApp/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Android/LiveStreamApp/app/src/main/res/layout/channelrow.xml" value="0.22282608695652173" />
         <entry key="..\:/Android/LiveStreamApp/app/src/main/res/layout/content_purchases.xml" value="0.1" />
         <entry key="..\:/Android/LiveStreamApp/app/src/main/res/layout/fragment_bottom_menu.xml" value="0.12962962962962962" />
+        <entry key="..\:/Android/LiveStreamApp/app/src/main/res/layout/product_list_layout.xml" value="0.2667572463768116" />
+        <entry key="..\:/Android/LiveStreamApp/app/src/main/res/layout/product_row.xml" value="0.12962962962962962" />
+        <entry key="..\:/Android/LiveStreamApp/app/src/main/res/layout/products_list_layout.xml" value="0.1" />
         <entry key="..\:/Android/LiveStreamApp/app/src/main/res/menu/activity_main_drawer.xml" value="0.19047619047619047" />
         <entry key="..\:/Android/LiveStreamApp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1265625" />
         <entry key="..\:/Android/LiveStreamApp/app/src/main/res/menu/sidebar.xml" value="0.27447916666666666" />

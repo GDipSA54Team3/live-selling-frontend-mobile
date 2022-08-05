@@ -7,7 +7,9 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,16 +27,20 @@ import java.util.List;
 import io.agora.rtc2.Constants;
 import iss.workshop.livestreamapp.adapters.ChStreamAdapter;
 import iss.workshop.livestreamapp.interfaces.IMenuAccess;
+import iss.workshop.livestreamapp.interfaces.ISessionUser;
 import iss.workshop.livestreamapp.interfaces.IStreamDetails;
 import iss.workshop.livestreamapp.models.Channel;
 import iss.workshop.livestreamapp.models.Stream;
+import iss.workshop.livestreamapp.models.User;
 
-public class EntranceActivity extends AppCompatActivity implements IStreamDetails, IMenuAccess {
+public class EntranceActivity extends AppCompatActivity implements IStreamDetails, IMenuAccess, ISessionUser {
 
-    public ListView listOfStreams;
-    public DrawerLayout drawerLayout;
-    public ActionBarDrawerToggle actionBarDrawerToggle;
-    public Channel channel;
+    private ListView listOfStreams;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
+    private Channel channel;
+    private Stream currStream;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +49,18 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
 
         Button startA = findViewById(R.id.startA);
         Button startB = findViewById(R.id.startB);
+
+        //checkUser method
+        Intent intent = getIntent();
+        user = (User) intent.getSerializableExtra("user");
+        SharedPreferences sPref = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+        if (isValidated(sPref, user.getUsername(), user.getPassword())){
+            //unique to entrance activity
+            TextView welcomeUser = findViewById(R.id.welcome_user);
+            welcomeUser.setText("Welcome " + user.getUsername() + "!");
+        } else {
+            logOut(sPref, this);
+        }
 
         // drawer layout instance to toggle the menu icon to open
         // drawer and back button to close drawer
@@ -78,10 +96,10 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
                         .findViewById(R.id.channel_name);
                 String channelName = channelNameTxt.getText().toString();
 
-                Stream currStream = (Stream) streamAdapter.getItem(i);
+                currStream = (Stream) streamAdapter.getItem(i);
                 Toast.makeText(EntranceActivity.this, currStream.getName(), Toast.LENGTH_SHORT).show();
 
-                openStreamPage("buyer", channel, currStream.getId());
+                openStreamPage("buyer", channel, currStream);
             }
         });
 
@@ -89,7 +107,7 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
         startA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openStreamPage("seller", channel, 1);
+                openStreamPage("seller", channel, new Stream());
             }
         });
 
@@ -97,19 +115,21 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
         startB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openStreamPage("seller", channel, 2);
+                openStreamPage("seller", channel, new Stream());
             }
         });
 
     }
 
 
-    public void openStreamPage(String role, Channel channel, long streamId){
+    public void openStreamPage(String role, Channel channel, Stream currStream){
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("channelName", channel.getName());
         intent.putExtra("token", channel.getToken());
         intent.putExtra("appID", getAppID());
-        intent.putExtra("streamID", streamId);
+        //intent.putExtra("streamID", streamId);
+        intent.putExtra("streamObj", currStream);
+        intent.putExtra("user", user);
         if (role.equals("seller")){
             intent.putExtra("clientRole", Constants.CLIENT_ROLE_BROADCASTER);
         } else {
@@ -134,4 +154,5 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }
