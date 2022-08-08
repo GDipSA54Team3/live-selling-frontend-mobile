@@ -25,15 +25,16 @@ public interface IStreamDetails {
         return channelStream;
     };
 
+    /*
     default List<Stream> generateStreams(ChannelStream channelStream){
         List<Stream> streams = new ArrayList<Stream>();
         Stream stream1 = new Stream();
 
-        stream1.setId(1);
+        stream1.setId(UUID.randomUUID().toString());
         stream1.setChannelStream(channelStream);
-        stream1.setName("First Stream");
-        stream1.setDescription("This is the first stream for " + channelStream.getName());
-        stream1.setStartDate(LocalDateTime.now());
+        stream1.setTitle("First Stream");
+        //stream1.setDescription("This is the first stream for " + channelStream.getName());
+        stream1.setSchedule(LocalDateTime.now());
 
         //generate product objects
         Product product1 = new Product();
@@ -77,6 +78,8 @@ public interface IStreamDetails {
         streams.add(stream3);
         return streams;
     }
+
+     */
 
     default String generateUserId(){
         return UUID.randomUUID().toString();

@@ -37,7 +37,7 @@ public class ChStreamAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int i) {
-        return streams.get(i).getId();
+        return 0;
     }
 
     @Override
@@ -55,7 +55,7 @@ public class ChStreamAdapter extends BaseAdapter {
                 .findViewById(R.id.top_container)
                 .findViewById(R.id.text_fields)
                 .findViewById(R.id.channel_name);
-        channelName.setText(currentStream.getChannel().getName());
+        channelName.setText(currentStream.getChannelStream().getName());
 
         //stream name
         TextView streamName = (TextView) view
@@ -63,9 +63,10 @@ public class ChStreamAdapter extends BaseAdapter {
                 .findViewById(R.id.top_container)
                 .findViewById(R.id.text_fields)
                 .findViewById(R.id.stream_name);
-        streamName.setText(currentStream.getName());
+        streamName.setText(currentStream.getTitle());
 
         //stream name
+        /*
         TextView streamDesc = (TextView) view
                 .findViewById(R.id.entire_row)
                 .findViewById(R.id.top_container)
@@ -73,11 +74,13 @@ public class ChStreamAdapter extends BaseAdapter {
                 .findViewById(R.id.stream_desc);
         streamDesc.setText(currentStream.getDescription());
 
+         */
+
         //stream name
         TextView streamDate = (TextView) view
                 .findViewById(R.id.bottom_container)
                 .findViewById(R.id.date_of_stream);
-        streamDate.setText(currentStream.getStartDate().toString());
+        streamDate.setText(currentStream.getSchedule().toString());
 
         Chip liveChip = (Chip) view
                 .findViewById(R.id.bottom_container)

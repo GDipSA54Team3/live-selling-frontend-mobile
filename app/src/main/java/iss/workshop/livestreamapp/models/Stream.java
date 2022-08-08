@@ -7,8 +7,10 @@ import java.util.List;
 
 import iss.workshop.livestreamapp.helpers.StreamStatus;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class Stream implements Serializable {
 
     private String id;

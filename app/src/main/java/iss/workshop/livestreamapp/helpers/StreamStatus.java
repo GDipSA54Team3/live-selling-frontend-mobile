@@ -5,5 +5,10 @@ public enum StreamStatus {
     ONGOING,
     CANCELLED,
     COMPLETED,
-    DELETED
+    DELETED;
+
+    @Override
+    public String toString() {
+        return name();
+    }
 }

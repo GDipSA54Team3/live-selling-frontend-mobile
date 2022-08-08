@@ -30,6 +30,11 @@ import iss.workshop.livestreamapp.interfaces.IStreamDetails;
 import iss.workshop.livestreamapp.models.ChannelStream;
 import iss.workshop.livestreamapp.models.Stream;
 import iss.workshop.livestreamapp.models.User;
+import iss.workshop.livestreamapp.services.RetroFitService;
+import iss.workshop.livestreamapp.services.StreamsApi;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class EntranceActivity extends AppCompatActivity implements IStreamDetails, IMenuAccess, ISessionUser {
 
@@ -79,25 +84,22 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
 
         //populating streams
         listOfStreams = findViewById(R.id.stream_list_first);
-        channelStream = generateChannel();
-        List<Stream> streamList = generateStreams(channelStream);
 
-        ChStreamAdapter streamAdapter = new ChStreamAdapter(this, streamList);
-        listOfStreams.setAdapter(streamAdapter);
-        listOfStreams.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        RetroFitService rfServ = new RetroFitService();
+        StreamsApi streamAPI = rfServ.getRetrofit().create(StreamsApi.class);
+
+        streamAPI.getAllStreams().enqueue(new Callback<List<Stream>>() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                TextView channelNameTxt = view
-                        .findViewById(R.id.entire_row)
-                        .findViewById(R.id.top_container)
-                        .findViewById(R.id.text_fields)
-                        .findViewById(R.id.channel_name);
-                String channelName = channelNameTxt.getText().toString();
+            public void onResponse(Call<List<Stream>> call, Response<List<Stream>> response)
+            {
+                System.out.println(response.isSuccessful());
+                System.out.println(response.body());
+                populateStreamList(response.body());
+            }
 
-                currStream = (Stream) streamAdapter.getItem(i);
-                Toast.makeText(EntranceActivity.this, currStream.getName(), Toast.LENGTH_SHORT).show();
-
-                openStreamPage("buyer", channelStream, currStream);
+            @Override
+            public void onFailure(Call<List<Stream>> call, Throwable t) {
+                Toast.makeText(EntranceActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -119,11 +121,36 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
 
     }
 
+    private void populateStreamList(List<Stream> body) {
+        ChStreamAdapter streamAdapter = new ChStreamAdapter(this, body);
+        listOfStreams.setAdapter(streamAdapter);
+
+        listOfStreams.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                TextView channelNameTxt = view
+                        .findViewById(R.id.entire_row)
+                        .findViewById(R.id.top_container)
+                        .findViewById(R.id.text_fields)
+                        .findViewById(R.id.channel_name);
+                String channelName = channelNameTxt.getText().toString();
+
+                currStream = (Stream) streamAdapter.getItem(i);
+                channelStream = currStream.getChannelStream();
+                Toast.makeText(EntranceActivity.this, currStream.getTitle(), Toast.LENGTH_SHORT).show();
+
+                openStreamPage("buyer", channelStream, currStream);
+            }
+
+        });
+
+    }
+
 
     public void openStreamPage(String role, ChannelStream channelStream, Stream currStream){
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("channelName", channelStream.getName());
-        intent.putExtra("token", channelStream.getToken());
+        //intent.putExtra("token", "006813f22ea50924b43ae8488edb975d02cIACSwVYot3MJjOw/ZoWEFqBcwkViZje5dTy0hjwbD1QGzWV0cykAAAAAEACGukDPdf3xYgEAAQBy/fFi");
         intent.putExtra("appID", getAppID());
         //intent.putExtra("streamID", streamId);
         intent.putExtra("streamObj", currStream);
@@ -152,5 +179,7 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 
 }

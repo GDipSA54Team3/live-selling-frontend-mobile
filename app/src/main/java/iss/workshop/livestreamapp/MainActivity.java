@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
     // Fill the channel name.
     private String channelName;// = "Test ChannelStream";
     // Fill the temp token generated on Agora Console.
-    private String token; // = "006813f22ea50924b43ae8488edb975d02cIAAxDRKS4ib/zZjrP5mLezB9zE+BMB+yGXmuPBf3zjYT+eQQT+IAAAAAEACGukDPSVTrYgEAAQBGVOti";
+    private String token = "006813f22ea50924b43ae8488edb975d02cIACSwVYot3MJjOw/ZoWEFqBcwkViZje5dTy0hjwbD1QGzWV0cykAAAAAEACGukDPdf3xYgEAAQBy/fFi";
     private Stream currStream;
     private String numberOfViewers;
     private String streamerImage;
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
         appId = getAppID();
         channelName = streamDetails.getStringExtra("channelName");
         //streamId = streamDetails.getLongExtra("streamId", 0);
-        token = streamDetails.getStringExtra("token");
+        //token = streamDetails.getStringExtra("token");
         clientRole = streamDetails.getIntExtra("clientRole", 0);
         currStream = (Stream) streamDetails.getSerializableExtra("streamObj");
         user = (User) streamDetails.getSerializableExtra("user");
@@ -218,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
 
         // Join the channel with a temp token.
         // You need to specify the user ID yourself, and ensure that it is unique in the channel.
-        mRtcEngine.joinChannel(token, channelName, user.getId(), options);
+        mRtcEngine.joinChannel(token, channelName, 0, options);
     }
 
     private void setupRemoteVideo(int uid) {
@@ -234,11 +234,13 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.product_list_layout);
 
+        /*
         ListView productsListing = dialog.findViewById(R.id.products_list);
         if (productsListing.getAdapter() == null){
             ProductsListAdapter prodAdapter = new ProductsListAdapter(this, currStream.getProducts());
             productsListing.setAdapter(prodAdapter);
         }
+         */
 
         dialog.show();
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, (int) (getResources().getDisplayMetrics().heightPixels*0.60));
