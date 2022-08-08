@@ -1,11 +1,5 @@
 package iss.workshop.livestreamapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,9 +12,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import io.agora.rtc2.Constants;
 import iss.workshop.livestreamapp.adapters.ChStreamAdapter;
@@ -30,6 +31,7 @@ import iss.workshop.livestreamapp.interfaces.IStreamDetails;
 import iss.workshop.livestreamapp.models.ChannelStream;
 import iss.workshop.livestreamapp.models.Stream;
 import iss.workshop.livestreamapp.models.User;
+import iss.workshop.livestreamapp.services.ChannelsApi;
 import iss.workshop.livestreamapp.services.RetroFitService;
 import iss.workshop.livestreamapp.services.StreamsApi;
 import retrofit2.Call;
@@ -65,6 +67,8 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
             logOut(sPref, this);
         }
 
+        channelStream = user.getChannel();
+
         // drawer layout instance to toggle the menu icon to open
         // drawer and back button to close drawer
         drawerLayout = findViewById(R.id.my_drawer_layout);
@@ -82,18 +86,37 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
         navigationView.setNavigationItemSelectedListener(this);
 
 
+        //find channel of user by ID
+        RetroFitService rfServ = new RetroFitService("channel");
+        ChannelsApi channelAPI = rfServ.getRetrofit().create(ChannelsApi.class);
+
+        channelAPI.getAllChannels().enqueue(new Callback<List<ChannelStream>>() {
+            @Override
+            public void onResponse(Call<List<ChannelStream>> call, Response<List<ChannelStream>> response) {
+
+                channelStream = response.body()
+                        .stream()
+                        .filter(x -> x.getUser().getId().equals(user.getId()))
+                        .collect(Collectors.toList())
+                        .get(0);
+            }
+
+            @Override
+            public void onFailure(Call<List<ChannelStream>> call, Throwable t) {
+                Toast.makeText(EntranceActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
         //populating streams
         listOfStreams = findViewById(R.id.stream_list_first);
 
-        RetroFitService rfServ = new RetroFitService("stream");
+        rfServ = new RetroFitService("stream");
         StreamsApi streamAPI = rfServ.getRetrofit().create(StreamsApi.class);
 
         streamAPI.getAllStreams().enqueue(new Callback<List<Stream>>() {
             @Override
             public void onResponse(Call<List<Stream>> call, Response<List<Stream>> response)
             {
-                System.out.println(response.isSuccessful());
-                System.out.println(response.body());
                 populateStreamList(response.body());
             }
 

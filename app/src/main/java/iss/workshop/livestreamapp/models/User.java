@@ -14,23 +14,14 @@ public class User implements Serializable {
 
     private String id;
     private String firstName;
-
     private String lastName;
-
     private String address;
-
     private String username;
-
     private String password;
     private Boolean isVerified;
-
     //private Cart cart;
-
     private ChannelStream channel;
-
-
     //private List<Rating> reviews;
-
     //private List<Orders> ordersHistory;
 
     public User(String firstName, String lastName, String address, String username, String password, Boolean isVerified) {
