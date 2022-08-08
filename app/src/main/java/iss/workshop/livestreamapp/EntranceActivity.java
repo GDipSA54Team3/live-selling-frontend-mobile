@@ -60,7 +60,7 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
         if (isValidated(sPref, user.getUsername(), user.getPassword())){
             //unique to entrance activity
             TextView welcomeUser = findViewById(R.id.welcome_user);
-            welcomeUser.setText("Welcome " + user.getUsername() + "!");
+            welcomeUser.setText("Welcome " + user.getFirstName() + "!");
         } else {
             logOut(sPref, this);
         }
@@ -85,7 +85,7 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
         //populating streams
         listOfStreams = findViewById(R.id.stream_list_first);
 
-        RetroFitService rfServ = new RetroFitService();
+        RetroFitService rfServ = new RetroFitService("stream");
         StreamsApi streamAPI = rfServ.getRetrofit().create(StreamsApi.class);
 
         streamAPI.getAllStreams().enqueue(new Callback<List<Stream>>() {
@@ -118,7 +118,6 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
                 openStreamPage("seller", channelStream, new Stream());
             }
         });
-
     }
 
     private void populateStreamList(List<Stream> body) {
