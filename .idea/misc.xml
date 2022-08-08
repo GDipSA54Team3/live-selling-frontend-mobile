@@ -23,6 +23,19 @@
         <entry key="..\:/Android/LiveStreamApp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1265625" />
         <entry key="..\:/Android/LiveStreamApp/app/src/main/res/menu/sidebar.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/stian/Dropbox/ISS-GDipSA/ADProjectTina/live-streaming-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/activity_channel_profile.xml" value="0.2796875" />
+        <entry key="app/src/main/res/drawable-v24/background.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable-v24/input_bg.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/dialog_bg.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_channel_profile.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_custom_dialog.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_entrance.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_register.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/channelrow.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/custom_dialog.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/product_list_layout.xml" value="0.1" />
+        <entry key="app/src/main/res/menu/sidebar.xml" value="0.12962962962962962" />
       </map>
     </option>
   </component>

@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
+import iss.workshop.livestreamapp.ChannelProfileActivity;
 import iss.workshop.livestreamapp.EntranceActivity;
 import iss.workshop.livestreamapp.LoginActivity;
 import iss.workshop.livestreamapp.R;
@@ -42,6 +43,10 @@ public interface IMenuAccess extends NavigationView.OnNavigationItemSelectedList
             case R.id.nav_dashboard:
                 Toast.makeText(context, "Dashboard", Toast.LENGTH_SHORT).show();
                 pageToOpen = EntranceActivity.class;
+                break;
+            case R.id.nav_myProfile:
+                //Toast.makeText(context, "Dashboard", Toast.LENGTH_SHORT).show();
+                pageToOpen = ChannelProfileActivity.class;
                 break;
             case R.id.nav_orders:
                 Toast.makeText(context, "Orders", Toast.LENGTH_SHORT).show();
