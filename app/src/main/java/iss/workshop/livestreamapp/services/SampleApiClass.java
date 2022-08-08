@@ -9,14 +9,6 @@ import retrofit2.http.*;
 public interface SampleApiClass {
     //this class will serve as an example, might need to create more helper classes for api fetches
 
-    @GET("stream/get-all") // this will have the request URl that will make the server fetch the list of streams
-    Call<List<Stream>> getAllStreams();
-
-    @POST("stream/get-all") // this will have the request URl that will make the stream save the stream
-    Call<Stream> saveStream(@Body Stream stream); //body annotation will save the entity in the post body
-
-    @DELETE("stream/delete")
-    void delete();
 }
 
 /*
