@@ -1,23 +1,24 @@
 package iss.workshop.livestreamapp.models;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @NoArgsConstructor
-public class Cart {
-
+public class Orders {
+    //this is Tina's comment
     private String id;
     private User user;
+    private LocalDateTime orderDateTime;
 
     private List<OrderProduct> orderProduct;
 
-    public Cart(String id, User user) {
-        this.id = id;
+    public Orders(User user, LocalDateTime orderDateTime) {
+        this.orderDateTime = orderDateTime;
         this.orderProduct = new ArrayList<>();
         this.user = user;
     }
