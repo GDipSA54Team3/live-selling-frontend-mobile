@@ -24,6 +24,7 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity implements ISessionUser {
 
     private Button btnLogin;
+    TextView newAccount;
     private SharedPreferences sPref;
 
     @Override
@@ -31,7 +32,30 @@ public class LoginActivity extends AppCompatActivity implements ISessionUser {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        btnLogin = findViewById(R.id.btnLogin);
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openPage();
+            }
+        });
+        newAccount = findViewById(R.id.createNewAccount);
+        newAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+            }
+        });
+
         sPref = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+
+
+        SharedPreferences.Editor editor = sPref.edit();
+        editor
+                .putString("username", "testUser")
+                .putString("password", "password")
+                .apply();
+
 
         btnLogin = findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(new View.OnClickListener() {

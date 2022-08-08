@@ -28,6 +28,10 @@
         android:title="Dashboard" />
 
     <item
+        android:id="@+id/nav_myProfile"
+        android:title="My Profile" />
+
+    <item
         android:id="@+id/nav_orders"
         android:title="My Orders" />
 
