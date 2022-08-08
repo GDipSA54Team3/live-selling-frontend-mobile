@@ -3,10 +3,11 @@ package iss.workshop.livestreamapp.models;
 import androidx.navigation.NavType;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
@@ -21,8 +22,9 @@ public class User implements Serializable {
     private Boolean isVerified;
     //private Cart cart;
     private ChannelStream channel;
-    //private List<Rating> reviews;
-    //private List<Orders> ordersHistory;
+
+    private List<Rating> reviews;
+    private List<Orders> ordersHistory;
 
     public User(String firstName, String lastName, String address, String username, String password, Boolean isVerified) {
         this.firstName = firstName;
@@ -31,8 +33,8 @@ public class User implements Serializable {
         this.username = username;
         this.password = password;
         this.isVerified = isVerified;
-        //this.reviews = new ArrayList<>();
-        //this.ordersHistory = new ArrayList<>();
+        this.reviews = new ArrayList<>();
+        this.ordersHistory = new ArrayList<>();
     }
 
     public User(String username, String password){
