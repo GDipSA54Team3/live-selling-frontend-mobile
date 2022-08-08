@@ -1,13 +1,11 @@
 package iss.workshop.livestreamapp.interfaces;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import iss.workshop.livestreamapp.models.Channel;
+import iss.workshop.livestreamapp.models.ChannelStream;
 import iss.workshop.livestreamapp.models.Product;
 import iss.workshop.livestreamapp.models.Stream;
 
@@ -17,24 +15,24 @@ public interface IStreamDetails {
         return "813f22ea50924b43ae8488edb975d02c";
     }
 
-    default Channel generateChannel(){
-        Channel channel = new Channel();
-        channel.setName("Channel A");
+    default ChannelStream generateChannel(){
+        ChannelStream channelStream = new ChannelStream();
+        channelStream.setName("ChannelStream A");
 
         //change this item for token generation
-        channel.setToken("006813f22ea50924b43ae8488edb975d02cIAAFA+4Cs0XMCcPj1uZSCm7YdswHBh/eGisZnI0U4hxmzuQQT+IAAAAAEABUJOp92bTsYgEAAQDVtOxi");
+        channelStream.setToken("006813f22ea50924b43ae8488edb975d02cIAAFA+4Cs0XMCcPj1uZSCm7YdswHBh/eGisZnI0U4hxmzuQQT+IAAAAAEABUJOp92bTsYgEAAQDVtOxi");
         //add other setters for testing
-        return channel;
+        return channelStream;
     };
 
-    default List<Stream> generateStreams(Channel channel){
+    default List<Stream> generateStreams(ChannelStream channelStream){
         List<Stream> streams = new ArrayList<Stream>();
         Stream stream1 = new Stream();
 
         stream1.setId(1);
-        stream1.setChannel(channel);
+        stream1.setChannelStream(channelStream);
         stream1.setName("First Stream");
-        stream1.setDescription("This is the first stream for " + channel.getName());
+        stream1.setDescription("This is the first stream for " + channelStream.getName());
         stream1.setStartDate(LocalDateTime.now());
 
         //generate product objects
@@ -61,17 +59,17 @@ public interface IStreamDetails {
         Stream stream2 = new Stream();
 
         stream2.setId(2);
-        stream2.setChannel(channel);
+        stream2.setChannelStream(channelStream);
         stream2.setName("Second Stream");
-        stream2.setDescription("This is the second stream for " + channel.getName());
+        stream2.setDescription("This is the second stream for " + channelStream.getName());
         stream2.setStartDate(LocalDateTime.now());
 
         Stream stream3 = new Stream();
 
         stream3.setId(3);
-        stream3.setChannel(channel);
+        stream3.setChannelStream(channelStream);
         stream3.setName("Third Stream");
-        stream3.setDescription("This is the third stream for " + channel.getName());
+        stream3.setDescription("This is the third stream for " + channelStream.getName());
         stream3.setStartDate(LocalDateTime.now());
 
         streams.add(stream1);

@@ -5,7 +5,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +12,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -29,7 +27,7 @@ import iss.workshop.livestreamapp.adapters.ChStreamAdapter;
 import iss.workshop.livestreamapp.interfaces.IMenuAccess;
 import iss.workshop.livestreamapp.interfaces.ISessionUser;
 import iss.workshop.livestreamapp.interfaces.IStreamDetails;
-import iss.workshop.livestreamapp.models.Channel;
+import iss.workshop.livestreamapp.models.ChannelStream;
 import iss.workshop.livestreamapp.models.Stream;
 import iss.workshop.livestreamapp.models.User;
 
@@ -38,7 +36,7 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
     private ListView listOfStreams;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
-    private Channel channel;
+    private ChannelStream channelStream;
     private Stream currStream;
     private User user;
 
@@ -81,8 +79,8 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
 
         //populating streams
         listOfStreams = findViewById(R.id.stream_list_first);
-        channel = generateChannel();
-        List<Stream> streamList = generateStreams(channel);
+        channelStream = generateChannel();
+        List<Stream> streamList = generateStreams(channelStream);
 
         ChStreamAdapter streamAdapter = new ChStreamAdapter(this, streamList);
         listOfStreams.setAdapter(streamAdapter);
@@ -99,7 +97,7 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
                 currStream = (Stream) streamAdapter.getItem(i);
                 Toast.makeText(EntranceActivity.this, currStream.getName(), Toast.LENGTH_SHORT).show();
 
-                openStreamPage("buyer", channel, currStream);
+                openStreamPage("buyer", channelStream, currStream);
             }
         });
 
@@ -107,7 +105,7 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
         startA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openStreamPage("seller", channel, new Stream());
+                openStreamPage("seller", channelStream, new Stream());
             }
         });
 
@@ -115,17 +113,17 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
         startB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openStreamPage("seller", channel, new Stream());
+                openStreamPage("seller", channelStream, new Stream());
             }
         });
 
     }
 
 
-    public void openStreamPage(String role, Channel channel, Stream currStream){
+    public void openStreamPage(String role, ChannelStream channelStream, Stream currStream){
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("channelName", channel.getName());
-        intent.putExtra("token", channel.getToken());
+        intent.putExtra("channelName", channelStream.getName());
+        intent.putExtra("token", channelStream.getToken());
         intent.putExtra("appID", getAppID());
         //intent.putExtra("streamID", streamId);
         intent.putExtra("streamObj", currStream);

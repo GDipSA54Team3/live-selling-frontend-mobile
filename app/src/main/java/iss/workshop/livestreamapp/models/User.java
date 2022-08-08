@@ -13,7 +13,7 @@ public class User implements Serializable {
     private String username;
     private String password;
     private int id;
-    //private Channel channel;
+    //private ChannelStream channel;
 
     public User(String username, String password){
         this.username = username;

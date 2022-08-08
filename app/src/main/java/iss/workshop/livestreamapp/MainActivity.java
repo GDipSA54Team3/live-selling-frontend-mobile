@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
     // Fill the App ID of your project generated on Agora Console.
     private String appId; // = "813f22ea50924b43ae8488edb975d02c";
     // Fill the channel name.
-    private String channelName;// = "Test Channel";
+    private String channelName;// = "Test ChannelStream";
     // Fill the temp token generated on Agora Console.
     private String token; // = "006813f22ea50924b43ae8488edb975d02cIAAxDRKS4ib/zZjrP5mLezB9zE+BMB+yGXmuPBf3zjYT+eQQT+IAAAAAEACGukDPSVTrYgEAAQBGVOti";
     private Stream currStream;

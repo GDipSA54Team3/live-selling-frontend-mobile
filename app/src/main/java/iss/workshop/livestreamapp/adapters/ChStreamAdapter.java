@@ -13,7 +13,6 @@ import com.google.android.material.chip.Chip;
 import iss.workshop.livestreamapp.R;
 import java.util.List;
 
-import iss.workshop.livestreamapp.models.Channel;
 import iss.workshop.livestreamapp.models.Stream;
 
 public class ChStreamAdapter extends BaseAdapter {

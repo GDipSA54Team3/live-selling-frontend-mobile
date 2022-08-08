@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class Channel implements Serializable{
+public class ChannelStream implements Serializable{
     private long id;
     private String name;
     private Bitmap profilePic;
