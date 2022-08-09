@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class ChannelStream implements Serializable{
+public class ChannelStream implements Serializable {
 
     private Bitmap profilePic;
     private String token;

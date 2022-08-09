@@ -12,8 +12,10 @@ import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import iss.workshop.livestreamapp.interfaces.IMenuAccess;
-import iss.workshop.livestreamapp.interfaces.ISessionUser;
 import iss.workshop.livestreamapp.interfaces.IStreamDetails;
 import iss.workshop.livestreamapp.models.ChannelStream;
 import iss.workshop.livestreamapp.models.Stream;
@@ -38,7 +40,8 @@ public class MyProductsActivity extends AppCompatActivity implements IMenuAccess
         Intent intent = getIntent();
         user = (User) intent.getSerializableExtra("user");
         //get channel
-        channel = generateChannel(user, this);
+        channel = (ChannelStream) intent.getSerializableExtra("channel");
+
     }
 
     @Override
@@ -57,8 +60,18 @@ public class MyProductsActivity extends AppCompatActivity implements IMenuAccess
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        plantOnClickItems(this, item, user);
+        plantOnClickItems(this, item, user, channel);
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void searchForSpecificChannel(List<ChannelStream> body, User user) {
+        List<ChannelStream> channels = body.stream()
+                .filter(channel -> (channel.getUser().getId()).equals((user.getId())))
+                .collect(Collectors.toList());
+
+        channel = channels.get(0);
+        invokeToken(channel);
     }
 }

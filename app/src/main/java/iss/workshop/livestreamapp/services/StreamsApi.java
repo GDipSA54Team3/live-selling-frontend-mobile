@@ -4,8 +4,11 @@ import java.util.List;
 
 import iss.workshop.livestreamapp.models.Stream;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface StreamsApi {
@@ -16,4 +19,8 @@ public interface StreamsApi {
 
     @GET("/api/user/userstreams/{userId}")
     Call<List<Stream>> getAllUserStreams(@Path("userId") String userId);
+
+
+    @POST("/api/user/addstream/{userId}")
+    Call<Stream> addNewStream(@Body Stream newStream, @Path("userId") String userId);
 }

@@ -26,6 +26,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import io.agora.rtc2.Constants;
 import io.agora.rtc2.IRtcEngineEventHandler;
 import io.agora.rtc2.RtcEngine;
@@ -35,13 +38,13 @@ import io.agora.rtc2.ChannelMediaOptions;
 import iss.workshop.livestreamapp.adapters.ChStreamAdapter;
 import iss.workshop.livestreamapp.adapters.ProductsListAdapter;
 import iss.workshop.livestreamapp.interfaces.IStreamDetails;
+import iss.workshop.livestreamapp.models.ChannelStream;
 import iss.workshop.livestreamapp.models.Stream;
 import iss.workshop.livestreamapp.models.User;
 import iss.workshop.livestreamapp.services.FetchStreamLog;
 
 public class MainActivity extends AppCompatActivity implements IStreamDetails {
 
-    // maybe pass these information as intent when opened?
     // Fill the App ID of your project generated on Agora Console.
     private String appId; // = "813f22ea50924b43ae8488edb975d02c";
     // Fill the channel name.
@@ -52,15 +55,12 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
     private String numberOfViewers;
     private String streamerImage;
     private TextView streamStatus;
-
+    private ChannelStream channel;
     private RtcEngine mRtcEngine;
-
     //audience or host
     private int clientRole;
-
     //current user logged in
     private User user;
-
     //button that shows the products
     private Button showProducts;
 
@@ -107,11 +107,15 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
         Intent streamDetails = getIntent();
         appId = getAppID();
         channelName = streamDetails.getStringExtra("channelName");
+
+
+
         //streamId = streamDetails.getLongExtra("streamId", 0);
         //token = streamDetails.getStringExtra("token");
         clientRole = streamDetails.getIntExtra("clientRole", 0);
         currStream = (Stream) streamDetails.getSerializableExtra("streamObj");
         user = (User) streamDetails.getSerializableExtra("user");
+        channel = (ChannelStream) streamDetails.getSerializableExtra("channel");
         //Toast.makeText(this, currStream.getName(), Toast.LENGTH_SHORT).show();
         TextView txtName = findViewById(R.id.channel_name);
         txtName.setText(channelName);
@@ -238,13 +242,13 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.product_list_layout);
 
-        /*
+
         ListView productsListing = dialog.findViewById(R.id.products_list);
         if (productsListing.getAdapter() == null){
-            ProductsListAdapter prodAdapter = new ProductsListAdapter(this, currStream.getProducts());
+            ProductsListAdapter prodAdapter = new ProductsListAdapter(this, channel.getProducts());
             productsListing.setAdapter(prodAdapter);
         }
-         */
+
 
         dialog.show();
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, (int) (getResources().getDisplayMetrics().heightPixels*0.60));
@@ -253,4 +257,13 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
         dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
+    @Override
+    public void searchForSpecificChannel(List<ChannelStream> body, User user) {
+        List<ChannelStream> channels = body.stream()
+                .filter(channel -> (channel.getUser().getId()).equals((user.getId())))
+                .collect(Collectors.toList());
+
+        channel = channels.get(0);
+        invokeToken(channel);
+    }
 }

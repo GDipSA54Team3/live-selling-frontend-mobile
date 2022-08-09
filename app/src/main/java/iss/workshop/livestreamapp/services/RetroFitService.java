@@ -37,8 +37,9 @@ public class RetroFitService {
 
 
     private static Converter.Factory createGsonConverter(Type type, Object typeAdapter) {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(type, typeAdapter);
+        GsonBuilder gsonBuilder = new GsonBuilder()
+                .registerTypeAdapter(type, typeAdapter)
+                .setDateFormat("yyyy-MM-dd'T'HH:mm");
         Gson gson = gsonBuilder.create();
 
         return GsonConverterFactory.create(gson);
@@ -64,6 +65,12 @@ public class RetroFitService {
                 retrofit = new Retrofit.Builder()
                         .baseUrl(API_URL)
                         .addConverterFactory(createGsonConverter(ChannelStream.class, new ChannelDeserializer()))
+                        .build();
+                break;
+            case("save-stream"):
+                retrofit = new Retrofit.Builder()
+                        .baseUrl(API_URL)
+                        .addConverterFactory(GsonConverterFactory.create(new Gson()))
                         .build();
                 break;
         }

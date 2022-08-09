@@ -1,5 +1,7 @@
 package iss.workshop.livestreamapp;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,11 +14,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import io.agora.rtc2.Constants;
@@ -26,7 +32,6 @@ import iss.workshop.livestreamapp.interfaces.IStreamDetails;
 import iss.workshop.livestreamapp.models.ChannelStream;
 import iss.workshop.livestreamapp.models.Stream;
 import iss.workshop.livestreamapp.models.User;
-import iss.workshop.livestreamapp.services.ChannelsApi;
 import iss.workshop.livestreamapp.services.RetroFitService;
 import iss.workshop.livestreamapp.services.StreamsApi;
 import retrofit2.Call;
@@ -40,8 +45,13 @@ public class MyStreamsActivity extends AppCompatActivity implements IMenuAccess,
     private Stream currStream;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
+    private ChStreamAdapter streamAdapter;
     private ListView listOfStreams;
     private Button btnStartStream;
+    private Button btnCreateStream;
+    private ActivityResultLauncher<Intent> rlCreateStream;
+    private RetroFitService rfServ;
+    private StreamsApi streamAPI;
 
 
     @Override
@@ -53,11 +63,14 @@ public class MyStreamsActivity extends AppCompatActivity implements IMenuAccess,
         Intent intent = getIntent();
         user = (User) intent.getSerializableExtra("user");
         //get channel
-        channel = generateChannel(user, this);
+        channel = (ChannelStream) intent.getSerializableExtra("channel");
+
+        //TextView txtChannelName = findViewById(R.id.channel_name);
+        //txtChannelName.setText(channel.getName());
 
         //populate stream list
-        RetroFitService rfServ = new RetroFitService("stream");
-        StreamsApi streamAPI = rfServ.getRetrofit().create(StreamsApi.class);
+        rfServ = new RetroFitService("stream");
+        streamAPI = rfServ.getRetrofit().create(StreamsApi.class);
         listOfStreams = findViewById(R.id.my_streams_list);
 
         streamAPI.getAllUserStreams(user.getId()).enqueue(new Callback<List<Stream>>() {
@@ -72,6 +85,55 @@ public class MyStreamsActivity extends AppCompatActivity implements IMenuAccess,
             }
         });
 
+        rlCreateStream = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == AppCompatActivity.RESULT_OK) {
+                Intent streamDetails = result.getData();
+
+                Stream newStream = new Stream();
+                newStream.setTitle(streamDetails.getStringExtra("title"));
+
+                LocalDateTime newDate = (LocalDateTime) streamDetails.getSerializableExtra("schedule");
+                //newStream.setSchedule(newDate);
+                newStream.setTempSchedule(newDate.toString());
+
+                rfServ = new RetroFitService("stream");
+                streamAPI = rfServ.getRetrofit().create(StreamsApi.class);
+                streamAPI.addNewStream(newStream, user.getId()).enqueue(new Callback<Stream>() {
+                            @Override
+                            public void onResponse(Call<Stream> call, Response<Stream> response) {
+                                if(response.code() == 400){
+                                    Toast.makeText(MyStreamsActivity.this,
+                                            "Stream was not saved. Try again",
+                                            Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(MyStreamsActivity.this,
+                                            "Stream Title: " + response.body() + " has been added!",
+                                            Toast.LENGTH_SHORT).show();
+
+                                    streamAdapter.notifyDataSetChanged();
+                                }
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<Stream> call, Throwable t) {
+                                Toast.makeText(MyStreamsActivity.this, "Stream was not saved. Try again", Toast.LENGTH_SHORT).show();
+                            }
+                });
+
+            }
+        });
+
+        btnCreateStream = findViewById(R.id.btn_create_stream);
+        btnCreateStream.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    Intent intent = new Intent(MyStreamsActivity.this, ScheduleStreamActivity.class);
+                    intent.putExtra("user", user);
+                    intent.putExtra("channel", channel);
+                    rlCreateStream.launch(intent);
+            }
+        });
 
         //set on click listener to start stream
         btnStartStream = findViewById(R.id.btn_start_now);
@@ -91,7 +153,7 @@ public class MyStreamsActivity extends AppCompatActivity implements IMenuAccess,
     }
 
     private void populateMyStreamList(List<Stream> body) {
-        ChStreamAdapter streamAdapter = new ChStreamAdapter(this, body, true);
+        streamAdapter = new ChStreamAdapter(this, body, true);
         listOfStreams.setAdapter(streamAdapter);
     }
 
@@ -107,7 +169,7 @@ public class MyStreamsActivity extends AppCompatActivity implements IMenuAccess,
     //make nav clickable
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        plantOnClickItems(this, item, user);
+        plantOnClickItems(this, item, user, channel);
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -124,5 +186,15 @@ public class MyStreamsActivity extends AppCompatActivity implements IMenuAccess,
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    public void searchForSpecificChannel(List<ChannelStream> body, User user) {
+        List<ChannelStream> channels = body.stream()
+                .filter(channel -> (channel.getUser().getId()).equals((user.getId())))
+                .collect(Collectors.toList());
+
+        channel = channels.get(0);
+        invokeToken(channel);
     }
 }

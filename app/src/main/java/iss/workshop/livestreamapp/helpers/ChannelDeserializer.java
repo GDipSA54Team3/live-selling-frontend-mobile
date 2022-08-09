@@ -18,7 +18,7 @@ public class ChannelDeserializer implements JsonDeserializer<ChannelStream> {
     public ChannelStream deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         ChannelStream channel = new ChannelStream();
         User user = new User();
-        JsonObject channelJson = json.getAsJsonObject();
+        final JsonObject channelJson = json.getAsJsonObject();
         //set channel id
         String channelId = channelJson.get("id").getAsString();
         channel.setId(channelId);
@@ -38,6 +38,7 @@ public class ChannelDeserializer implements JsonDeserializer<ChannelStream> {
         user.setIsVerified(isVerified);
 
         channel.setUser(user);
+        user.setChannel(channel);
 
         return channel;
     }

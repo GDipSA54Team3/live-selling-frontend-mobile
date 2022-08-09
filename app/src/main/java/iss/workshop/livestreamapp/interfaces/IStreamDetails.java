@@ -26,21 +26,14 @@ public interface IStreamDetails {
         return "813f22ea50924b43ae8488edb975d02c";
     }
 
-    default ChannelStream generateChannel(User user, Context context){
-        final ChannelStream[] channelStream = {new ChannelStream()};
+    default void generateChannel(User user, Context context){
         RetroFitService rfServ = new RetroFitService("channel");
         ChannelsApi channelAPI = rfServ.getRetrofit().create(ChannelsApi.class);
 
         channelAPI.getAllChannels().enqueue(new Callback<List<ChannelStream>>() {
             @Override
             public void onResponse(Call<List<ChannelStream>> call, Response<List<ChannelStream>> response) {
-
-                List<ChannelStream> channelList = response.body()
-                        .stream()
-                        .filter(x -> x.getUser().getId().equals(user.getId()))
-                        .collect(Collectors.toList());
-
-                channelStream[0] = channelList.get(0);
+                searchForSpecificChannel(response.body(), user);
             }
 
             @Override
@@ -48,13 +41,12 @@ public interface IStreamDetails {
                 Toast.makeText(context, t.toString(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
-        channelStream[0].setName("ChannelStream A");
+    void searchForSpecificChannel(List<ChannelStream> body, User user);
 
-        //change this item for token generation
-        channelStream[0].setToken("006813f22ea50924b43ae8488edb975d02cIAAFA+4Cs0XMCcPj1uZSCm7YdswHBh/eGisZnI0U4hxmzuQQT+IAAAAAEABUJOp92bTsYgEAAQDVtOxi");
-        //add other setters for testing
-        return channelStream[0];
+    default void invokeToken(ChannelStream channel){
+        channel.setToken("006813f22ea50924b43ae8488edb975d02cIAAFA+4Cs0XMCcPj1uZSCm7YdswHBh/eGisZnI0U4hxmzuQQT+IAAAAAEABUJOp92bTsYgEAAQDVtOxi");
     };
 
     /*
