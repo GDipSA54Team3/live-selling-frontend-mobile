@@ -3,6 +3,7 @@ package iss.workshop.livestreamapp.models;
 import android.graphics.Bitmap;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
@@ -28,10 +29,10 @@ public class ChannelStream implements Serializable{
 
     public ChannelStream(String name, User user) {
         this.name = name;
-        //this.products = new ArrayList<>();
+        this.products = new ArrayList<>();
         //this.ratings = new ArrayList<>();
         //this.orders = new ArrayList<>();
-        //this.streams = new ArrayList<>();
+        this.streams = new ArrayList<>();
         this.user = user;
     }
 }

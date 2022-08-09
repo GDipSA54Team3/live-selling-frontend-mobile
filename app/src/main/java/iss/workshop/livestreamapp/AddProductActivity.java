@@ -18,18 +18,17 @@ import iss.workshop.livestreamapp.models.ChannelStream;
 import iss.workshop.livestreamapp.models.Stream;
 import iss.workshop.livestreamapp.models.User;
 
-public class ChannelProfileActivity extends AppCompatActivity implements IMenuAccess, IStreamDetails {
+public class AddProductActivity extends AppCompatActivity implements IMenuAccess, IStreamDetails {
 
     private User user;
     private ChannelStream channel;
     private Stream currStream;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_channel_profile);
+        setContentView(R.layout.activity_add_product);
 
         setupSidebarMenu();
 
@@ -70,4 +69,5 @@ public class ChannelProfileActivity extends AppCompatActivity implements IMenuAc
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
+
 }

@@ -58,6 +58,7 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
         //checkUser method
         Intent intent = getIntent();
         user = (User) intent.getSerializableExtra("user");
+
         SharedPreferences sPref = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
         if (isValidated(sPref, user.getUsername(), user.getPassword())){
             //unique to entrance activity
@@ -67,50 +68,16 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
             logOut(sPref, this);
         }
 
-        channelStream = user.getChannel();
-
-        // drawer layout instance to toggle the menu icon to open
-        // drawer and back button to close drawer
-        drawerLayout = findViewById(R.id.my_drawer_layout);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close);
-
-        // pass the Open and Close toggle for the drawer layout listener
-        // to toggle the button
-        drawerLayout.addDrawerListener(actionBarDrawerToggle);
-        actionBarDrawerToggle.syncState();
-
-        // to make the Navigation drawer icon always appear on the action bar
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
+        //channelStream = user.getChannel();
+        setupSidebarMenu();
 
         //find channel of user by ID
-        RetroFitService rfServ = new RetroFitService("channel");
-        ChannelsApi channelAPI = rfServ.getRetrofit().create(ChannelsApi.class);
-
-        channelAPI.getAllChannels().enqueue(new Callback<List<ChannelStream>>() {
-            @Override
-            public void onResponse(Call<List<ChannelStream>> call, Response<List<ChannelStream>> response) {
-
-                channelStream = response.body()
-                        .stream()
-                        .filter(x -> x.getUser().getId().equals(user.getId()))
-                        .collect(Collectors.toList())
-                        .get(0);
-            }
-
-            @Override
-            public void onFailure(Call<List<ChannelStream>> call, Throwable t) {
-                Toast.makeText(EntranceActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        channelStream = generateChannel(user, this);
 
         //populating streams
         listOfStreams = findViewById(R.id.stream_list_first);
 
-        rfServ = new RetroFitService("stream");
+        RetroFitService rfServ = new RetroFitService("stream");
         StreamsApi streamAPI = rfServ.getRetrofit().create(StreamsApi.class);
 
         streamAPI.getAllStreams().enqueue(new Callback<List<Stream>>() {
@@ -125,26 +92,10 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
                 Toast.makeText(EntranceActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
             }
         });
-
-        //start stream A as host
-        startA.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openStreamPage("seller", channelStream, new Stream());
-            }
-        });
-
-        //start stream B as host
-        startB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openStreamPage("seller", channelStream, new Stream());
-            }
-        });
     }
 
     private void populateStreamList(List<Stream> body) {
-        ChStreamAdapter streamAdapter = new ChStreamAdapter(this, body);
+        ChStreamAdapter streamAdapter = new ChStreamAdapter(this, body, false);
         listOfStreams.setAdapter(streamAdapter);
 
         listOfStreams.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -197,11 +148,25 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
     //make nav clickable
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        plantOnClickItems(this, item);
+        plantOnClickItems(this, item, user);
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
 
+    @Override
+    public void setupSidebarMenu() {
 
+            drawerLayout = findViewById(R.id.my_drawer_layout);
+            actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close);
+
+            drawerLayout.addDrawerListener(actionBarDrawerToggle);
+            actionBarDrawerToggle.syncState();
+
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+            NavigationView navigationView = findViewById(R.id.nav_view);
+            navigationView.setNavigationItemSelectedListener(this);
+
+    }
 }

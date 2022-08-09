@@ -1,5 +1,6 @@
 package iss.workshop.livestreamapp.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class Cart {
+public class Cart implements Serializable {
 
     private String id;
     private User user;

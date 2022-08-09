@@ -1,5 +1,6 @@
 package iss.workshop.livestreamapp.models;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class Orders {
+public class Orders implements Serializable {
     //this is Tina's comment
     private String id;
     private User user;
