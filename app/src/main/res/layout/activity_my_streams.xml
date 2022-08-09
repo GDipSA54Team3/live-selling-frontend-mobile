@@ -14,6 +14,23 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:text="My Streams" />
+
+        <Button
+            android:id="@+id/btn_start_now"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="START A STREAM NOW" />
+
+        <ListView
+            android:id="@+id/my_streams_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 

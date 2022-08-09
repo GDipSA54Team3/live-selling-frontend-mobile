@@ -144,6 +144,10 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
         //setting listener to viewing products
         showProducts = findViewById(R.id.open_product_list);
 
+        if(clientRole == Constants.CLIENT_ROLE_BROADCASTER){
+            showProducts.setVisibility(View.INVISIBLE);
+        }
+
         showProducts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

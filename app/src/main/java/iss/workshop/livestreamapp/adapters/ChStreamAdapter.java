@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.chip.Chip;
@@ -18,11 +19,13 @@ import iss.workshop.livestreamapp.models.Stream;
 public class ChStreamAdapter extends BaseAdapter {
     private Context context;
     protected List<Stream> streams;
+    protected boolean myStreamOrNot;
 
 
-    public ChStreamAdapter (Context context, List<Stream> streams){
+    public ChStreamAdapter (Context context, List<Stream> streams, boolean mystreamornot){
         this.context = context;
         this.streams = streams;
+        this.myStreamOrNot = mystreamornot;
     }
 
     @Override
@@ -44,7 +47,11 @@ public class ChStreamAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.channelrow, viewGroup, false);
+            if (myStreamOrNot){
+                view = inflater.inflate(R.layout.my_stream_row, viewGroup, false);
+            } else {
+                view = inflater.inflate(R.layout.channelrow, viewGroup, false);
+            }
         }
 
         Stream currentStream = streams.get(i);
@@ -82,10 +89,18 @@ public class ChStreamAdapter extends BaseAdapter {
                 .findViewById(R.id.date_of_stream);
         streamDate.setText(currentStream.getSchedule().toString());
 
-        Chip liveChip = (Chip) view
-                .findViewById(R.id.bottom_container)
-                .findViewById(R.id.live_chip);
-        liveChip.setText("LIVE");
+        if (myStreamOrNot){
+            Button btnCheckStreams = view
+                    .findViewById(R.id.bottom_container)
+                    .findViewById(R.id.btn_check_stream);
+            btnCheckStreams.setText("Check this stream");
+        } else {
+            Chip liveChip = (Chip) view
+                    .findViewById(R.id.bottom_container)
+                    .findViewById(R.id.live_chip);
+            liveChip.setText("LIVE");
+        }
+
 
         return view;
     }

@@ -1,11 +1,13 @@
 package iss.workshop.livestreamapp.models;
 
+import java.io.Serializable;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class OrderProduct {
+public class OrderProduct implements Serializable  {
     private String id;
     private int quantity;
     private Orders order;

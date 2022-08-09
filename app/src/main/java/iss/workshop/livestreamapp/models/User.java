@@ -20,7 +20,7 @@ public class User implements Serializable {
     private String username;
     private String password;
     private Boolean isVerified;
-    //private Cart cart;
+    private Cart cart;
     private ChannelStream channel;
 
     private List<Rating> reviews;
