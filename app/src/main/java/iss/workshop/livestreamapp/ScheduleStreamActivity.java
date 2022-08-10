@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -24,12 +23,18 @@ import android.widget.TimePicker;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import iss.workshop.livestreamapp.interfaces.IMenuAccess;
+import iss.workshop.livestreamapp.interfaces.IStreamDetails;
+import iss.workshop.livestreamapp.models.ChannelStream;
 import iss.workshop.livestreamapp.models.User;
 
-public class ScheduleStreamActivity extends AppCompatActivity implements IMenuAccess {
+public class ScheduleStreamActivity extends AppCompatActivity implements IMenuAccess, IStreamDetails {
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
@@ -38,6 +43,7 @@ public class ScheduleStreamActivity extends AppCompatActivity implements IMenuAc
     private int mDate, mMonth, mYear;
     private int mHour, mMinute;
     private User user;
+    private ChannelStream channel;
     private Dialog dialog;
     ListView prodListView;
     Button AddProduct,CreateEvent;
@@ -49,22 +55,9 @@ public class ScheduleStreamActivity extends AppCompatActivity implements IMenuAc
 
         Intent intent = getIntent();
         user = (User) intent.getSerializableExtra("user");
+        channel = (ChannelStream) intent.getSerializableExtra("channel");
 
-        // drawer layout instance to toggle the menu icon to open
-        // drawer and back button to close drawer
-        drawerLayout = findViewById(R.id.my_drawer_layout);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close);
-
-        // pass the Open and Close toggle for the drawer layout listener
-        // to toggle the button
-        drawerLayout.addDrawerListener(actionBarDrawerToggle);
-        actionBarDrawerToggle.syncState();
-
-        // to make the Navigation drawer icon always appear on the action bar
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        setupSidebarMenu();
 
         dateTxt = findViewById(R.id.date);
         cal = findViewById(R.id.datePicker);
@@ -79,7 +72,7 @@ public class ScheduleStreamActivity extends AppCompatActivity implements IMenuAc
                 DatePickerDialog datePickerDialog = new DatePickerDialog(ScheduleStreamActivity.this, android.R.style.Theme_DeviceDefault_Dialog, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int date) {
-                        dateTxt.setText(date +"-"+month+"-"+year );
+                        dateTxt.setText(date +"/"+month+"/"+year );
                     }
                 }, mYear, mMonth, mDate);
                 datePickerDialog.show();
@@ -116,44 +109,31 @@ public class ScheduleStreamActivity extends AppCompatActivity implements IMenuAc
         mEName = findViewById(R.id.eventName);
 
         mEDes = findViewById(R.id.eventDesc);
-        AddProduct = findViewById(R.id.addProductBtn);
+
+        //AddProduct = findViewById(R.id.addProductBtn);
         CreateEvent = findViewById(R.id.createEventBtn);
-        AddProduct.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String eventName = mEName.getText().toString();
-                String eventDesc = mEDes.getText().toString();
-                //textEventName.setText('');
-                //textEventDesc.setText('');
-            }
-        });
-        //create the dialog here
-        dialog = new Dialog(this);
-        dialog.setContentView(R.layout.activity_custom_dialog);
-        dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.background));
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.setCancelable(false);
-        dialog.getWindow().getAttributes().windowAnimations = R.style.animation;
 
-        Button ok = dialog.findViewById(R.id.btn_okay);
-        Button cancel = dialog.findViewById(R.id.btn_cancel);
-
-        ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
         CreateEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.show();
+                Intent response = new Intent();
+                String streamName = mEName.getText().toString();
+                //String eventDesc = mEDes.getText().toString();
+
+                String sDate1 = dateTxt.getText().toString();
+                String sTime1 = timeTxt.getText().toString();
+                String str = sDate1 + " " + sTime1;
+                System.out.println(str);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy hh:mm a");
+                LocalDateTime schedule = LocalDateTime.parse(str, formatter);
+
+                response.putExtra("user", user);
+                response.putExtra("channel", channel);
+                response.putExtra("title", streamName);
+                response.putExtra("schedule", schedule);
+                //response.putExtra(“computedSum", 100);
+                setResult(RESULT_OK, response);
+                finish();
             }
         });
 
@@ -171,7 +151,7 @@ public class ScheduleStreamActivity extends AppCompatActivity implements IMenuAc
     //make nav clickable
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        plantOnClickItems(this, item, user);
+        plantOnClickItems(this, item, user, channel);
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }

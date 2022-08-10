@@ -12,6 +12,9 @@ import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import iss.workshop.livestreamapp.interfaces.IMenuAccess;
 import iss.workshop.livestreamapp.interfaces.IStreamDetails;
 import iss.workshop.livestreamapp.models.ChannelStream;
@@ -36,7 +39,7 @@ public class AddProductActivity extends AppCompatActivity implements IMenuAccess
         Intent intent = getIntent();
         user = (User) intent.getSerializableExtra("user");
         //get channel
-        channel = generateChannel(user, this);
+        channel = (ChannelStream) intent.getSerializableExtra("channel");
     }
 
     @Override
@@ -51,7 +54,7 @@ public class AddProductActivity extends AppCompatActivity implements IMenuAccess
     //make nav clickable
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        plantOnClickItems(this, item, user);
+        plantOnClickItems(this, item, user, channel);
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }

@@ -106,6 +106,7 @@ public class LoginActivity extends AppCompatActivity implements ISessionUser {
         body.setPassword(password);
         body.setUsername(username);
         intent.putExtra("user", body);
+
         startActivity(intent);
     }
 }
