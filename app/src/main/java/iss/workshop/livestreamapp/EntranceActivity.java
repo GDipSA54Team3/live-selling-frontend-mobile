@@ -45,6 +45,7 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private ChannelStream channelStream;
     private Stream currStream;
+    private TextView welcomeUser;
     private User user;
 
     @Override
@@ -52,27 +53,41 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entrance);
 
-        Button startA = findViewById(R.id.startA);
-        Button startB = findViewById(R.id.startB);
+        //Button startA = findViewById(R.id.startA);
+        //Button startB = findViewById(R.id.startB);
 
         //checkUser method
         Intent intent = getIntent();
         user = (User) intent.getSerializableExtra("user");
+        if(intent.getSerializableExtra("channel") == null){
+            //find the channel here
+            RetroFitService rfServ = new RetroFitService("get-channel-from-id");
+            ChannelsApi channelAPI = rfServ.getRetrofit().create(ChannelsApi.class);
+
+            channelAPI.findChannelByUserId(user.getId()).enqueue(new Callback<ChannelStream>() {
+                @Override
+                public void onResponse(Call<ChannelStream> call, Response<ChannelStream> response) {
+                    channelStream = response.body();
+                }
+
+                @Override
+                public void onFailure(Call<ChannelStream> call, Throwable t) {
+                    Toast.makeText(EntranceActivity.this, "Channel for user not found.", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
 
         SharedPreferences sPref = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
         if (isValidated(sPref, user.getUsername(), user.getPassword())){
-            //unique to entrance activity
-            TextView welcomeUser = findViewById(R.id.welcome_user);
-            welcomeUser.setText("Welcome " + user.getFirstName() + "!");
+            welcomeUser = findViewById(R.id.welcome_user);
+            welcomeUser.setText("Welcome " + user.getFirstName() + ", to your Channel!");
         } else {
             logOut(sPref, this);
         }
 
-        //channelStream = user.getChannel();
         setupSidebarMenu();
 
-        //find channel of user by ID
-        channelStream = generateChannel(user, this);
 
         //populating streams
         listOfStreams = findViewById(R.id.stream_list_first);
@@ -109,10 +124,9 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
                 String channelName = channelNameTxt.getText().toString();
 
                 currStream = (Stream) streamAdapter.getItem(i);
-                channelStream = currStream.getChannelStream();
+                invokeToken(currStream.getChannelStream());
                 Toast.makeText(EntranceActivity.this, currStream.getTitle(), Toast.LENGTH_SHORT).show();
-
-                openStreamPage("buyer", channelStream, currStream);
+                openStreamPage("buyer", currStream.getChannelStream(), currStream);
             }
 
         });
@@ -148,7 +162,7 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
     //make nav clickable
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        plantOnClickItems(this, item, user);
+        plantOnClickItems(this, item, user, channelStream);
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -169,4 +183,5 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
             navigationView.setNavigationItemSelectedListener(this);
 
     }
+
 }

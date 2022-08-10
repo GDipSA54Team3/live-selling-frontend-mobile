@@ -17,8 +17,10 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import iss.workshop.livestreamapp.interfaces.IMenuAccess;
-import iss.workshop.livestreamapp.interfaces.ISessionUser;
 import iss.workshop.livestreamapp.interfaces.IStreamDetails;
 import iss.workshop.livestreamapp.models.ChannelStream;
 import iss.workshop.livestreamapp.models.Stream;
@@ -43,7 +45,8 @@ public class MyProductsActivity extends AppCompatActivity implements IMenuAccess
         Intent intent = getIntent();
         user = (User) intent.getSerializableExtra("user");
         //get channel
-        channel = generateChannel(user, this);
+        channel = (ChannelStream) intent.getSerializableExtra("channel");
+
 
     }
 
@@ -63,8 +66,9 @@ public class MyProductsActivity extends AppCompatActivity implements IMenuAccess
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        plantOnClickItems(this, item, user);
+        plantOnClickItems(this, item, user, channel);
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }

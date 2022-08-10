@@ -6,9 +6,6 @@ import android.content.Intent;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.drawerlayout.widget.DrawerLayout;
-
 import com.google.android.material.navigation.NavigationView;
 
 import iss.workshop.livestreamapp.ScheduleStreamActivity;
@@ -16,12 +13,13 @@ import iss.workshop.livestreamapp.EntranceActivity;
 import iss.workshop.livestreamapp.LoginActivity;
 import iss.workshop.livestreamapp.MyStreamsActivity;
 import iss.workshop.livestreamapp.R;
+import iss.workshop.livestreamapp.models.ChannelStream;
 import iss.workshop.livestreamapp.models.User;
 
 public interface IMenuAccess extends NavigationView.OnNavigationItemSelectedListener {
 
     @SuppressLint("NonConstantResourceId")
-    default void plantOnClickItems(Context context, MenuItem item, User user){
+    default void plantOnClickItems(Context context, MenuItem item, User user, ChannelStream channelStream){
 
         Class<?> pageToOpen = null;
 
@@ -65,6 +63,7 @@ public interface IMenuAccess extends NavigationView.OnNavigationItemSelectedList
         if (!context.getClass().getName().equals(pageToOpen.getName())){
             Intent intent = new Intent(context, pageToOpen);
             intent.putExtra("user", user);
+            intent.putExtra("channel", channelStream);
             if (pageToOpen == LoginActivity.class){
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             }

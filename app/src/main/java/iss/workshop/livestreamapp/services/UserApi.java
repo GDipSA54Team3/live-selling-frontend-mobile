@@ -1,14 +1,14 @@
 package iss.workshop.livestreamapp.services;
 
-import java.util.List;
-
-import iss.workshop.livestreamapp.models.Stream;
+import iss.workshop.livestreamapp.models.User;
 import retrofit2.Call;
-import retrofit2.http.GET;
+import retrofit2.http.Body;
+import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface UserApi {
 
-    @GET("/api/user/str")
-    Call<List<Stream>> getAllStreams();
+    @POST("/api/user/register/{channelName}")
+    Call<User> addNewUser(@Body User user, @Path("channelName") String channelName);
 
 }

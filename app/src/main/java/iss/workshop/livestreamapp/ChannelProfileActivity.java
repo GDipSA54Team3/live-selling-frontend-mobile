@@ -18,6 +18,9 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import iss.workshop.livestreamapp.interfaces.IMenuAccess;
 import iss.workshop.livestreamapp.interfaces.IStreamDetails;
 import iss.workshop.livestreamapp.models.ChannelStream;
@@ -50,7 +53,9 @@ public class ChannelProfileActivity extends AppCompatActivity implements IMenuAc
         Intent intent = getIntent();
         user = (User) intent.getSerializableExtra("user");
         //get channel
-        channel = generateChannel(user, this);
+
+        channel = (ChannelStream) intent.getSerializableExtra("channel");
+        invokeToken(channel);
 
         //rating bar
         rateCount = findViewById(R.id.rate_Count);
@@ -101,7 +106,7 @@ public class ChannelProfileActivity extends AppCompatActivity implements IMenuAc
     //make nav clickable
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        plantOnClickItems(this, item, user);
+        plantOnClickItems(this, item, user, channel);
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -119,4 +124,5 @@ public class ChannelProfileActivity extends AppCompatActivity implements IMenuAc
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
+
 }

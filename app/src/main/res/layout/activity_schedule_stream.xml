@@ -21,8 +21,7 @@
             android:orientation="vertical"
             tools:ignore="MissingConstraints"
             tools:layout_editor_absoluteX="1dp"
-            tools:layout_editor_absoluteY="1dp"
-            android:descendantFocusability="blocksDescendants">
+            tools:layout_editor_absoluteY="1dp">
 
             <LinearLayout
                 android:id="@+id/top_container"
@@ -48,7 +47,7 @@
 
 
                     <TextView
-                        android:id="@+id/stream_name"
+                        android:id="@+id/channel_name"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:textColor="@color/black"
@@ -57,7 +56,7 @@
                         android:text="Channel Name" />
 
                     <TextView
-                        android:id="@+id/channel_name"
+                        android:id="@+id/num_streams"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
@@ -79,6 +78,40 @@
             </LinearLayout>
 
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="45dp"
+                android:padding="15dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Event Details:"
+                    android:layout_marginBottom="30dp"/>
+
+                <EditText
+                    android:id="@+id/eventName"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:hint="Event Name" />
+
+                <EditText
+                    android:id="@+id/eventDesc"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:hint="Even Description" />
+
+            </LinearLayout>
+
+            <LinearLayout
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -94,14 +127,14 @@
                     <EditText
                         android:id="@+id/date"
                         android:layout_width="300dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="80dp"
                         android:layout_centerVertical="true"
                         android:hint="DD/MM/YYYY" />
 
                     <ImageView
                         android:id="@+id/datePicker"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
                         android:layout_toRightOf="@+id/date"
                         android:src="@drawable/calendar" />
 
@@ -114,121 +147,58 @@
                     <EditText
                         android:id="@+id/time"
                         android:layout_width="300dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="80dp"
                         android:layout_centerVertical="true"
-                        android:ems="10"
-                        android:inputType="time"
-                        android:hint="00:00" />
+                        android:hint="00:00"
+                        android:inputType="time" />
 
                     <ImageView
                         android:id="@+id/timePicker"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
                         android:layout_toRightOf="@+id/time"
                         android:src="@drawable/clock" />
 
                 </RelativeLayout>
             </LinearLayout>
 
+<!--
             <LinearLayout
-                android:layout_width="360dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_gravity="center"
-                android:layout_marginTop="45dp">
-
-                    <com.google.android.material.textfield.TextInputLayout
-
-                        android:orientation="vertical"
-                        android:hint="Event Name:"
-                        app:counterEnabled="true"
-                        app:counterMaxLength="60"
-                        app:helperText="Required"
-                        app:endIconMode="clear_text"
-                        app:helperTextTextColor="@color/red"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                    <com.google.android.material.textfield.TextInputEditText
-
-                        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-                        android:id="@+id/eventName"
-                        android:layout_width="350dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:textSize="13dp"
-                        android:background="@color/grey"
-                        android:textColorHint="@color/grey"
-                        android:maxLength="60"
-                        android:inputType="text"
-                        android:textStyle="italic"
-                        android:enabled="true"
-                        android:layout_centerVertical="true" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:orientation="vertical"
-                    android:hint="Event Information:"
-                    app:counterEnabled="true"
-                    app:counterMaxLength="200"
-                    app:helperText="Required"
-                    app:endIconMode="clear_text"
-                    app:helperTextTextColor="@color/red"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-                        android:id="@+id/eventDesc"
-                        android:layout_width="350dp"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center_vertical"
-                        android:textStyle="italic"
-                        android:background="@color/grey"
-                        android:textColorHint="@color/grey"
-                        android:textSize="13dp"
-                        android:gravity="left"
-                        android:maxLength="200"
-                        android:paddingLeft="20dp"
-                        android:layout_centerVertical="true" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-            <LinearLayout
+                android:layout_marginTop="40dp"
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
+                android:layout_height="300dp"
                 android:orientation="vertical"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
                 android:paddingLeft="10dp">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Products:"
+                    android:layout_marginBottom="30dp"/>
+
                 <ListView
-                    android:id="@+id/stream_list_first"
+                    android:id="@+id/products_to_add"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
             </LinearLayout>
+-->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
-                android:orientation="horizontal"
-                android:paddingLeft="10dp">
+                android:layout_height="80dp"
+                android:orientation="vertical"
+                android:layout_marginTop="30dp"
+                android:padding="2dp">
 
-                <Button
-                    android:id="@+id/addProductBtn"
-                    android:textColor="@color/black"
-                    android:layout_marginTop="35dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Add Product"/>
                 <Button
                     android:id="@+id/createEventBtn"
                     android:textColor="@color/black"
-                    android:layout_marginTop="35dp"
                     android:layout_gravity="center_horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:text="Create Event"/>
             </LinearLayout>
 
