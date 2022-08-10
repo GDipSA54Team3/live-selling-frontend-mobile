@@ -53,8 +53,8 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entrance);
 
-        Button startA = findViewById(R.id.startA);
-        Button startB = findViewById(R.id.startB);
+        //Button startA = findViewById(R.id.startA);
+        //Button startB = findViewById(R.id.startB);
 
         //checkUser method
         Intent intent = getIntent();

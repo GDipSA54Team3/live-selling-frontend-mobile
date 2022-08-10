@@ -64,5 +64,5 @@ public class MyProductsActivity extends AppCompatActivity implements IMenuAccess
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
-    
+
 }
