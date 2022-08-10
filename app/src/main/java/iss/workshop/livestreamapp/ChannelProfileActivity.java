@@ -9,12 +9,19 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RatingBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
 import iss.workshop.livestreamapp.interfaces.IMenuAccess;
 import iss.workshop.livestreamapp.interfaces.IStreamDetails;
 import iss.workshop.livestreamapp.models.ChannelStream;
+import iss.workshop.livestreamapp.models.Rating;
 import iss.workshop.livestreamapp.models.Stream;
 import iss.workshop.livestreamapp.models.User;
 
@@ -25,6 +32,12 @@ public class ChannelProfileActivity extends AppCompatActivity implements IMenuAc
     private Stream currStream;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
+
+    private RatingBar ratingBar;
+    private Button btnSubmit;
+    private TextView rateCount, showRating;
+    EditText review;
+    float rateValue; String temp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +51,42 @@ public class ChannelProfileActivity extends AppCompatActivity implements IMenuAc
         user = (User) intent.getSerializableExtra("user");
         //get channel
         channel = generateChannel(user, this);
+
+        //rating bar
+        rateCount = findViewById(R.id.rate_Count);
+        ratingBar = findViewById(R.id.rating_bar);
+        btnSubmit = findViewById(R.id.rating_submit);
+        review = findViewById(R.id.write_Review);
+        showRating = findViewById(R.id.showRating);
+
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                rateValue = ratingBar.getRating();
+
+                if(rateValue <=1 && rateValue>0)
+                    rateCount.setText("Bad" + rateValue + "/5");
+                else if(rateValue <=2 && rateValue>1)
+                    rateCount.setText("Ok" + rateValue + "/5");
+                else if(rateValue <=3 && rateValue>2)
+                    rateCount.setText("Good" + rateValue + "/5");
+                else if(rateValue <=4 && rateValue>3)
+                    rateCount.setText("Very Good" + rateValue + "/5");
+                else if(rateValue <=5 && rateValue>4)
+                    rateCount.setText("Best" + rateValue + "/5");
+            }
+        });
+
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                temp = rateCount.getText().toString();
+                showRating.setText("Your Rating: \n"+ temp+ "\n"+ review.getText());
+                review.setText("");
+                ratingBar.setRating(0);
+                rateCount.setText("");
+            }
+        });
     }
 
     @Override

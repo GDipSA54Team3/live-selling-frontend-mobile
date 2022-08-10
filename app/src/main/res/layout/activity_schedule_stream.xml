@@ -103,7 +103,7 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_toRightOf="@+id/date"
-                        android:src="@drawable/calendar"/>
+                        android:src="@drawable/calendar" />
 
                 </RelativeLayout>
 

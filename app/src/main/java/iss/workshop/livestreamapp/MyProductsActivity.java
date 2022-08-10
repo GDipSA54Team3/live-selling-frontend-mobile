@@ -9,6 +9,11 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -39,6 +44,7 @@ public class MyProductsActivity extends AppCompatActivity implements IMenuAccess
         user = (User) intent.getSerializableExtra("user");
         //get channel
         channel = generateChannel(user, this);
+
     }
 
     @Override
