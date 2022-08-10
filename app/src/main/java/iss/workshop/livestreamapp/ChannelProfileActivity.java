@@ -41,6 +41,7 @@ public class ChannelProfileActivity extends AppCompatActivity implements IMenuAc
         user = (User) intent.getSerializableExtra("user");
         //get channel
         channel = (ChannelStream) intent.getSerializableExtra("channel");
+        invokeToken(channel);
     }
 
     @Override
@@ -74,13 +75,4 @@ public class ChannelProfileActivity extends AppCompatActivity implements IMenuAc
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    @Override
-    public void searchForSpecificChannel(List<ChannelStream> body, User user) {
-        List<ChannelStream> channels = body.stream()
-                .filter(channel -> (channel.getUser().getId()).equals((user.getId())))
-                .collect(Collectors.toList());
-
-        channel = channels.get(0);
-        invokeToken(channel);
-    }
 }

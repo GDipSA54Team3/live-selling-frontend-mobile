@@ -64,14 +64,5 @@ public class MyProductsActivity extends AppCompatActivity implements IMenuAccess
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
-
-    @Override
-    public void searchForSpecificChannel(List<ChannelStream> body, User user) {
-        List<ChannelStream> channels = body.stream()
-                .filter(channel -> (channel.getUser().getId()).equals((user.getId())))
-                .collect(Collectors.toList());
-
-        channel = channels.get(0);
-        invokeToken(channel);
-    }
+    
 }

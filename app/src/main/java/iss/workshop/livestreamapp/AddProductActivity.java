@@ -73,14 +73,4 @@ public class AddProductActivity extends AppCompatActivity implements IMenuAccess
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    @Override
-    public void searchForSpecificChannel(List<ChannelStream> body, User user) {
-        List<ChannelStream> channels = body.stream()
-                .filter(channel -> (channel.getUser().getId()).equals((user.getId())))
-                .collect(Collectors.toList());
-
-        channel = channels.get(0);
-        invokeToken(channel);
-    }
-
 }

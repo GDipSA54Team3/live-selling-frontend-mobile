@@ -61,18 +61,18 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
         user = (User) intent.getSerializableExtra("user");
         if(intent.getSerializableExtra("channel") == null){
             //find the channel here
-            RetroFitService rfServ = new RetroFitService("channel");
+            RetroFitService rfServ = new RetroFitService("get-channel-from-id");
             ChannelsApi channelAPI = rfServ.getRetrofit().create(ChannelsApi.class);
 
-            channelAPI.getAllChannels().enqueue(new Callback<List<ChannelStream>>() {
+            channelAPI.findChannelByUserId(user.getId()).enqueue(new Callback<ChannelStream>() {
                 @Override
-                public void onResponse(Call<List<ChannelStream>> call, Response<List<ChannelStream>> response) {
-                    searchForSpecificChannel(response.body(), user);
+                public void onResponse(Call<ChannelStream> call, Response<ChannelStream> response) {
+                    channelStream = response.body();
                 }
 
                 @Override
-                public void onFailure(Call<List<ChannelStream>> call, Throwable t) {
-                    Toast.makeText(EntranceActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
+                public void onFailure(Call<ChannelStream> call, Throwable t) {
+                    Toast.makeText(EntranceActivity.this, "Channel for user not found.", Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -80,19 +80,14 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
 
         SharedPreferences sPref = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
         if (isValidated(sPref, user.getUsername(), user.getPassword())){
-            //unique to entrance activity
-            //generateChannel(user, this);
-            //System.out.print(channelStream.getName());
             welcomeUser = findViewById(R.id.welcome_user);
             welcomeUser.setText("Welcome " + user.getFirstName() + ", to your Channel!");
         } else {
             logOut(sPref, this);
         }
 
-        //channelStream = user.getChannel();
         setupSidebarMenu();
 
-        //find channel of user by ID
 
         //populating streams
         listOfStreams = findViewById(R.id.stream_list_first);
@@ -129,10 +124,9 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
                 String channelName = channelNameTxt.getText().toString();
 
                 currStream = (Stream) streamAdapter.getItem(i);
-                channelStream = currStream.getChannelStream();
+                invokeToken(currStream.getChannelStream());
                 Toast.makeText(EntranceActivity.this, currStream.getTitle(), Toast.LENGTH_SHORT).show();
-
-                openStreamPage("buyer", channelStream, currStream);
+                openStreamPage("buyer", currStream.getChannelStream(), currStream);
             }
 
         });
@@ -190,17 +184,4 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
 
     }
 
-    @Override
-    public void searchForSpecificChannel(List<ChannelStream> body, User user) {
-        List<ChannelStream> channels = body
-                .stream()
-                .filter(channel -> (channel.getUser().getId()).equals((user.getId())))
-                .collect(Collectors.toList());
-
-        channelStream = channels.get(0);
-        invokeToken(channelStream);
-
-        channelStream.setUser(user);
-        user.setChannel(channelStream);
-    }
 }

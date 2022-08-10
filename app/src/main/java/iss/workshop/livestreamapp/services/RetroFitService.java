@@ -28,7 +28,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @Data
 public class RetroFitService {
-    private final String API_URL = "http://10.20.6.60:8080";
+    private final String API_URL = "http://10.50.4.140:8080";
     private Retrofit retrofit;
 
     public RetroFitService(String type){
@@ -67,6 +67,9 @@ public class RetroFitService {
                         .addConverterFactory(createGsonConverter(ChannelStream.class, new ChannelDeserializer()))
                         .build();
                 break;
+            case("get-channel-from-id"):
+            case("save-user"):
+            case("save-channel"):
             case("save-stream"):
                 retrofit = new Retrofit.Builder()
                         .baseUrl(API_URL)

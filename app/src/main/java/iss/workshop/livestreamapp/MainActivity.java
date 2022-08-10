@@ -108,8 +108,6 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
         appId = getAppID();
         channelName = streamDetails.getStringExtra("channelName");
 
-
-
         //streamId = streamDetails.getLongExtra("streamId", 0);
         //token = streamDetails.getStringExtra("token");
         clientRole = streamDetails.getIntExtra("clientRole", 0);
@@ -255,15 +253,5 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
-    }
-
-    @Override
-    public void searchForSpecificChannel(List<ChannelStream> body, User user) {
-        List<ChannelStream> channels = body.stream()
-                .filter(channel -> (channel.getUser().getId()).equals((user.getId())))
-                .collect(Collectors.toList());
-
-        channel = channels.get(0);
-        invokeToken(channel);
     }
 }

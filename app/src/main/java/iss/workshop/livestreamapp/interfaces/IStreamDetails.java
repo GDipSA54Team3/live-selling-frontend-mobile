@@ -24,29 +24,10 @@ public interface IStreamDetails {
 
     default String getAppID(){
         return "813f22ea50924b43ae8488edb975d02c";
-    }
-
-    default void generateChannel(User user, Context context){
-        RetroFitService rfServ = new RetroFitService("channel");
-        ChannelsApi channelAPI = rfServ.getRetrofit().create(ChannelsApi.class);
-
-        channelAPI.getAllChannels().enqueue(new Callback<List<ChannelStream>>() {
-            @Override
-            public void onResponse(Call<List<ChannelStream>> call, Response<List<ChannelStream>> response) {
-                searchForSpecificChannel(response.body(), user);
-            }
-
-            @Override
-            public void onFailure(Call<List<ChannelStream>> call, Throwable t) {
-                Toast.makeText(context, t.toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    void searchForSpecificChannel(List<ChannelStream> body, User user);
+    };
 
     default void invokeToken(ChannelStream channel){
-        channel.setToken("006813f22ea50924b43ae8488edb975d02cIAAFA+4Cs0XMCcPj1uZSCm7YdswHBh/eGisZnI0U4hxmzuQQT+IAAAAAEABUJOp92bTsYgEAAQDVtOxi");
+        channel.setToken("006813f22ea50924b43ae8488edb975d02cIAB5KN/Ep2DJSY+6Kc9bPoFGx2i48ZOfN4FeabE+e7r4nqblnUYAAAAAEAAn3Xd0XZ70YgEAAQBbnvRi");
     };
 
     /*

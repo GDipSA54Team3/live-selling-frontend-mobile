@@ -57,7 +57,6 @@ public class ScheduleStreamActivity extends AppCompatActivity implements IMenuAc
         user = (User) intent.getSerializableExtra("user");
         channel = (ChannelStream) intent.getSerializableExtra("channel");
 
-
         setupSidebarMenu();
 
         dateTxt = findViewById(R.id.date);
@@ -113,32 +112,7 @@ public class ScheduleStreamActivity extends AppCompatActivity implements IMenuAc
 
         //AddProduct = findViewById(R.id.addProductBtn);
         CreateEvent = findViewById(R.id.createEventBtn);
-        /*
-        //create the dialog here
-        dialog = new Dialog(this);
-        dialog.setContentView(R.layout.activity_custom_dialog);
-        dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.background));
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.setCancelable(false);
-        dialog.getWindow().getAttributes().windowAnimations = R.style.animation;
 
-        Button ok = dialog.findViewById(R.id.btn_okay);
-        Button cancel = dialog.findViewById(R.id.btn_cancel);
-
-        ok.setOnClickListener(new View.OnClickListener() {
-            @SneakyThrows
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-        */
         CreateEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -194,15 +168,5 @@ public class ScheduleStreamActivity extends AppCompatActivity implements IMenuAc
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-    }
-
-    @Override
-    public void searchForSpecificChannel(List<ChannelStream> body, User user) {
-        List<ChannelStream> channels = body.stream()
-                .filter(channel -> (channel.getUser().getId()).equals((user.getId())))
-                .collect(Collectors.toList());
-
-        channel = channels.get(0);
-        invokeToken(channel);
     }
 }

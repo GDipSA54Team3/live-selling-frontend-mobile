@@ -64,7 +64,8 @@ public class MyStreamsActivity extends AppCompatActivity implements IMenuAccess,
         user = (User) intent.getSerializableExtra("user");
         //get channel
         channel = (ChannelStream) intent.getSerializableExtra("channel");
-
+        invokeToken(channel);
+        setupSidebarMenu();
         //TextView txtChannelName = findViewById(R.id.channel_name);
         //txtChannelName.setText(channel.getName());
 
@@ -188,13 +189,4 @@ public class MyStreamsActivity extends AppCompatActivity implements IMenuAccess,
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    @Override
-    public void searchForSpecificChannel(List<ChannelStream> body, User user) {
-        List<ChannelStream> channels = body.stream()
-                .filter(channel -> (channel.getUser().getId()).equals((user.getId())))
-                .collect(Collectors.toList());
-
-        channel = channels.get(0);
-        invokeToken(channel);
-    }
 }
