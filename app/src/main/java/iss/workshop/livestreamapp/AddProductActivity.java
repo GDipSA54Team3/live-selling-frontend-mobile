@@ -9,8 +9,17 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,6 +37,23 @@ public class AddProductActivity extends AppCompatActivity implements IMenuAccess
     private Stream currStream;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
+
+
+    //in, de qty
+   private TextView qtyValue;
+   int count = 0;
+   private ImageView up, down;
+
+   //drop down category
+    String [] items = {"CLOTHING", "FOOD", "APPLIANCES", "FURNITURE",
+            "technology", "BABY", "HEALTH", "OTHERS", "SPORT", "GROCERIES"};
+    AutoCompleteTextView autoCompleteTxt;
+    TextInputLayout textInputLayout;
+
+    //Add Product
+    EditText productName, productPrice, productDescription;
+    Button addProduct;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +66,45 @@ public class AddProductActivity extends AppCompatActivity implements IMenuAccess
         user = (User) intent.getSerializableExtra("user");
         //get channel
         channel = (ChannelStream) intent.getSerializableExtra("channel");
+
+        //dropdown category
+        textInputLayout = findViewById(R.id.menu_drop);
+        autoCompleteTxt = findViewById(R.id.auto_complete_txt);
+        ArrayAdapter<String> itemAdapter = new ArrayAdapter<String>(this,R.layout.list_category, items);
+        autoCompleteTxt.setAdapter(itemAdapter);
+
+        autoCompleteTxt.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                //textView.setText((String)parents.getItemPosition(position));
+
+                //Toast.makeText(getApplicationContext(), "Item"+ item, Toast.LENGTH_SHORT).show();
+            }
+        });
+        //in, de qty
+        qtyValue = findViewById(R.id.value);
+        up = findViewById(R.id.dropUp);
+        down = findViewById(R.id.dropDown);
+
+        up.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                count++;
+                qtyValue.setText(count);}
+        });
+        down.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //not to decrease if it zero
+                if(count < 0) { count =0;}
+                else count--;
+                qtyValue.setText(""+count);}
+        });
+        //Add Product
+        productName = findViewById(R.id.pName);
+        productPrice = findViewById(R.id.pPrice);
+        productDescription = findViewById(R.id.pDesc);
+        addProduct = findViewById(R.id.createProduct);
     }
 
     @Override

@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+
         <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/activity_add_product.xml" value="0.15760869565217392" />
         <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/activity_channel_profile.xml" value="0.15760869565217392" />
         <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/activity_entrance.xml" value="0.22282608695652173" />
@@ -38,16 +39,27 @@
         <entry key="app/src/main/res/drawable-v24/background.xml" value="0.1" />
         <entry key="app/src/main/res/drawable-v24/input_bg.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/dialog_bg.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_channel_profile.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/edit_text_background.xml" value="0.1335" />
+        <entry key="app/src/main/res/drawable/ic_baseline_shopping_bag_24.xml" value="0.133" />
+        <entry key="app/src/main/res/drawable/layout_border.xml" value="0.116" />
+        <entry key="app/src/main/res/layout/activity_add_product.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_channel_profile.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_custom_dialog.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_entrance.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_my_products.xml" value="0.18115942028985507" />
+        <entry key="app/src/main/res/layout/activity_my_profile.xml" value="0.18115942028985507" />
+        <entry key="app/src/main/res/layout/activity_my_streams.xml" value="0.2164855072463768" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_schedule_stream.xml" value="0.18115942028985507" />
         <entry key="app/src/main/res/layout/channelrow.xml" value="0.1" />
         <entry key="app/src/main/res/layout/custom_dialog.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/list_category.xml" value="0.18115942028985507" />
+        <entry key="app/src/main/res/layout/my_stream_row.xml" value="0.18115942028985507" />
         <entry key="app/src/main/res/layout/product_list_layout.xml" value="0.1" />
-        <entry key="app/src/main/res/menu/sidebar.xml" value="0.12962962962962962" />
+        <entry key="app/src/main/res/layout/product_row.xml" value="0.18115942028985507" />
+        <entry key="app/src/main/res/menu/sidebar.xml" value="0.33692027904369215" />
       </map>
     </option>
   </component>
