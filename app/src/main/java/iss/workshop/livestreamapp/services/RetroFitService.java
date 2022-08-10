@@ -28,13 +28,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @Data
 public class RetroFitService {
-    private final String API_URL = "http://10.50.4.140:8080";
+    private final String API_URL = "http://10.20.6.60:8080";
     private Retrofit retrofit;
 
     public RetroFitService(String type){
         initializeRetrofit(type);
     }
-
 
     private static Converter.Factory createGsonConverter(Type type, Object typeAdapter) {
         GsonBuilder gsonBuilder = new GsonBuilder()
@@ -44,7 +43,6 @@ public class RetroFitService {
 
         return GsonConverterFactory.create(gson);
     }
-
 
     private void initializeRetrofit(String type) {
 
