@@ -65,6 +65,7 @@ public class RetroFitService {
                         .addConverterFactory(createGsonConverter(ChannelStream.class, new ChannelDeserializer()))
                         .build();
                 break;
+            case("orders"):
             case("get-channel-from-id"):
             case("save-user"):
             case("save-channel"):

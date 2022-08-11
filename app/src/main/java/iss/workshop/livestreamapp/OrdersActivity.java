@@ -38,7 +38,12 @@ public class OrdersActivity extends AppCompatActivity implements IMenuAccess, IS
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_orders);
 
-
+        Intent intent = getIntent();
+        user = (User) intent.getSerializableExtra("user");
+        //get channel
+        channel = (ChannelStream) intent.getSerializableExtra("channel");
+        invokeToken(channel);
+        setupSidebarMenu();
 
         //dummy list
         List<Orders> orders = new ArrayList<Orders>();
@@ -53,14 +58,6 @@ public class OrdersActivity extends AppCompatActivity implements IMenuAccess, IS
         ListView orders_listview = findViewById(R.id.orders_listview);
         OrdersAdapter ordersAdapter = new OrdersAdapter(this,orders);
         orders_listview.setAdapter(ordersAdapter);
-
-
-        Intent intent = getIntent();
-        user = (User) intent.getSerializableExtra("user");
-        //get channel
-        channel = (ChannelStream) intent.getSerializableExtra("channel");
-        invokeToken(channel);
-        setupSidebarMenu();
 
     }
 

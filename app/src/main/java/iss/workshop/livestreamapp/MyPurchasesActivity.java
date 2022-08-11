@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -24,6 +25,11 @@ import iss.workshop.livestreamapp.models.ChannelStream;
 import iss.workshop.livestreamapp.models.Orders;
 import iss.workshop.livestreamapp.models.Stream;
 import iss.workshop.livestreamapp.models.User;
+import iss.workshop.livestreamapp.services.OrdersApi;
+import iss.workshop.livestreamapp.services.RetroFitService;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MyPurchasesActivity extends AppCompatActivity implements IMenuAccess, IStreamDetails {
 
@@ -48,18 +54,28 @@ public class MyPurchasesActivity extends AppCompatActivity implements IMenuAcces
         invokeToken(channel);
         setupSidebarMenu();
 
-        //dummy list
-        List<Orders> orders = new ArrayList<Orders>();
-        for (int i = 0; i < 5; i++){
-            Orders order = new Orders();
-            order.setUser(user);
-            order.setId(UUID.randomUUID().toString());
-            orders.add(order);
-        }
-        //dummy list
+        //fetch orders API
+        RetroFitService rfServ = new RetroFitService("orders");
+        OrdersApi purchasesAPI = rfServ.getRetrofit().create(OrdersApi.class);
+        //sending API to our database
+        purchasesAPI.getUserPurchases(user.getId()).enqueue(new Callback<List<Orders>>() {
+            @Override
+            public void onResponse(Call<List<Orders>> call, Response<List<Orders>> response) {
+                if(response.code() == 200){
+                    populatePurchaseList(response.body());
+                }
+            }
+            @Override
+            public void onFailure(Call<List<Orders>> call, Throwable t) {
+                Toast.makeText(MyPurchasesActivity.this,"List didn't populate. Try again",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
+    private void populatePurchaseList(List<Orders> body) {
         ListView purchase_listview = findViewById(R.id.purchaseList);
-        PurchaseAdapter pAdapter = new PurchaseAdapter(this,  orders);
+        PurchaseAdapter pAdapter = new PurchaseAdapter(this,  body);
         purchase_listview.setAdapter(pAdapter);
     }
 
