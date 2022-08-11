@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -24,6 +25,11 @@ import iss.workshop.livestreamapp.models.ChannelStream;
 import iss.workshop.livestreamapp.models.Orders;
 import iss.workshop.livestreamapp.models.Stream;
 import iss.workshop.livestreamapp.models.User;
+import iss.workshop.livestreamapp.services.OrdersApi;
+import iss.workshop.livestreamapp.services.RetroFitService;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class OrdersActivity extends AppCompatActivity implements IMenuAccess, IStreamDetails{
 
@@ -45,20 +51,33 @@ public class OrdersActivity extends AppCompatActivity implements IMenuAccess, IS
         invokeToken(channel);
         setupSidebarMenu();
 
-        //dummy list
-        List<Orders> orders = new ArrayList<Orders>();
-        for (int i = 0; i < 5; i++){
-            Orders order = new Orders();
-            order.setUser(user);
-            order.setId(UUID.randomUUID().toString());
-            orders.add(order);
-        }
-        //dummy list
-        //populate data into listview
-        ListView orders_listview = findViewById(R.id.orders_listview);
-        OrdersAdapter ordersAdapter = new OrdersAdapter(this,orders);
-        orders_listview.setAdapter(ordersAdapter);
 
+        //fetch order API
+        RetroFitService rfServ = new RetroFitService("orders");
+        OrdersApi ordersAPI = rfServ.getRetrofit().create(OrdersApi.class);
+
+        ordersAPI.getChannelOrders(channel.getId()).enqueue(new Callback<List<Orders>>() {
+            @Override
+            public void onResponse(Call<List<Orders>> call, Response<List<Orders>> response) {
+                if(response.code() == 200) {
+                    populateOrdersList(response.body());
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Orders>> call, Throwable t) {
+                Toast.makeText(OrdersActivity.this, "List not populate. Try it again.", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+    }
+
+    private void populateOrdersList(List<Orders> body) {
+        ListView orders_listview = findViewById(R.id.orders_listview);
+        OrdersAdapter ordersAdapter = new OrdersAdapter(this,body);
+        orders_listview.setAdapter(ordersAdapter);
     }
 
     @Override
