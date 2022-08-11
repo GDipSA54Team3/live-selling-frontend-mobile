@@ -61,13 +61,13 @@ public class OrdersActivity extends AppCompatActivity implements IMenuAccess, IS
             public void onResponse(Call<List<Orders>> call, Response<List<Orders>> response) {
                 if(response.code() == 200) {
                     populateOrdersList(response.body());
-
+                    Toast.makeText(OrdersActivity.this, response.body().size() + " orders found.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<Orders>> call, Throwable t) {
-                Toast.makeText(OrdersActivity.this, "List not populate. Try it again.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OrdersActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
 
             }
         });
