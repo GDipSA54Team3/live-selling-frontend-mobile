@@ -13,6 +13,7 @@ import iss.workshop.livestreamapp.EntranceActivity;
 import iss.workshop.livestreamapp.LoginActivity;
 import iss.workshop.livestreamapp.MyStreamsActivity;
 import iss.workshop.livestreamapp.R;
+import iss.workshop.livestreamapp.TestActivity;
 import iss.workshop.livestreamapp.models.ChannelStream;
 import iss.workshop.livestreamapp.models.User;
 
@@ -37,7 +38,7 @@ public interface IMenuAccess extends NavigationView.OnNavigationItemSelectedList
                 break;
             case R.id.nav_products:
                 Toast.makeText(context, "Products", Toast.LENGTH_SHORT).show();
-                pageToOpen = EntranceActivity.class;
+                pageToOpen = TestActivity.class;
                 break;
             case R.id.nav_streams:
                 Toast.makeText(context, "Streams", Toast.LENGTH_SHORT).show();

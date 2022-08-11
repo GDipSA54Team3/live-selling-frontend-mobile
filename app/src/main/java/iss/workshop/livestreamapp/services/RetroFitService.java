@@ -28,7 +28,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @Data
 public class RetroFitService {
-    private final String API_URL = "http://192.168.0.105:8080";
+    private final String API_URL = "http://10.249.38.181:8080";
     private Retrofit retrofit;
 
     public RetroFitService(String type){
