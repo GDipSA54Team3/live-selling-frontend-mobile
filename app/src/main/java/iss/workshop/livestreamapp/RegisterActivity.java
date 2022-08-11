@@ -82,13 +82,17 @@ public class RegisterActivity extends AppCompatActivity {
                     System.out.println(user.getUsername() + " " + user.getPassword());
                     RetroFitService rfServ = new RetroFitService("save-user");
                     UserApi userAPI = rfServ.getRetrofit().create(UserApi.class);
-                    userAPI.addNewUser(user, channelName).enqueue(new Callback<User>() {
+                    userAPI.addNewUser(user, username, password, address, channelName).enqueue(new Callback<User>() {
                         @Override
                         public void onResponse(Call<User> call, Response<User> response) {
-                            Toast.makeText(RegisterActivity.this, "Thank you for registering! You may now log in using your credentials.", Toast.LENGTH_SHORT).show();
-                            finish();
-                        }
+                            if(response.code() == 409){
+                                Toast.makeText(RegisterActivity.this, "A username already exists with that username. Please try again.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(RegisterActivity.this, "Thank you for registering! You may now log in using your credentials.", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
 
+                        }
                         @Override
                         public void onFailure(Call<User> call, Throwable t) {
                             Toast.makeText(RegisterActivity.this, "Registration unsuccessful. Try again in a few minutes.", Toast.LENGTH_SHORT).show();

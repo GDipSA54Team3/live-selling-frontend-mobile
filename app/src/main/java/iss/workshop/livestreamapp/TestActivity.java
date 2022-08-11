@@ -9,27 +9,17 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 import iss.workshop.livestreamapp.interfaces.IMenuAccess;
 import iss.workshop.livestreamapp.interfaces.IStreamDetails;
 import iss.workshop.livestreamapp.models.ChannelStream;
-import iss.workshop.livestreamapp.models.Orders;
 import iss.workshop.livestreamapp.models.Stream;
 import iss.workshop.livestreamapp.models.User;
 
-public class MyProductsActivity extends AppCompatActivity implements IMenuAccess, IStreamDetails {
+public class TestActivity extends AppCompatActivity implements IMenuAccess, IStreamDetails {
+
 
     private User user;
     private ChannelStream channel;
@@ -40,24 +30,20 @@ public class MyProductsActivity extends AppCompatActivity implements IMenuAccess
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_products);
+        setContentView(R.layout.activity_test);
 
-        setupSidebarMenu();
-
-        //get user
         Intent intent = getIntent();
         user = (User) intent.getSerializableExtra("user");
-        //get channel
+//get channel
         channel = (ChannelStream) intent.getSerializableExtra("channel");
-
-
+        invokeToken(channel);
+        setupSidebarMenu();
     }
 
     @Override
     public void setupSidebarMenu() {
         drawerLayout = findViewById(R.id.my_drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close);
-
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
@@ -65,15 +51,24 @@ public class MyProductsActivity extends AppCompatActivity implements IMenuAccess
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    //make nav clickable
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         plantOnClickItems(this, item, user, channel);
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
-
-
-
 }
