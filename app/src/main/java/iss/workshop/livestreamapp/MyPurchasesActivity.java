@@ -63,11 +63,12 @@ public class MyPurchasesActivity extends AppCompatActivity implements IMenuAcces
             public void onResponse(Call<List<Orders>> call, Response<List<Orders>> response) {
                 if(response.code() == 200){
                     populatePurchaseList(response.body());
+                    Toast.makeText(MyPurchasesActivity.this, response.body().size() + " orders found.", Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
             public void onFailure(Call<List<Orders>> call, Throwable t) {
-                Toast.makeText(MyPurchasesActivity.this,"List didn't populate. Try again",
+                Toast.makeText(MyPurchasesActivity.this,t.toString(),
                         Toast.LENGTH_SHORT).show();
             }
         });

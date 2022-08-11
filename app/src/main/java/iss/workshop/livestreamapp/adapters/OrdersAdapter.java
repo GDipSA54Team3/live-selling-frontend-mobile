@@ -46,13 +46,14 @@ public class OrdersAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.orders_row, viewGroup, false);
         }
-        Orders currOrder = orders.get(i);
+
+        //Orders currOrder = orders.get(i);
 
         TextView txtId = view.findViewById(R.id.order_id);
-        txtId.setText(currOrder.getId());
+        txtId.setText(orders.get(i).getId());
 
         TextView txtUser = view.findViewById(R.id.user_name);
-        txtId.setText(currOrder.getUser().getUsername());
+        txtId.setText(orders.get(i).getUser().getUsername());
 
         return view;
     }
