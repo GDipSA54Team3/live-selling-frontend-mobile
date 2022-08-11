@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
+import iss.workshop.livestreamapp.OrdersActivity;
 import iss.workshop.livestreamapp.MyPurchasesActivity;
 import iss.workshop.livestreamapp.ScheduleStreamActivity;
 import iss.workshop.livestreamapp.EntranceActivity;
@@ -55,7 +56,7 @@ public interface IMenuAccess extends NavigationView.OnNavigationItemSelectedList
                 break;
             case R.id.nav_orders:
                 Toast.makeText(context, "Orders", Toast.LENGTH_SHORT).show();
-                pageToOpen = EntranceActivity.class;
+                pageToOpen = OrdersActivity.class;
                 break;
             case R.id.nav_logout:
                 pageToOpen = LoginActivity.class;
