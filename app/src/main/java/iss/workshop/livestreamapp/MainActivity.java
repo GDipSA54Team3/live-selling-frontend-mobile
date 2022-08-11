@@ -39,6 +39,7 @@ import iss.workshop.livestreamapp.adapters.ChStreamAdapter;
 import iss.workshop.livestreamapp.adapters.ProductsListAdapter;
 import iss.workshop.livestreamapp.interfaces.IStreamDetails;
 import iss.workshop.livestreamapp.models.ChannelStream;
+import iss.workshop.livestreamapp.models.Product;
 import iss.workshop.livestreamapp.models.Stream;
 import iss.workshop.livestreamapp.models.User;
 import iss.workshop.livestreamapp.services.FetchStreamLog;
@@ -63,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
     private User user;
     //button that shows the products
     private Button showProducts;
+    private Dialog dialog;
+    private ListView productsListing;
 
     private IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() {
         @Override
@@ -112,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
         //token = streamDetails.getStringExtra("token");
         clientRole = streamDetails.getIntExtra("clientRole", 0);
         currStream = (Stream) streamDetails.getSerializableExtra("streamObj");
+
         user = (User) streamDetails.getSerializableExtra("user");
         channel = (ChannelStream) streamDetails.getSerializableExtra("channel");
         //Toast.makeText(this, currStream.getName(), Toast.LENGTH_SHORT).show();
@@ -146,9 +150,21 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
         //setting listener to viewing products
         showProducts = findViewById(R.id.open_product_list);
 
+
         if(clientRole == Constants.CLIENT_ROLE_BROADCASTER){
             showProducts.setVisibility(View.INVISIBLE);
         }
+
+
+        dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.product_list_layout);
+
+        productsListing = dialog.findViewById(R.id.products_list);
+
+        //generate list of items from channel
+        List<Product> products = channel.getProducts();
+        //create adapter
 
         showProducts.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -236,17 +252,14 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
     }
 
     private void openProductDialog(){
-        final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.product_list_layout);
 
-
+        /*
         ListView productsListing = dialog.findViewById(R.id.products_list);
         if (productsListing.getAdapter() == null){
             ProductsListAdapter prodAdapter = new ProductsListAdapter(this, channel.getProducts());
             productsListing.setAdapter(prodAdapter);
         }
-
+        */
 
         dialog.show();
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, (int) (getResources().getDisplayMetrics().heightPixels*0.60));
