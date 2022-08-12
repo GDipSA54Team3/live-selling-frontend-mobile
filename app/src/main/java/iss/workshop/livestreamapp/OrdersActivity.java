@@ -53,7 +53,6 @@ public class OrdersActivity extends AppCompatActivity implements IMenuAccess, IS
         invokeToken(channel);
         setupSidebarMenu();
 
-
         //fetch order API
         RetroFitService rfServ = new RetroFitService("orders");
         OrdersApi ordersAPI = rfServ.getRetrofit().create(OrdersApi.class);
