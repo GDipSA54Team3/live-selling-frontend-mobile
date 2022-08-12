@@ -6,7 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
+
+import com.google.android.material.chip.Chip;
 
 import java.util.List;
 
@@ -47,13 +50,40 @@ public class OrdersAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.orders_row, viewGroup, false);
         }
 
-        //Orders currOrder = orders.get(i);
+        Orders currOrder = orders.get(i);
 
         TextView txtId = view.findViewById(R.id.order_id);
         txtId.setText(orders.get(i).getId());
 
-        TextView txtUser = view.findViewById(R.id.user_name);
-        txtId.setText(orders.get(i).getUser().getUsername());
+        TextView txtTime = view.findViewById(R.id.order_time);
+        txtTime.setText(orders.get(i).getOrderDateTime().toString());
+
+        TextView txtDes = view.findViewById(R.id.order_description);
+        txtDes.setText(orders.get(i).getOrderProduct().toString());
+
+
+
+        Chip orderStatus = view.findViewById(R.id.btn_order_status);
+        orderStatus.setText(orders.get(i).getOrderStatus().toString());
+
+        Button btnConfirm = view.findViewById(R.id.btn_order_confirm);
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Orders orderToConfirm = orders.get(i);
+                //code to confirm
+            }
+        });
+
+        Button btnReject = view.findViewById(R.id.btn_order_reject);
+        btnReject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Orders orderToReject = orders.get(i);
+                //code to reject
+            }
+        });
+
 
         return view;
     }
