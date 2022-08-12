@@ -16,9 +16,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 import iss.workshop.livestreamapp.helpers.ChannelDeserializer;
+import iss.workshop.livestreamapp.helpers.OrderDeserializer;
 import iss.workshop.livestreamapp.helpers.StreamDeserializer;
 import iss.workshop.livestreamapp.helpers.UserDeserializer;
 import iss.workshop.livestreamapp.models.ChannelStream;
+import iss.workshop.livestreamapp.models.Orders;
 import iss.workshop.livestreamapp.models.Stream;
 import iss.workshop.livestreamapp.models.User;
 import lombok.Data;
@@ -29,6 +31,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Data
 public class RetroFitService {
     private final String API_URL = "http://10.0.2.2:8080";
+
     private Retrofit retrofit;
 
     public RetroFitService(String type){
@@ -63,6 +66,12 @@ public class RetroFitService {
                 retrofit = new Retrofit.Builder()
                         .baseUrl(API_URL)
                         .addConverterFactory(createGsonConverter(ChannelStream.class, new ChannelDeserializer()))
+                        .build();
+                break;
+            case("orders"):
+                retrofit = new Retrofit.Builder()
+                        .baseUrl(API_URL)
+                        .addConverterFactory(createGsonConverter(Orders.class, new OrderDeserializer()))
                         .build();
                 break;
             case("get-channel-from-id"):

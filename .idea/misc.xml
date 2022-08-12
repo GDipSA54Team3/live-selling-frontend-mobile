@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+
         <entry key="..\:/ADProject/Android/new4/live-selling-frontend-mobile/app/src/main/res/drawable-v24/background.xml" value="0.1" />
         <entry key="..\:/ADProject/Android/new4/live-selling-frontend-mobile/app/src/main/res/drawable/arrow_drop_down.xml" value="0.1" />
         <entry key="..\:/ADProject/Android/new4/live-selling-frontend-mobile/app/src/main/res/drawable/arrow_drop_up.xml" value="0.1" />
@@ -11,6 +12,7 @@
         <entry key="..\:/ADProject/Android/new4/live-selling-frontend-mobile/app/src/main/res/layout/activity_dashboard2.xml" value="0.1" />
         <entry key="..\:/ADProject/Android/new4/live-selling-frontend-mobile/app/src/main/res/layout/activity_entrance.xml" value="0.1" />
         <entry key="..\:/ADProject/Android/new4/live-selling-frontend-mobile/app/src/main/res/menu/sidebar.xml" value="0.2" />
+
         <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/activity_add_product.xml" value="0.15760869565217392" />
         <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/activity_channel_profile.xml" value="0.15760869565217392" />
         <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/activity_entrance.xml" value="0.22282608695652173" />
@@ -19,8 +21,10 @@
         <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/activity_my_streams.xml" value="0.22282608695652173" />
         <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/activity_register.xml" value="0.2" />
         <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/activity_schedule_stream.xml" value="0.264" />
+        <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/activity_test.xml" value="0.1265625" />
         <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/channelrow.xml" value="0.1265625" />
         <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/my_stream_row.xml" value="0.1" />
+        <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/orders_row.xml" value="0.15715579710144928" />
         <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/product_row.xml" value="0.1265625" />
         <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/menu/sidebar.xml" value="0.27447916666666666" />
         <entry key="..\:/Android/LiveStreamApp/app/src/main/res/drawable/dialog_bg.xml" value="0.107" />
@@ -42,7 +46,15 @@
         <entry key="..\:/Android/LiveStreamApp/app/src/main/res/menu/activity_main_drawer.xml" value="0.19047619047619047" />
         <entry key="..\:/Android/LiveStreamApp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1265625" />
         <entry key="..\:/Android/LiveStreamApp/app/src/main/res/menu/sidebar.xml" value="0.27447916666666666" />
+        <entry key="..\:/Users/stian/Dropbox/ISS-GDipSA/ADProjectTina/live-streaming-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/activity_add_product.xml" value="0.22592592592592592" />
         <entry key="..\:/Users/stian/Dropbox/ISS-GDipSA/ADProjectTina/live-streaming-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/activity_channel_profile.xml" value="0.2796875" />
+        <entry key="..\:/Users/stian/Dropbox/ISS-GDipSA/ADProjectTina/live-streaming-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/activity_entrance.xml" value="0.22592592592592592" />
+        <entry key="..\:/Users/stian/Dropbox/ISS-GDipSA/ADProjectTina/live-streaming-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/activity_orders.xml" value="0.25" />
+        <entry key="..\:/Users/stian/Dropbox/ISS-GDipSA/ADProjectTina/live-streaming-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/activity_register.xml" value="0.22592592592592592" />
+        <entry key="..\:/Users/stian/Dropbox/ISS-GDipSA/ADProjectTina/live-streaming-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/channelrow.xml" value="0.1296875" />
+        <entry key="..\:/Users/stian/Dropbox/ISS-GDipSA/ADProjectTina/live-streaming-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/orders_row.xml" value="0.1" />
+        <entry key="..\:/Users/stian/Dropbox/ISS-GDipSA/ADProjectTina/live-streaming-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/product_list_layout.xml" value="0.22592592592592592" />
+        <entry key="..\:/Users/stian/Dropbox/ISS-GDipSA/ADProjectTina/live-streaming-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/product_row.xml" value="0.2796875" />
         <entry key="app/src/main/res/drawable-v24/background.xml" value="0.1" />
         <entry key="app/src/main/res/drawable-v24/input_bg.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/dialog_bg.xml" value="0.1" />
@@ -52,13 +64,14 @@
         <entry key="app/src/main/res/layout/activity_add_product.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_channel_profile.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_custom_dialog.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_entrance.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_entrance.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_my_products.xml" value="0.18115942028985507" />
         <entry key="app/src/main/res/layout/activity_my_profile.xml" value="0.18115942028985507" />
+        <entry key="app/src/main/res/layout/activity_my_purchases.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_my_streams.xml" value="0.2164855072463768" />
-        <entry key="app/src/main/res/layout/activity_register.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_register.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_schedule_stream.xml" value="0.18115942028985507" />
         <entry key="app/src/main/res/layout/channelrow.xml" value="0.1" />
         <entry key="app/src/main/res/layout/custom_dialog.xml" value="0.1" />
@@ -66,6 +79,7 @@
         <entry key="app/src/main/res/layout/my_stream_row.xml" value="0.18115942028985507" />
         <entry key="app/src/main/res/layout/product_list_layout.xml" value="0.1" />
         <entry key="app/src/main/res/layout/product_row.xml" value="0.18115942028985507" />
+        <entry key="app/src/main/res/layout/purchases_row.xml" value="0.1" />
         <entry key="app/src/main/res/menu/sidebar.xml" value="0.33692027904369215" />
       </map>
     </option>

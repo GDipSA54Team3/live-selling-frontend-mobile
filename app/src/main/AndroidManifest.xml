@@ -26,6 +26,12 @@
             android:name=".DashboardActivity"
             android:exported="false" />
         <activity
+            android:name=".MyPurchasesActivity"
+            android:exported="false" />
+         <activity
+            android:name=".TestActivity"
+            android:exported="false" />
+        <activity
             android:name=".MyProductsActivity"
             android:exported="false" />
         <activity
@@ -42,6 +48,9 @@
             android:exported="false" />
         <activity
             android:name=".CustomDialogActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OrdersActivity"
             android:exported="false" />
 
         <service
