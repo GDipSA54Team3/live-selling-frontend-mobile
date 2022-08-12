@@ -20,6 +20,8 @@ public interface StreamsApi {
     @GET("/api/user/userstreams/{userId}")
     Call<List<Stream>> getAllUserStreams(@Path("userId") String userId);
 
+    @GET("/api/user/notuserstreams/{channelId}")
+    Call<List<Stream>> getAllStreamsNotByUser(@Path("channelId") String channelId);
 
     @POST("/api/user/addstream/{userId}")
     Call<Stream> addNewStream(@Body Stream newStream, @Path("userId") String userId);

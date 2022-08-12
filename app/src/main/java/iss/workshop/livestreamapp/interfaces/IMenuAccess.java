@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
+import iss.workshop.livestreamapp.ChannelProfileActivity;
+import iss.workshop.livestreamapp.MyProductsActivity;
 import iss.workshop.livestreamapp.OrdersActivity;
 import iss.workshop.livestreamapp.MyPurchasesActivity;
 import iss.workshop.livestreamapp.ScheduleStreamActivity;
@@ -40,7 +42,7 @@ public interface IMenuAccess extends NavigationView.OnNavigationItemSelectedList
                 break;
             case R.id.nav_products:
                 Toast.makeText(context, "Products", Toast.LENGTH_SHORT).show();
-                pageToOpen = TestActivity.class;
+                pageToOpen = MyProductsActivity.class;
                 break;
             case R.id.nav_streams:
                 Toast.makeText(context, "Streams", Toast.LENGTH_SHORT).show();
@@ -52,7 +54,7 @@ public interface IMenuAccess extends NavigationView.OnNavigationItemSelectedList
                 break;
             case R.id.nav_myProfile:
                 //Toast.makeText(context, "Dashboard", Toast.LENGTH_SHORT).show();
-                pageToOpen = ScheduleStreamActivity.class;
+                pageToOpen = ChannelProfileActivity.class;
                 break;
             case R.id.nav_orders:
                 Toast.makeText(context, "Orders", Toast.LENGTH_SHORT).show();

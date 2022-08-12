@@ -27,20 +27,6 @@
         app:iconGravity="start"
         tools:ignore="MissingConstraints" />
 
-    <Button
-        android:id="@+id/leave_channel"
-        android:layout_width="122dp"
-        android:layout_height="62dp"
-        android:text="Leave Channel"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.9"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.04000002"
-        android:backgroundTint="@color/black"
-        tools:ignore="MissingConstraints" />
-
 
     <FrameLayout
         android:id="@+id/local_video_view_container"
