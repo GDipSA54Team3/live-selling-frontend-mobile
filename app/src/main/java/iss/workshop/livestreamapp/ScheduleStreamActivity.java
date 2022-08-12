@@ -57,7 +57,9 @@ public class ScheduleStreamActivity extends AppCompatActivity implements IMenuAc
         user = (User) intent.getSerializableExtra("user");
         channel = (ChannelStream) intent.getSerializableExtra("channel");
 
-        setupSidebarMenu();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //setupSidebarMenu();
 
         dateTxt = findViewById(R.id.date);
         cal = findViewById(R.id.datePicker);
@@ -142,8 +144,10 @@ public class ScheduleStreamActivity extends AppCompatActivity implements IMenuAc
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -151,22 +155,11 @@ public class ScheduleStreamActivity extends AppCompatActivity implements IMenuAc
     //make nav clickable
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        plantOnClickItems(this, item, user, channel);
-        drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
     @Override
     public void setupSidebarMenu() {
-        drawerLayout = findViewById(R.id.my_drawer_layout);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close);
-
-        drawerLayout.addDrawerListener(actionBarDrawerToggle);
-        actionBarDrawerToggle.syncState();
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        return;
     }
 }

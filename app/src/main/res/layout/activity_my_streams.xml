@@ -22,12 +22,6 @@
             android:text="My Streams" />
 
         <Button
-            android:id="@+id/btn_start_now"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="START A STREAM NOW" />
-
-        <Button
             android:id="@+id/btn_create_stream"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

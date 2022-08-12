@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -108,10 +109,8 @@ public class MyStreamsActivity extends AppCompatActivity implements IMenuAccess,
                                             Toast.LENGTH_SHORT).show();
                                 } else {
                                     Toast.makeText(MyStreamsActivity.this,
-                                            "Stream Title: " + response.body() + " has been added!",
+                                            "Stream Title: " + response.body().getTitle() + " has been added!",
                                             Toast.LENGTH_SHORT).show();
-
-                                    streamAdapter.notifyDataSetChanged();
                                 }
 
                             }
@@ -121,6 +120,8 @@ public class MyStreamsActivity extends AppCompatActivity implements IMenuAccess,
                                 Toast.makeText(MyStreamsActivity.this, "Stream was not saved. Try again", Toast.LENGTH_SHORT).show();
                             }
                 });
+
+
 
             }
         });
@@ -135,27 +136,40 @@ public class MyStreamsActivity extends AppCompatActivity implements IMenuAccess,
                     rlCreateStream.launch(intent);
             }
         });
-
-        //set on click listener to start stream
-        btnStartStream = findViewById(R.id.btn_start_now);
-        btnStartStream.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MyStreamsActivity.this, MainActivity.class);
-                intent.putExtra("channelName", channel.getName());
-                intent.putExtra("appID", getAppID());
-                intent.putExtra("streamObj", new Stream());
-                intent.putExtra("user", user);
-                intent.putExtra("clientRole", Constants.CLIENT_ROLE_BROADCASTER);
-                startActivity(intent);
-            }
-        });
-
     }
 
     private void populateMyStreamList(List<Stream> body) {
         streamAdapter = new ChStreamAdapter(this, body, true);
         listOfStreams.setAdapter(streamAdapter);
+
+        listOfStreams.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                currStream = (Stream) streamAdapter.getItem(i);
+                invokeToken(currStream.getChannelStream());
+                Toast.makeText(MyStreamsActivity.this, currStream.getTitle(), Toast.LENGTH_SHORT).show();
+                openStreamPage("seller", currStream);
+            }
+        });
+    }
+
+    private void openStreamPage(String role, Stream currStream) {
+        Intent intent = new Intent(this, MainActivity.class);
+        //check if sellerStream == channelStream?
+
+        intent.putExtra("channelName", channel.getName());
+        intent.putExtra("appID", getAppID());
+        intent.putExtra("streamObj", currStream);
+        intent.putExtra("user", user);
+        intent.putExtra("channel", channel);
+        intent.putExtra("seller-stream", channel);
+        intent.putExtra("calling-activity", "entrance");
+        if (role.equals("seller")){
+            intent.putExtra("clientRole", Constants.CLIENT_ROLE_BROADCASTER);
+        } else {
+            intent.putExtra("clientRole", Constants.CLIENT_ROLE_AUDIENCE);
+        }
+        startActivity(intent);
     }
 
     @Override
@@ -187,6 +201,12 @@ public class MyStreamsActivity extends AppCompatActivity implements IMenuAccess,
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        recreate();
     }
 
 }
