@@ -77,14 +77,14 @@ public class FetchStreamLog extends Service {
         RetroFitService rfServ = new RetroFitService("save-logs");
         StreamLogApi streamlogAPI = rfServ.getRetrofit().create(StreamLogApi.class);
 
-        streamlogAPI.addNewLogList(streamLog, seller.getId(), stream.getId()).enqueue(new Callback<List<StreamLog>>() {
+        streamlogAPI.addNewLogList(streamLog, seller.getId(), stream.getId()).enqueue(new Callback<StreamLog>() {
             @Override
-            public void onResponse(Call<List<StreamLog>> call, Response<List<StreamLog>> response) {
+            public void onResponse(Call<StreamLog> call, Response<StreamLog> response) {
                 Toast.makeText(FetchStreamLog.this, "Logs have been saved!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onFailure(Call<List<StreamLog>> call, Throwable t) {
+            public void onFailure(Call<StreamLog> call, Throwable t) {
                 Toast.makeText(FetchStreamLog.this, "Saving has been unsuccessful!", Toast.LENGTH_SHORT).show();
             }
         });
