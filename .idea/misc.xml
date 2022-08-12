@@ -3,16 +3,28 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+
+        <entry key="..\:/ADProject/Android/new4/live-selling-frontend-mobile/app/src/main/res/drawable-v24/background.xml" value="0.1" />
+        <entry key="..\:/ADProject/Android/new4/live-selling-frontend-mobile/app/src/main/res/drawable/arrow_drop_down.xml" value="0.1" />
+        <entry key="..\:/ADProject/Android/new4/live-selling-frontend-mobile/app/src/main/res/drawable/arrow_drop_up.xml" value="0.1" />
+        <entry key="..\:/ADProject/Android/new4/live-selling-frontend-mobile/app/src/main/res/drawable/dialog_bg.xml" value="0.1" />
+        <entry key="..\:/ADProject/Android/new4/live-selling-frontend-mobile/app/src/main/res/layout/activity_dashboard.xml" value="0.1" />
+        <entry key="..\:/ADProject/Android/new4/live-selling-frontend-mobile/app/src/main/res/layout/activity_dashboard2.xml" value="0.1" />
+        <entry key="..\:/ADProject/Android/new4/live-selling-frontend-mobile/app/src/main/res/layout/activity_entrance.xml" value="0.1" />
+        <entry key="..\:/ADProject/Android/new4/live-selling-frontend-mobile/app/src/main/res/menu/sidebar.xml" value="0.2" />
+
         <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/activity_add_product.xml" value="0.15760869565217392" />
         <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/activity_channel_profile.xml" value="0.15760869565217392" />
         <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/activity_entrance.xml" value="0.22282608695652173" />
         <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/activity_login.xml" value="0.16394927536231885" />
+        <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/activity_main.xml" value="0.1265625" />
         <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/activity_my_products.xml" value="0.15760869565217392" />
         <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/activity_my_streams.xml" value="0.22282608695652173" />
         <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/activity_register.xml" value="0.2" />
         <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/activity_schedule_stream.xml" value="0.264" />
         <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/activity_test.xml" value="0.1265625" />
         <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/channelrow.xml" value="0.1265625" />
+        <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/list_category.xml" value="0.1265625" />
         <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/my_stream_row.xml" value="0.1" />
         <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/orders_row.xml" value="0.15715579710144928" />
         <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/product_row.xml" value="0.1265625" />

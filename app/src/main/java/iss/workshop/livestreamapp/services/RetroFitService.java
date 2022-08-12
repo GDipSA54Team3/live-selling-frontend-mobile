@@ -30,7 +30,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @Data
 public class RetroFitService {
-    private final String API_URL = "http://10.249.38.181:8080";
+
+    private final String API_URL = "http://10.0.2.2:8080";
+
     private Retrofit retrofit;
 
     public RetroFitService(String type){
@@ -73,6 +75,9 @@ public class RetroFitService {
                         .addConverterFactory(createGsonConverter(Orders.class, new OrderDeserializer()))
                         .build();
                 break;
+            case("save-logs"):
+            case("save-product"):
+            case("get-products"):
             case("get-channel-from-id"):
             case("save-user"):
             case("save-channel"):
@@ -82,6 +87,13 @@ public class RetroFitService {
                         .addConverterFactory(GsonConverterFactory.create(new Gson()))
                         .build();
                 break;
+            case("dashboard"):
+                retrofit = new Retrofit.Builder()
+                        .baseUrl(API_URL)
+                        .addConverterFactory(createGsonConverter(User.class, new UserDeserializer()))
+                        .build();
+                break;
+
         }
 
     }
