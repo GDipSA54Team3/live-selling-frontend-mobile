@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="false"
+    android:gravity="center">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+        <TextView
+            android:id="@+id/rating_Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:text="My Rating"
+            android:gravity="center"
+            android:layout_marginTop="5dp"/>
+        <TextView
+            android:id="@+id/rating_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:text="TextView"
+            android:gravity="center"/>
+        <RatingBar
+            android:id="@+id/rating_bar_dash"
+            android:scaleX="0.7"
+            android:scaleY="0.7"
+            android:isIndicator="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:stepSize="1"
+            android:theme="@style/RatingBar"/>
+        <TextView
+            android:id="@+id/popularity_Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:text="My Popularity"
+            android:gravity="center"/>
+        <TextView
+            android:id="@+id/popularity_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="Updating.."
+            android:gravity="center"/>
+        <ImageView
+            android:id="@+id/pop_chart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"/>
+        <ImageView
+            android:id="@+id/time_series_chart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"/>
+        <TextView
+            android:id="@+id/pending_orders"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:text="Orders Pending Confirmation"
+            android:gravity="center"
+            android:layout_marginTop="5dp"/>
+        <TextView
+            android:id="@+id/pending_order_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:text="Fetiching.."
+            android:gravity="center"/>
+        <TextView
+            android:id="@+id/platform_statitics"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:text="Platform Sales Statistics"
+            android:gravity="center"
+            android:layout_marginTop="5dp"/>
+        <ImageView
+            android:id="@+id/time_period_chart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"/>
+    </LinearLayout>
+</ScrollView>
+
+
