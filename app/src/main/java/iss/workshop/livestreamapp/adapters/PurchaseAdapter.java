@@ -6,17 +6,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
 
 import iss.workshop.livestreamapp.R;
 import iss.workshop.livestreamapp.models.Orders;
+import iss.workshop.livestreamapp.models.Product;
 
 public class PurchaseAdapter extends BaseAdapter {
 
     private Context context;
     private List<Orders> purchases;
+    private List<Product> products;
 
     public PurchaseAdapter(Context context, List<Orders> purchases){
         this.context = context;
@@ -45,14 +48,28 @@ public class PurchaseAdapter extends BaseAdapter {
         }
         Orders orders = purchases.get(i);
 
-        TextView orderId = view.findViewById(R.id.o_id);
-        orderId.setText("1234");
+        //getUser
+        TextView userName = view.findViewById(R.id.profile_Image);
+        userName.setText(orders.getUser().getId());
 
-        TextView orderName = view.findViewById(R.id.o_name);
-        orderName.setText("888");
+        TextView totalPurchase = view.findViewById(R.id.total_Purchase);
 
-        TextView orderDesc = view.findViewById(R.id.o_desc);
-        orderDesc.setText("88888");
+        //getChannelName
+        TextView profileName = view.findViewById(R.id.profile_Name);
+        profileName.setText(orders.getChannel().getName());
+
+        TextView productName = view.findViewById(R.id.product_Name);
+
+
+        //TextView productQty = view.findViewById(R.id.product_Qty);
+        TextView totalPrice = view.findViewById(R.id.total_Price);
+
+        //orderStatus
+        TextView orderStatus = view.findViewById(R.id.order_status);
+        orderStatus.setText(orders.getOrderStatus().name());
+
+        Button cancelOrder = view.findViewById(R.id.cancel_order);
+
         return view;
     }
 }

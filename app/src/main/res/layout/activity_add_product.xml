@@ -19,21 +19,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingTop="50dp">
 
             <EditText
                 android:id="@+id/pName"
                 android:layout_width="match_parent"
-                android:layout_height="58dp"
+                android:layout_height="48dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginBottom="15dp"
-                android:background="@drawable/edit_text_border"
+                android:background="@color/white"
                 android:hint="Enter product name"
                 android:inputType="text"
                 android:paddingLeft="10dp"
-                android:textColorHint="@color/white"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey"
                 android:textStyle="italic" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -44,49 +46,50 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginBottom="15dp"
-                android:background="@drawable/edit_text_border">
+                android:backgroundTint="@color/white">
 
                 <AutoCompleteTextView
                     android:id="@+id/auto_complete_txt"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:hint="Enter Category"
                     android:inputType="none"
-                    android:textColorHint="@color/white" />
+                    android:textColor="@color/black" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <EditText
                 android:id="@+id/pPrice"
                 android:layout_width="match_parent"
-                android:layout_height="58dp"
+                android:layout_height="48dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginBottom="15dp"
-                android:background="@drawable/edit_text_border"
+                android:background="@color/white"
                 android:drawableLeft="@drawable/money"
                 android:hint="Enter price"
                 android:inputType="text"
                 android:paddingLeft="10dp"
                 android:paddingRight="26dp"
-                android:textColorHint="@color/white"
+                android:textColorHint="@color/grey"
                 android:textStyle="italic" />
 
             <EditText
                 android:id="@+id/pDesc"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="100dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginBottom="0dp"
-                android:background="@drawable/edit_text_border"
+                android:background="@color/white"
                 android:gravity="top"
                 android:hint="Enter product description"
                 android:inputType="text"
-                android:paddingLeft="26dp"
+                android:paddingLeft="13dp"
                 android:paddingRight="26dp"
-                android:textColorHint="@color/white"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey"
                 android:textStyle="italic" />
 
             <LinearLayout
@@ -97,17 +100,17 @@
                 <TextView
                     android:id="@+id/value"
                     android:layout_width="310dp"
-                    android:layout_height="58dp"
+                    android:layout_height="48dp"
                     android:layout_margin="20dp"
                     android:layout_marginRight="5dp"
                     android:layout_marginBottom="15dp"
-                    android:background="@drawable/edit_text_border"
+                    android:background="@color/white"
                     android:gravity="center_vertical"
                     android:hint="Enter quantity"
                     android:inputType="text"
-                    android:paddingLeft="26dp"
+                    android:paddingLeft="13dp"
                     android:paddingRight="26dp"
-                    android:textColorHint="@color/white"
+                    android:textColorHint="@color/grey"
                     android:textSize="18dp"
                     android:textStyle="italic" />
 
@@ -145,7 +148,7 @@
                 android:layout_gravity="center"
                 android:backgroundTint="@color/black"
                 android:text="Add"
-                android:textColor="@color/yellow" />
+                android:textColor="@color/white" />
         </LinearLayout>
 
     </RelativeLayout>

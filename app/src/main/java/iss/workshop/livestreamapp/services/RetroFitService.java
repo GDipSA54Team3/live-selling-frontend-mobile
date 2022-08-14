@@ -21,6 +21,7 @@ import iss.workshop.livestreamapp.helpers.StreamDeserializer;
 import iss.workshop.livestreamapp.helpers.UserDeserializer;
 import iss.workshop.livestreamapp.models.ChannelStream;
 import iss.workshop.livestreamapp.models.Orders;
+import iss.workshop.livestreamapp.models.Product;
 import iss.workshop.livestreamapp.models.Stream;
 import iss.workshop.livestreamapp.models.User;
 import lombok.Data;
@@ -30,7 +31,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @Data
 public class RetroFitService {
-    private final String API_URL = "http://10.249.38.181:8080";
+    private final String API_URL = "http://10.0.2.2:8080";
     private Retrofit retrofit;
 
     public RetroFitService(String type){
@@ -71,6 +72,12 @@ public class RetroFitService {
                 retrofit = new Retrofit.Builder()
                         .baseUrl(API_URL)
                         .addConverterFactory(createGsonConverter(Orders.class, new OrderDeserializer()))
+                        .build();
+                break;
+            case("product"):
+                retrofit = new Retrofit.Builder()
+                        .baseUrl(API_URL)
+                        .addConverterFactory(createGsonConverter(Product.class, new OrderDeserializer()))
                         .build();
                 break;
             case("get-channel-from-id"):
