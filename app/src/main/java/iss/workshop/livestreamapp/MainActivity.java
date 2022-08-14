@@ -39,6 +39,7 @@ import io.agora.rtc2.video.VideoCanvas;
 import io.agora.rtc2.ChannelMediaOptions;
 import iss.workshop.livestreamapp.adapters.ChStreamAdapter;
 import iss.workshop.livestreamapp.adapters.ProductsListAdapter;
+import iss.workshop.livestreamapp.adapters.ProductsStreamAdapter;
 import iss.workshop.livestreamapp.interfaces.IStreamDetails;
 import iss.workshop.livestreamapp.models.ChannelStream;
 import iss.workshop.livestreamapp.models.Product;
@@ -75,6 +76,9 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
     private Dialog dialog;
     private ListView productsListing;
     private List<Product> channelProducts;
+
+    //for orders
+    private ProductsStreamAdapter prodStreamAdapter;
 
     private IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() {
         @Override
@@ -186,8 +190,8 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
     }
 
     private void populateListView() {
-            ProductsListAdapter prodAdapter = new ProductsListAdapter(this, channelProducts);
-            productsListing.setAdapter(prodAdapter);
+            prodStreamAdapter = new ProductsStreamAdapter(this, channelProducts);
+            productsListing.setAdapter(prodStreamAdapter);
     }
 
 
