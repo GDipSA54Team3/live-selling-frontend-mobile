@@ -2,18 +2,8 @@ package iss.workshop.livestreamapp.services;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
 import iss.workshop.livestreamapp.helpers.ChannelDeserializer;
 import iss.workshop.livestreamapp.helpers.OrderDeserializer;
@@ -32,6 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetroFitService {
 
     private final String API_URL = "http://10.0.2.2:8080";
+    private final String PREDICTION_API_URL = "http://10.0.2.2:5000";
 
     private Retrofit retrofit;
 
@@ -89,10 +80,10 @@ public class RetroFitService {
                         .addConverterFactory(GsonConverterFactory.create(new Gson()))
                         .build();
                 break;
-            case("dashboard"):
+            case("prediction"):
                 retrofit = new Retrofit.Builder()
-                        .baseUrl(API_URL)
-                        .addConverterFactory(createGsonConverter(User.class, new UserDeserializer()))
+                        .baseUrl(PREDICTION_API_URL)
+                        .addConverterFactory(GsonConverterFactory.create(new Gson()))
                         .build();
                 break;
 

@@ -27,7 +27,7 @@ public interface IStreamDetails {
     };
 
     default void invokeToken(ChannelStream channel){
-        channel.setToken("006813f22ea50924b43ae8488edb975d02cIACLUEDkC8qQTjPc+8X+G9ipCRn4MS9zQtI6UKtjPJZREmDRtcIAAAAAEACLq5A0ExH3YgEAAQASEfdi");
+        channel.setToken("006813f22ea50924b43ae8488edb975d02cIABuOpRvb069KHmOzzmtCLAHV7RLGBtNNvZh8JBNchc6dqHYMoUAAAAAEABiLYCEkb/5YgEAAQCRv/li");
     };
 
     /*
