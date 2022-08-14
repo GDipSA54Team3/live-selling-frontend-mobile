@@ -22,4 +22,6 @@ public interface StreamsApi {
 
     @POST("/api/user/addstream/{userId}")
     Call<Stream> addNewStream(@Body Stream newStream, @Path("userId") String userId);
+
+
 }
