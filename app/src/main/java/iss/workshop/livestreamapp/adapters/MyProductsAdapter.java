@@ -12,14 +12,13 @@ import java.util.List;
 
 import iss.workshop.livestreamapp.R;
 import iss.workshop.livestreamapp.models.Product;
-import iss.workshop.livestreamapp.models.Stream;
 
-public class ProductsListAdapter extends BaseAdapter {
+public class MyProductsAdapter extends BaseAdapter {
 
     private Context context;
-    protected List<Product> products;
+    private List<Product> products;
 
-    public ProductsListAdapter(Context context, List<Product> products){
+    public MyProductsAdapter(Context context, List<Product> products){
         this.context = context;
         this.products = products;
     }
@@ -44,13 +43,21 @@ public class ProductsListAdapter extends BaseAdapter {
 
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.product_row, viewGroup, false);
+            view = inflater.inflate(R.layout.product_row, //change to the row before testing
+                    viewGroup, false);
         }
 
-        Product currProduct = products.get(i);
+        Product product= products.get(i);
 
-        TextView txtProductName = view.findViewById(R.id.product_name);
-        txtProductName.setText(currProduct.getName());
+        TextView txtName = view.findViewById(R.id.product_name);
+        txtName.setText(product.getName());
+
+        TextView txtDesc = view.findViewById(R.id.product_description);
+        txtDesc.setText(product.getDescription());
+
+        TextView txtPrice = view.findViewById(R.id.product_price);
+        txtPrice.setText(Double.toString(product.getPrice()));
+        //name, price, SKU, buttons (update/delete)
 
         return view;
     }

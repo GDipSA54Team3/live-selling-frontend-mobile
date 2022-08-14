@@ -1,5 +1,6 @@
 package iss.workshop.livestreamapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -14,6 +15,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,12 +40,21 @@ import io.agora.rtc2.video.VideoCanvas;
 import io.agora.rtc2.ChannelMediaOptions;
 import iss.workshop.livestreamapp.adapters.ChStreamAdapter;
 import iss.workshop.livestreamapp.adapters.ProductsListAdapter;
+import iss.workshop.livestreamapp.adapters.ProductsStreamAdapter;
 import iss.workshop.livestreamapp.interfaces.IStreamDetails;
 import iss.workshop.livestreamapp.models.ChannelStream;
+import iss.workshop.livestreamapp.models.OrderProduct;
+import iss.workshop.livestreamapp.models.Orders;
 import iss.workshop.livestreamapp.models.Product;
 import iss.workshop.livestreamapp.models.Stream;
 import iss.workshop.livestreamapp.models.User;
 import iss.workshop.livestreamapp.services.FetchStreamLog;
+import iss.workshop.livestreamapp.services.OrdersApi;
+import iss.workshop.livestreamapp.services.ProductsApi;
+import iss.workshop.livestreamapp.services.RetroFitService;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements IStreamDetails {
 
@@ -54,10 +66,11 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
     private String token = "006813f22ea50924b43ae8488edb975d02cIACSwVYot3MJjOw/ZoWEFqBcwkViZje5dTy0hjwbD1QGzWV0cykAAAAAEACGukDPdf3xYgEAAQBy/fFi";
     private Stream currStream;
     private String numberOfViewers;
-    private String streamerImage;
     private TextView streamStatus;
     private ChannelStream channel;
+    private ChannelStream sellerChannel;
     private RtcEngine mRtcEngine;
+    private String prevActivity;
     //audience or host
     private int clientRole;
     //current user logged in
@@ -66,6 +79,11 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
     private Button showProducts;
     private Dialog dialog;
     private ListView productsListing;
+    private List<Product> channelProducts;
+    private Button sendOrder;
+
+    //for orders
+    private ProductsStreamAdapter prodStreamAdapter;
 
     private IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() {
         @Override
@@ -115,15 +133,56 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
         //token = streamDetails.getStringExtra("token");
         clientRole = streamDetails.getIntExtra("clientRole", 0);
         currStream = (Stream) streamDetails.getSerializableExtra("streamObj");
-
+        prevActivity = streamDetails.getStringExtra("calling-activity");
         user = (User) streamDetails.getSerializableExtra("user");
         channel = (ChannelStream) streamDetails.getSerializableExtra("channel");
+        invokeToken(channel);
+
+        dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.product_list_layout);
+
+        productsListing = dialog.findViewById(R.id.products_list);
+
+        showProducts = findViewById(R.id.open_product_list);
+        //if clientRole is buyer (audience) or seller (broadcaster)
+        if(clientRole == Constants.CLIENT_ROLE_BROADCASTER){
+            showProducts.setVisibility(View.INVISIBLE);
+        } else {
+            sellerChannel = (ChannelStream) streamDetails.getSerializableExtra("seller-stream");
+            invokeToken(sellerChannel);
+            RetroFitService rfServ = new RetroFitService("get-products");
+            ProductsApi prodAPI = rfServ.getRetrofit().create(ProductsApi.class);
+            prodAPI.getAllProductsInStore(sellerChannel.getId()).enqueue(new Callback<List<Product>>() {
+                @Override
+                public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
+                    channelProducts = response.body();
+                    populateListView();
+                }
+
+                @Override
+                public void onFailure(Call<List<Product>> call, Throwable t) {
+
+                }
+            });
+        }
+
+        showProducts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openProductDialog();
+            }
+        });
+        //get products from channel
+
+
+        //
         //Toast.makeText(this, currStream.getName(), Toast.LENGTH_SHORT).show();
         TextView txtName = findViewById(R.id.channel_name);
         txtName.setText(channelName);
 
         //hide top bar
-        getSupportActionBar().hide();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         streamStatus = findViewById(R.id.stream_status);
         streamStatus.setVisibility(View.INVISIBLE);
@@ -133,45 +192,63 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
             initializeAndJoinChannel();
         }
 
+    }
 
-        //setting listener to leave channel
-        Button btnLeaveChannel = findViewById(R.id.leave_channel);
-        btnLeaveChannel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, FetchStreamLog.class);
-                stopService(intent);
-                mRtcEngine.stopPreview();
-                mRtcEngine.leaveChannel();
-                finish();
+    private void populateListView() {
+            prodStreamAdapter = new ProductsStreamAdapter(this, channelProducts);
+            productsListing.setAdapter(prodStreamAdapter);
+            sendOrder = dialog.findViewById(R.id.send_order);
+            sendOrder.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    createOrder();
+                }
+            });
+
+    }
+
+    //function to do the order
+    private void createOrder() {
+        List<Product> productsToOrder = prodStreamAdapter.getProducts();
+        List<Integer> amtToOrder = prodStreamAdapter.getProductQty();
+        Orders newOrder = new Orders(user, null);
+        newOrder.setChannel(sellerChannel);
+
+        for(int i = 0; i < productsToOrder.size(); i++){
+            if(amtToOrder.get(i) > 0){
+                OrderProduct orderProd = new OrderProduct();
+                //orderProd.setOrder(newOrder);
+                orderProd.setChannel(sellerChannel);
+                orderProd.setProduct(productsToOrder.get(i));
+                orderProd.setQuantity(amtToOrder.get(i));
+
+                newOrder.getOrderProduct().add(orderProd);
             }
-        });
-
-        //setting listener to viewing products
-        showProducts = findViewById(R.id.open_product_list);
-
-
-        if(clientRole == Constants.CLIENT_ROLE_BROADCASTER){
-            showProducts.setVisibility(View.INVISIBLE);
         }
 
-
-        dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.product_list_layout);
-
-        productsListing = dialog.findViewById(R.id.products_list);
-
-        //generate list of items from channel
-        List<Product> products = channel.getProducts();
-        //create adapter
-
-        showProducts.setOnClickListener(new View.OnClickListener() {
+        RetroFitService rfServ = new RetroFitService("new-orders");
+        OrdersApi orderAPI = rfServ.getRetrofit().create(OrdersApi.class);
+        orderAPI.addNewOrder(newOrder, user.getId(), sellerChannel.getId()).enqueue(new Callback<Orders>() {
             @Override
-            public void onClick(View view) {
-                openProductDialog();
+            public void onResponse(Call<Orders> call, Response<Orders> response) {
+                if (response.code() == 201){
+                    Toast.makeText(MainActivity.this, "Success! Your order has been sent.", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                    for(int i = 0; i < amtToOrder.size(); i++){
+                        amtToOrder.set(i, 0);
+                    }
+                } else {
+                    Toast.makeText(MainActivity.this, "Got the response, wrong body", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Orders> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Order failed", Toast.LENGTH_SHORT).show();
             }
         });
+
+
     }
 
 
@@ -224,6 +301,8 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
             //start fetching of stream log
             Intent intent = new Intent(MainActivity.this, FetchStreamLog.class);
             intent.setAction("send_messages");
+            intent.putExtra("seller", user);
+            intent.putExtra("stream", currStream);
             intent.putExtra("duration", 5);
             startService(intent);
 
@@ -253,18 +332,25 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
 
     private void openProductDialog(){
 
-        /*
-        ListView productsListing = dialog.findViewById(R.id.products_list);
-        if (productsListing.getAdapter() == null){
-            ProductsListAdapter prodAdapter = new ProductsListAdapter(this, channel.getProducts());
-            productsListing.setAdapter(prodAdapter);
-        }
-        */
-
         dialog.show();
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, (int) (getResources().getDisplayMetrics().heightPixels*0.60));
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(MainActivity.this, FetchStreamLog.class);
+                stopService(intent);
+                mRtcEngine.stopPreview();
+                mRtcEngine.leaveChannel();
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

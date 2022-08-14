@@ -18,7 +18,52 @@ public class ProductDeserializer implements JsonDeserializer<Product> {
         Product product = new Product();
         ChannelStream channel = new ChannelStream();
         User user = new User();
-        final JsonObject channelJson = json.getAsJsonObject();
+        final JsonObject productJson = json.getAsJsonObject();
+
+        String productId = productJson.get("id").getAsString();
+        product.setId(productId);
+
+        String productName = productJson.get("name").getAsString();
+        product.setName(productName);
+
+        String productPrice = productJson.get("price").getAsString();
+        product.setPrice(Double.parseDouble(productPrice));
+
+        String category = productJson.get("category").getAsString();
+        switch(category){
+                case("HEALTH"):
+                    product.setCategory(ProductCategories.HEALTH);
+                    break;
+                case("FURNITURES"):
+                    product.setCategory(ProductCategories.FURNITURES);
+                    break;
+                case("APPLIANCES"):
+                    product.setCategory(ProductCategories.APPLIANCES);
+                    break;
+                case("BABY"):
+                    product.setCategory(ProductCategories.BABY);
+                    break;
+                case("CLOTHING"):
+                    product.setCategory(ProductCategories.CLOTHING);
+                    break;
+                case("FOOD"):
+                    product.setCategory(ProductCategories.FOOD);
+                    break;
+                case("GROCERIES"):
+                    product.setCategory(ProductCategories.GROCERIES);
+                    break;
+                case("SPORTS"):
+                    product.setCategory(ProductCategories.SPORTS);
+                    break;
+                case("TECHNOLOGY"):
+                    product.setCategory(ProductCategories.TECHNOLOGY);
+                    break;
+                default:
+                    product.setCategory(ProductCategories.OTHERS);
+                    break;
+        }
+
+
 
         return null;
     }

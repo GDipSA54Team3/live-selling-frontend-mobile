@@ -30,7 +30,13 @@ public class OrderDeserializer implements JsonDeserializer<Orders> {
         order.setId(orderId);
         //set statue
         String orderStatus = jsonOrder.get("status").getAsString();
-        if (orderStatus.equals("CONFIRMED")) order.setOrderStatus(OrderStatus.CONFIRMED);
+        if (orderStatus.equals("CONFIRMED")) {
+            order.setOrderStatus(OrderStatus.CONFIRMED);
+        } else if (orderStatus.equals("CANCELLED")) {
+            order.setOrderStatus(OrderStatus.CANCELLED);
+        } else {
+            order.setOrderStatus(OrderStatus.PENDING);
+        }
 
         //set orderdate
         DateTimeFormatter dtFormatter = DateTimeFormatter.ISO_DATE_TIME;

@@ -88,7 +88,6 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
 
         setupSidebarMenu();
 
-
         //populating streams
         listOfStreams = findViewById(R.id.stream_list_first);
 
@@ -121,7 +120,7 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
                         .findViewById(R.id.top_container)
                         .findViewById(R.id.text_fields)
                         .findViewById(R.id.channel_name);
-                String channelName = channelNameTxt.getText().toString();
+                String channel = channelNameTxt.getText().toString();
 
                 currStream = (Stream) streamAdapter.getItem(i);
                 invokeToken(currStream.getChannelStream());
@@ -134,14 +133,17 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
     }
 
 
-    public void openStreamPage(String role, ChannelStream channelStream, Stream currStream){
+    public void openStreamPage(String role, ChannelStream sellerStream, Stream currStream){
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("channelName", channelStream.getName());
-        //intent.putExtra("token", "006813f22ea50924b43ae8488edb975d02cIACSwVYot3MJjOw/ZoWEFqBcwkViZje5dTy0hjwbD1QGzWV0cykAAAAAEACGukDPdf3xYgEAAQBy/fFi");
+        //check if sellerStream == channelStream?
+
+        intent.putExtra("channelName", sellerStream.getName());
         intent.putExtra("appID", getAppID());
-        //intent.putExtra("streamID", streamId);
         intent.putExtra("streamObj", currStream);
         intent.putExtra("user", user);
+        intent.putExtra("channel", channelStream);
+        intent.putExtra("seller-stream", sellerStream);
+        intent.putExtra("calling-activity", "entrance");
         if (role.equals("seller")){
             intent.putExtra("clientRole", Constants.CLIENT_ROLE_BROADCASTER);
         } else {

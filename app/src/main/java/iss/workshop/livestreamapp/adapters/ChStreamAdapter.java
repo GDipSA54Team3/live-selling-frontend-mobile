@@ -73,17 +73,6 @@ public class ChStreamAdapter extends BaseAdapter {
         streamName.setText(currentStream.getTitle());
 
         //stream name
-        /*
-        TextView streamDesc = (TextView) view
-                .findViewById(R.id.entire_row)
-                .findViewById(R.id.top_container)
-                .findViewById(R.id.text_fields)
-                .findViewById(R.id.stream_desc);
-        streamDesc.setText(currentStream.getDescription());
-
-         */
-
-        //stream name
         TextView streamDate = (TextView) view
                 .findViewById(R.id.bottom_container)
                 .findViewById(R.id.date_of_stream);
@@ -93,7 +82,15 @@ public class ChStreamAdapter extends BaseAdapter {
             Button btnCheckStreams = view
                     .findViewById(R.id.bottom_container)
                     .findViewById(R.id.btn_check_stream);
-            btnCheckStreams.setText("Check this stream");
+            btnCheckStreams.setText("Start this stream");
+
+            btnCheckStreams.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Stream stream = streams.get(i);
+
+                }
+            });
         } else {
             Chip liveChip = (Chip) view
                     .findViewById(R.id.bottom_container)

@@ -5,13 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class StreamLog implements Serializable {
 
     private String id;
     private int numLikes;
     private Stream stream;
+    private User seller;
     private List<Message> messages;
 
     public StreamLog(int numLikes) {
