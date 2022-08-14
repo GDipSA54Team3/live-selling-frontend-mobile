@@ -36,7 +36,6 @@ public class OrderDeserializer implements JsonDeserializer<Orders> {
             order.setOrderStatus(OrderStatus.PENDING);
         }
 
-
         //set orderdate
         DateTimeFormatter dtFormatter = DateTimeFormatter.ISO_DATE_TIME;
         String date = jsonOrder.get("orderDateTime").getAsString();
