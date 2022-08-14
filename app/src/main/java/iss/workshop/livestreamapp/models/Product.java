@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Product implements Serializable {
 
-    private long Id;
+    private String id;
     private String name;
     private ProductCategories category;
     private String description;

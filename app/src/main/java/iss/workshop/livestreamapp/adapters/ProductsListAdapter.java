@@ -36,7 +36,7 @@ public class ProductsListAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int i) {
-        return products.get(i).getId();
+        return 0;
     }
 
     @Override

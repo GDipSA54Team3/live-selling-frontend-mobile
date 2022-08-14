@@ -69,12 +69,14 @@ public class RetroFitService {
                         .addConverterFactory(createGsonConverter(ChannelStream.class, new ChannelDeserializer()))
                         .build();
                 break;
+            case("new-orders"):
             case("orders"):
                 retrofit = new Retrofit.Builder()
                         .baseUrl(API_URL)
                         .addConverterFactory(createGsonConverter(Orders.class, new OrderDeserializer()))
                         .build();
                 break;
+
             case("save-logs"):
             case("save-product"):
             case("get-products"):
