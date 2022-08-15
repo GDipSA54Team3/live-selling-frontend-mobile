@@ -6,6 +6,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -21,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.os.Bundle;
@@ -30,6 +34,8 @@ import android.widget.Toast;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import io.agora.rtc2.Constants;
@@ -38,6 +44,18 @@ import io.agora.rtc2.RtcEngine;
 import io.agora.rtc2.RtcEngineConfig;
 import io.agora.rtc2.video.VideoCanvas;
 import io.agora.rtc2.ChannelMediaOptions;
+import io.agora.rtm.ErrorInfo;
+import io.agora.rtm.ResultCallback;
+import io.agora.rtm.RtmChannel;
+import io.agora.rtm.RtmChannelAttribute;
+import io.agora.rtm.RtmChannelListener;
+import io.agora.rtm.RtmChannelMember;
+import io.agora.rtm.RtmClient;
+import io.agora.rtm.RtmClientListener;
+import io.agora.rtm.RtmFileMessage;
+import io.agora.rtm.RtmImageMessage;
+import io.agora.rtm.RtmMediaOperationProgress;
+import io.agora.rtm.RtmMessage;
 import iss.workshop.livestreamapp.adapters.ChStreamAdapter;
 import iss.workshop.livestreamapp.adapters.ProductsListAdapter;
 import iss.workshop.livestreamapp.adapters.ProductsStreamAdapter;
@@ -59,11 +77,11 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity implements IStreamDetails {
 
     // Fill the App ID of your project generated on Agora Console.
-    private String appId; // = "813f22ea50924b43ae8488edb975d02c";
+    private String appId;
     // Fill the channel name.
-    private String channelName;// = "Test ChannelStream";
+    private String channelName;
     // Fill the temp token generated on Agora Console.
-    private String token = "006813f22ea50924b43ae8488edb975d02cIACSwVYot3MJjOw/ZoWEFqBcwkViZje5dTy0hjwbD1QGzWV0cykAAAAAEACGukDPdf3xYgEAAQBy/fFi";
+    private String token;
     private Stream currStream;
     private String numberOfViewers;
     private TextView streamStatus;
@@ -81,9 +99,31 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
     private ListView productsListing;
     private List<Product> channelProducts;
     private Button sendOrder;
+    private boolean entered = false;
 
     //for orders
     private ProductsStreamAdapter prodStreamAdapter;
+
+    //for real-time-chat
+    // TextView to show message records in the UI
+    private TextView messageHistory;
+    private TextView messageBox;
+    // Message content
+    private String message_content;
+    private Button sendMessage;
+
+    // RTM client instance
+    private RtmClient mRtmClient;
+    // RTM channel instance
+    private RtmChannel mRtmChannel;
+
+
+    //permissions
+    private static final int PERMISSION_REQ_ID = 22;
+    private static final String[] REQUESTED_PERMISSIONS = {
+            Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.CAMERA
+    };
 
     private IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() {
         @Override
@@ -101,22 +141,7 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
         @Override
         public void onRemoteVideoStats(RemoteVideoStats stats) {
             super.onRemoteVideoStats(stats);
-
         }
-
-        /*
-        @Override
-        public void onUserOffline(int uid, int reason) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Log.i("agora","User offline, uid: " + (uid & 0xFFFFFFFFL));
-                    //onRemoteUserLeft();
-                }
-            });
-        }
-
-         */
     };
 
     @Override
@@ -124,13 +149,11 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        token = getResources().getString(R.string.stream_token);
         //getting intent details
         Intent streamDetails = getIntent();
         appId = getAppID();
         channelName = streamDetails.getStringExtra("channelName");
-
-        //streamId = streamDetails.getLongExtra("streamId", 0);
-        //token = streamDetails.getStringExtra("token");
         clientRole = streamDetails.getIntExtra("clientRole", 0);
         currStream = (Stream) streamDetails.getSerializableExtra("streamObj");
         prevActivity = streamDetails.getStringExtra("calling-activity");
@@ -138,16 +161,21 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
         channel = (ChannelStream) streamDetails.getSerializableExtra("channel");
         invokeToken(channel);
 
+
         dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.product_list_layout);
 
         productsListing = dialog.findViewById(R.id.products_list);
+        messageHistory = findViewById(R.id.stream_status);
+        messageBox = findViewById(R.id.message_to_send);
+        sendMessage = findViewById(R.id.send_message);
 
         showProducts = findViewById(R.id.open_product_list);
         //if clientRole is buyer (audience) or seller (broadcaster)
         if(clientRole == Constants.CLIENT_ROLE_BROADCASTER){
             showProducts.setVisibility(View.INVISIBLE);
+
         } else {
             sellerChannel = (ChannelStream) streamDetails.getSerializableExtra("seller-stream");
             invokeToken(sellerChannel);
@@ -162,7 +190,6 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
 
                 @Override
                 public void onFailure(Call<List<Product>> call, Throwable t) {
-
                 }
             });
         }
@@ -175,7 +202,6 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
         });
         //get products from channel
 
-
         //
         //Toast.makeText(this, currStream.getName(), Toast.LENGTH_SHORT).show();
         TextView txtName = findViewById(R.id.channel_name);
@@ -184,14 +210,198 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
         //hide top bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        streamStatus = findViewById(R.id.stream_status);
-        streamStatus.setVisibility(View.INVISIBLE);
-
         if (checkSelfPermission(REQUESTED_PERMISSIONS[0], PERMISSION_REQ_ID) &&
                 checkSelfPermission(REQUESTED_PERMISSIONS[1], PERMISSION_REQ_ID)) {
             initializeAndJoinChannel();
         }
 
+        //join rtm
+        try {
+            mRtmClient = RtmClient.createInstance(getBaseContext(), appId, new RtmClientListener() {
+                @Override
+                public void onConnectionStateChanged(int state, int reason) {
+                    if (!entered){
+                        String text = "Welcome to " + channelName + "! Please remember to be polite and patient with the seller and other participants in the chat." + "\n";
+                        writeToMessageHistory(text);
+                        entered = true;
+                    }
+
+                }
+
+                @Override
+                public void onMessageReceived(RtmMessage rtmMessage, String s) {
+                    //String text =  user.getUsername() + ": " + rtmMessage.getText() + "\n";
+                    //writeToMessageHistory(text);
+                }
+
+                @Override
+                public void onImageMessageReceivedFromPeer(RtmImageMessage rtmImageMessage, String s) {
+
+                }
+
+                @Override
+                public void onFileMessageReceivedFromPeer(RtmFileMessage rtmFileMessage, String s) {
+
+                }
+
+                @Override
+                public void onMediaUploadingProgress(RtmMediaOperationProgress rtmMediaOperationProgress, long l) {
+
+                }
+
+                @Override
+                public void onMediaDownloadingProgress(RtmMediaOperationProgress rtmMediaOperationProgress, long l) {
+
+                }
+
+                @Override
+                public void onTokenExpired() {
+
+                }
+
+                @Override
+                public void onTokenPrivilegeWillExpire() {
+
+                }
+
+                @Override
+                public void onPeersOnlineStatusChanged(Map<String, Integer> map) {
+
+                }
+            });
+        } catch (Exception e) {
+            throw new RuntimeException("RTM initialization failed!");
+        }
+
+        String userToken = getUserTokenForRTM(user);
+
+        mRtmClient.login(userToken, user.getUsername(), new ResultCallback<Void>() {
+            @Override
+            public void onSuccess(Void responseInfo) {
+            }
+
+            @Override
+            public void onFailure(ErrorInfo errorInfo) {
+                CharSequence text = "User: " + user.getUsername() + " failed to log in to the RTM system!" + errorInfo.toString();
+                int duration = Toast.LENGTH_SHORT;
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+                        toast.show();
+                    }
+                });
+
+            }
+        });
+
+        RtmChannelListener mRtmChannelListener = new RtmChannelListener() {
+            @Override
+            public void onMemberCountUpdated(int i) {
+
+            }
+
+            @Override
+            public void onAttributesUpdated(List<RtmChannelAttribute> list) {
+
+            }
+
+            @Override
+            public void onMessageReceived(RtmMessage rtmMessage, RtmChannelMember rtmChannelMember) {
+
+                String message_text = "Message received from " + rtmChannelMember.getUserId() + " : " + rtmMessage + "\n";
+                writeToMessageHistory(message_text);
+            }
+
+            @Override
+            public void onImageMessageReceived(RtmImageMessage rtmImageMessage, RtmChannelMember rtmChannelMember) {
+
+            }
+
+            @Override
+            public void onFileMessageReceived(RtmFileMessage rtmFileMessage, RtmChannelMember rtmChannelMember) {
+
+            }
+
+            @Override
+            public void onMemberJoined(RtmChannelMember rtmChannelMember) {
+
+            }
+
+            @Override
+            public void onMemberLeft(RtmChannelMember rtmChannelMember) {
+
+            }
+        };
+
+        try {
+            // Create an RTM channel
+            mRtmChannel = mRtmClient.createChannel(channelName, mRtmChannelListener);
+        } catch (RuntimeException e) {
+        }
+        // Join the RTM channel
+        mRtmChannel.join(new ResultCallback<Void>() {
+            @Override
+            public void onSuccess(Void responseInfo) {
+            }
+
+            @Override
+            public void onFailure(ErrorInfo errorInfo) {
+                CharSequence text = "User: " + user.getUsername() + " failed to join the channel!" + errorInfo.toString();
+                int duration = Toast.LENGTH_SHORT;
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+                        toast.show();
+                    }
+                });
+
+            }
+        });
+
+    }
+
+    private void writeToMessageHistory(String message_text) {
+        messageHistory.append(message_text);
+    }
+
+
+    //go to https://webdemo.agora.io/token-builder/ to generate for the users, then
+    // put in the strings.xml (app id, app cert and username):
+    private String getUserTokenForRTM(User user) {
+        switch(user.getUsername()){
+            case "jamesseah":
+                return getResources().getString(R.string.token_for_jamesseah);
+            case "amandachong":
+                return getResources().getString(R.string.token_for_amandachong);
+            default:
+                return getResources().getString(R.string.token_for_new_acct);
+        }
+
+    }
+
+    public void onClickSendChannelMsg(View v)
+    {
+        message_content = messageBox.getText().toString();
+
+        // Create RTM message instance
+        RtmMessage message = mRtmClient.createMessage();
+        message.setText(message_content);
+
+        // Send message to channel
+        mRtmChannel.sendMessage(message, new ResultCallback<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                String text = user.getUsername() + ": " + message.getText() + "\n";
+                writeToMessageHistory(text);
+                messageBox.setText("");
+            }
+
+            @Override
+            public void onFailure(ErrorInfo errorInfo) {
+                String text = "Message fails to send to channel " + mRtmChannel.getId() + " Error: " + errorInfo + "\n";
+                writeToMessageHistory(text);
+            }
+        });
     }
 
     private void populateListView() {
@@ -251,13 +461,6 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
 
     }
 
-
-    private static final int PERMISSION_REQ_ID = 22;
-    private static final String[] REQUESTED_PERMISSIONS = {
-            Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.CAMERA
-    };
-
     private boolean checkSelfPermission(String permission, int requestCode) {
         if (ContextCompat.checkSelfPermission(this, permission) !=
                 PackageManager.PERMISSION_GRANTED) {
@@ -279,6 +482,7 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
         }
         // By default, video is disabled, and you need to call enableVideo to start a video stream.
         mRtcEngine.enableVideo();
+
         // Start local preview.
         mRtcEngine.startPreview();
 
@@ -298,6 +502,7 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
 
         if (options.clientRoleType == Constants.CLIENT_ROLE_BROADCASTER){
             mRtcEngine.setupLocalVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, 0));
+            mRtcEngine.enableAudio();
             //start fetching of stream log
             Intent intent = new Intent(MainActivity.this, FetchStreamLog.class);
             intent.setAction("send_messages");
@@ -305,21 +510,13 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
             intent.putExtra("stream", currStream);
             intent.putExtra("duration", 5);
             startService(intent);
-
-        } else {
-            boolean hostIsInside = true;
-            if (!hostIsInside){
-                streamStatus.setText("Stream is not ongoing. Please wait for the next stream.");
-                streamStatus.setVisibility(View.VISIBLE);
-            }
-            //check if host is inside. if not, run the
-
         }
         // Pass the SurfaceView object to Agora so that it renders the local video.
 
         // Join the channel with a temp token.
         // You need to specify the user ID yourself, and ensure that it is unique in the channel.
-        mRtcEngine.joinChannel(token, channelName, 0, options);
+        Random rd = new Random();
+        mRtcEngine.joinChannel(token, channelName, rd.nextInt(100), options);
     }
 
     private void setupRemoteVideo(int uid) {
@@ -331,7 +528,6 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
     }
 
     private void openProductDialog(){
-
         dialog.show();
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, (int) (getResources().getDisplayMetrics().heightPixels*0.60));
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -346,11 +542,17 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
             case android.R.id.home:
                 Intent intent = new Intent(MainActivity.this, FetchStreamLog.class);
                 stopService(intent);
+                //stop stream
                 mRtcEngine.stopPreview();
                 mRtcEngine.leaveChannel();
+                //stop chat
+                //mRtmClient.logout(null);
+                mRtmChannel.leave(null);
+
                 this.finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

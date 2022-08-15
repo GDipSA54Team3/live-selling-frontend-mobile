@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+<<<<<<< HEAD
+        <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/drawable/ic_shopping_bag.xml" value="0.1805" />
+=======
 
         <entry key="..\:/ADProject/Android/new4/live-selling-frontend-mobile/app/src/main/res/drawable-v24/background.xml" value="0.1" />
         <entry key="..\:/ADProject/Android/new4/live-selling-frontend-mobile/app/src/main/res/drawable/arrow_drop_down.xml" value="0.1" />
@@ -19,6 +22,7 @@
 
         <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/drawable/ic_shopping_bag.xml" value="0.1805" />
 
+>>>>>>> ee04472bf73e57de0d8162e15f6dd9c95ab9a6f2
         <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/activity_add_product.xml" value="0.15760869565217392" />
         <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/activity_channel_profile.xml" value="0.15760869565217392" />
         <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/activity_entrance.xml" value="0.22282608695652173" />
