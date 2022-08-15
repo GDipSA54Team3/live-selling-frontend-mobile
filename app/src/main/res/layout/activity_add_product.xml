@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MyStreamsActivity"
-    android:background="@drawable/live_cartoon"
+
     android:orientation="vertical"
     tools:ignore="HardcodedText">
 
@@ -34,8 +34,12 @@
                 android:hint="Enter product name"
                 android:inputType="text"
                 android:paddingLeft="10dp"
+<<<<<<< HEAD
                 android:textColor="@color/black"
                 android:textColorHint="@color/grey"
+=======
+                android:textColorHint="@color/black"
+>>>>>>> ee04472bf73e57de0d8162e15f6dd9c95ab9a6f2
                 android:textStyle="italic" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -68,10 +72,14 @@
                 android:background="@color/white"
                 android:drawableLeft="@drawable/money"
                 android:hint="Enter price"
-                android:inputType="text"
+                android:inputType="number"
                 android:paddingLeft="10dp"
                 android:paddingRight="26dp"
+<<<<<<< HEAD
                 android:textColorHint="@color/grey"
+=======
+                android:textColorHint="@color/black"
+>>>>>>> ee04472bf73e57de0d8162e15f6dd9c95ab9a6f2
                 android:textStyle="italic" />
 
             <EditText
@@ -88,12 +96,19 @@
                 android:inputType="text"
                 android:paddingLeft="13dp"
                 android:paddingRight="26dp"
+<<<<<<< HEAD
                 android:textColor="@color/black"
                 android:textColorHint="@color/grey"
+=======
+                android:textColorHint="@color/black"
+>>>>>>> ee04472bf73e57de0d8162e15f6dd9c95ab9a6f2
                 android:textStyle="italic" />
 
-            <LinearLayout
+
+            <EditText
+                android:id="@+id/quantity"
                 android:layout_width="match_parent"
+<<<<<<< HEAD
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
@@ -140,6 +155,21 @@
                 </LinearLayout>
 
             </LinearLayout>
+=======
+                android:layout_height="58dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/edit_text_border"
+                android:drawableLeft="@drawable/money"
+                android:hint="Enter price"
+                android:inputType="number"
+                android:paddingLeft="10dp"
+                android:paddingRight="26dp"
+                android:textColorHint="@color/black"
+                android:textStyle="italic" />
+
+>>>>>>> ee04472bf73e57de0d8162e15f6dd9c95ab9a6f2
 
             <Button
                 android:id="@+id/createProduct"

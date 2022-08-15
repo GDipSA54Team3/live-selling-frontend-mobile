@@ -12,6 +12,7 @@ import java.nio.channels.Channel;
 import iss.workshop.livestreamapp.models.ChannelStream;
 import iss.workshop.livestreamapp.models.User;
 
+
 public class ChannelDeserializer implements JsonDeserializer<ChannelStream> {
 
     @Override

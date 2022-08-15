@@ -26,6 +26,7 @@
             android:textSize="20dp"/>
 
         <Button
+<<<<<<< HEAD
             android:id="@+id/btn_start_now"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,6 +36,8 @@
             android:backgroundTint="@color/black"/>
 
         <Button
+=======
+>>>>>>> ee04472bf73e57de0d8162e15f6dd9c95ab9a6f2
             android:id="@+id/btn_create_stream"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

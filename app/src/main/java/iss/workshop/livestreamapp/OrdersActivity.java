@@ -9,6 +9,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -51,7 +53,6 @@ public class OrdersActivity extends AppCompatActivity implements IMenuAccess, IS
         invokeToken(channel);
         setupSidebarMenu();
 
-
         //fetch order API
         RetroFitService rfServ = new RetroFitService("orders");
         OrdersApi ordersAPI = rfServ.getRetrofit().create(OrdersApi.class);
@@ -78,6 +79,13 @@ public class OrdersActivity extends AppCompatActivity implements IMenuAccess, IS
         ListView orders_listview = findViewById(R.id.orders_listview);
         OrdersAdapter ordersAdapter = new OrdersAdapter(this,body);
         orders_listview.setAdapter(ordersAdapter);
+
+        orders_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+            }
+        });
     }
 
     @Override

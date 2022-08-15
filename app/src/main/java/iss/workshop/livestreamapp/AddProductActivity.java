@@ -24,6 +24,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import iss.workshop.livestreamapp.helpers.ProductCategories;
 import iss.workshop.livestreamapp.interfaces.IMenuAccess;
 import iss.workshop.livestreamapp.interfaces.IStreamDetails;
 import iss.workshop.livestreamapp.models.ChannelStream;
@@ -45,8 +46,7 @@ public class AddProductActivity extends AppCompatActivity implements IMenuAccess
    private ImageView up, down;
 
    //drop down category
-    String [] items = {"CLOTHING", "FOOD", "APPLIANCES", "FURNITURE",
-            "technology", "BABY", "HEALTH", "OTHERS", "SPORT", "GROCERIES"};
+    String [] items = ProductCategories.names();
     AutoCompleteTextView autoCompleteTxt;
     TextInputLayout textInputLayout;
 
@@ -59,7 +59,7 @@ public class AddProductActivity extends AppCompatActivity implements IMenuAccess
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_product);
 
-        setupSidebarMenu();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //get user
         Intent intent = getIntent();
@@ -72,7 +72,6 @@ public class AddProductActivity extends AppCompatActivity implements IMenuAccess
         autoCompleteTxt = findViewById(R.id.auto_complete_txt);
         ArrayAdapter<String> itemAdapter = new ArrayAdapter<String>(this,R.layout.list_category, items);
         autoCompleteTxt.setAdapter(itemAdapter);
-
         autoCompleteTxt.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
@@ -81,37 +80,39 @@ public class AddProductActivity extends AppCompatActivity implements IMenuAccess
                 //Toast.makeText(getApplicationContext(), "Item"+ item, Toast.LENGTH_SHORT).show();
             }
         });
-        //in, de qty
-        qtyValue = findViewById(R.id.value);
-        up = findViewById(R.id.dropUp);
-        down = findViewById(R.id.dropDown);
 
-        up.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                count++;
-                qtyValue.setText(count);}
-        });
-        down.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //not to decrease if it zero
-                if(count < 0) { count =0;}
-                else count--;
-                qtyValue.setText(""+count);}
-        });
+        //in, de qty
+        qtyValue = findViewById(R.id.quantity);
+
         //Add Product
         productName = findViewById(R.id.pName);
         productPrice = findViewById(R.id.pPrice);
         productDescription = findViewById(R.id.pDesc);
         addProduct = findViewById(R.id.createProduct);
+
+        addProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent response = new Intent();
+                response.putExtra("product_name", productName.getText().toString());
+                response.putExtra("product_price", Double.parseDouble(productPrice.getText().toString()));
+                response.putExtra("product_desc", productDescription.getText().toString());
+                response.putExtra("category", fetchCategory(autoCompleteTxt.getText().toString()));
+                response.putExtra("quantity", Integer.parseInt(qtyValue.getText().toString()));
+                //response.putExtra(“computedSum", 100);
+                setResult(RESULT_OK, response);
+                finish();
+            }
+        });
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -119,23 +120,51 @@ public class AddProductActivity extends AppCompatActivity implements IMenuAccess
     //make nav clickable
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        plantOnClickItems(this, item, user, channel);
-        drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
     @Override
     public void setupSidebarMenu() {
-        drawerLayout = findViewById(R.id.my_drawer_layout);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close);
-
-        drawerLayout.addDrawerListener(actionBarDrawerToggle);
-        actionBarDrawerToggle.syncState();
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        return;
     }
 
+
+    public ProductCategories fetchCategory (String strCategory){
+        ProductCategories category = null;
+
+        switch(strCategory){
+            case("HEALTH"):
+                category = ProductCategories.HEALTH;
+                break;
+            case("FURNITURES"):
+                category = ProductCategories.FURNITURES;
+                break;
+            case("APPLIANCES"):
+                category = ProductCategories.APPLIANCES;
+                break;
+            case("BABY"):
+                category = ProductCategories.BABY;
+                break;
+            case("CLOTHING"):
+                category = ProductCategories.CLOTHING;
+                break;
+            case("FOOD"):
+                category = ProductCategories.FOOD;
+                break;
+            case("GROCERIES"):
+                category = ProductCategories.GROCERIES;
+                break;
+            case("SPORTS"):
+                category = ProductCategories.SPORTS;
+                break;
+            case("TECHNOLOGY"):
+                category = ProductCategories.TECHNOLOGY;
+                break;
+            default:
+                category = ProductCategories.OTHERS;
+                break;
+        }
+
+        return category;
+    }
 }
