@@ -15,4 +15,10 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+    <string name="appId">813f22ea50924b43ae8488edb975d02c</string>
+    <string name="appCert">980df78128884816b442609b829a7743</string>
+    <string name="token_for_jamesseah"></string>
+    <string name="token_for_jacklee"></string>
+    <string name="token_for_new_acct"></string>
+    <string name="stream_token">006813f22ea50924b43ae8488edb975d02cIABLVFgsK7yaydA1J9kw0UIjEkHAGF8aqH8HDHOq69YlaablnUYAAAAAEACLq5A0CX33YgEAAQAJffdi</string>
 </resources>

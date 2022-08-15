@@ -30,6 +30,10 @@ public interface IStreamDetails {
         channel.setToken("006813f22ea50924b43ae8488edb975d02cIABuOpRvb069KHmOzzmtCLAHV7RLGBtNNvZh8JBNchc6dqHYMoUAAAAAEABiLYCEkb/5YgEAAQCRv/li");
     };
 
+    default String fetchToken(){
+        return "006813f22ea50924b43ae8488edb975d02cIABLVFgsK7yaydA1J9kw0UIjEkHAGF8aqH8HDHOq69YlaablnUYAAAAAEACLq5A0CX33YgEAAQAJffdi";
+    }
+
     /*
     default List<Stream> generateStreams(ChannelStream channelStream){
         List<Stream> streams = new ArrayList<Stream>();
