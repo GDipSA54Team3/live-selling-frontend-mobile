@@ -28,6 +28,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -53,12 +54,16 @@ import io.agora.rtm.RtmMediaOperationProgress;
 import io.agora.rtm.RtmMessage;
 import iss.workshop.livestreamapp.adapters.ChStreamAdapter;
 import iss.workshop.livestreamapp.adapters.ProductsListAdapter;
+import iss.workshop.livestreamapp.adapters.ProductsStreamAdapter;
 import iss.workshop.livestreamapp.interfaces.IStreamDetails;
 import iss.workshop.livestreamapp.models.ChannelStream;
+import iss.workshop.livestreamapp.models.OrderProduct;
+import iss.workshop.livestreamapp.models.Orders;
 import iss.workshop.livestreamapp.models.Product;
 import iss.workshop.livestreamapp.models.Stream;
 import iss.workshop.livestreamapp.models.User;
 import iss.workshop.livestreamapp.services.FetchStreamLog;
+import iss.workshop.livestreamapp.services.OrdersApi;
 import iss.workshop.livestreamapp.services.ProductsApi;
 import iss.workshop.livestreamapp.services.RetroFitService;
 import retrofit2.Call;
@@ -89,6 +94,10 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
     private Dialog dialog;
     private ListView productsListing;
     private List<Product> channelProducts;
+    private Button sendOrder;
+
+    //for orders
+    private ProductsStreamAdapter prodStreamAdapter;
 
     //for real-time-chat
     // TextView to show message records in the UI
@@ -388,8 +397,60 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
     }
 
     private void populateListView() {
-            ProductsListAdapter prodAdapter = new ProductsListAdapter(this, channelProducts);
-            productsListing.setAdapter(prodAdapter);
+            prodStreamAdapter = new ProductsStreamAdapter(this, channelProducts);
+            productsListing.setAdapter(prodStreamAdapter);
+            sendOrder = dialog.findViewById(R.id.send_order);
+            sendOrder.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    createOrder();
+                }
+            });
+
+    }
+
+    //function to do the order
+    private void createOrder() {
+        List<Product> productsToOrder = prodStreamAdapter.getProducts();
+        List<Integer> amtToOrder = prodStreamAdapter.getProductQty();
+        Orders newOrder = new Orders(user, null);
+        newOrder.setChannel(sellerChannel);
+
+        for(int i = 0; i < productsToOrder.size(); i++){
+            if(amtToOrder.get(i) > 0){
+                OrderProduct orderProd = new OrderProduct();
+                //orderProd.setOrder(newOrder);
+                orderProd.setChannel(sellerChannel);
+                orderProd.setProduct(productsToOrder.get(i));
+                orderProd.setQuantity(amtToOrder.get(i));
+
+                newOrder.getOrderProduct().add(orderProd);
+            }
+        }
+
+        RetroFitService rfServ = new RetroFitService("new-orders");
+        OrdersApi orderAPI = rfServ.getRetrofit().create(OrdersApi.class);
+        orderAPI.addNewOrder(newOrder, user.getId(), sellerChannel.getId()).enqueue(new Callback<Orders>() {
+            @Override
+            public void onResponse(Call<Orders> call, Response<Orders> response) {
+                if (response.code() == 201){
+                    Toast.makeText(MainActivity.this, "Success! Your order has been sent.", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                    for(int i = 0; i < amtToOrder.size(); i++){
+                        amtToOrder.set(i, 0);
+                    }
+                } else {
+                    Toast.makeText(MainActivity.this, "Got the response, wrong body", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Orders> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Order failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
     }
 
     private boolean checkSelfPermission(String permission, int requestCode) {

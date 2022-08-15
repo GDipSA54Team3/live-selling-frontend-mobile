@@ -1,11 +1,10 @@
 package iss.workshop.livestreamapp.services;
 
 import java.util.List;
+import java.util.Map;
 
-import iss.workshop.livestreamapp.models.LoginBag;
 import iss.workshop.livestreamapp.models.Stream;
-import iss.workshop.livestreamapp.models.User;
-import okhttp3.ResponseBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -25,4 +24,13 @@ public interface DashboardApi {
 
     @GET("/api/orders/pendingorders/{userId}")
     Call<String> getPengingOrders(@Path("userId") String userId);
+
+    @GET("/api/user/upcomingstreams/{userId}")
+    Call<List<Stream>> getThreeUserStreamsPending(@Path("userId") String userId);
+
+    @GET("/api/user/upcomingstreamcount/{userId}")
+    Call<String> getAllPendingStreamCount(@Path("userId") String userId);
+
+    @POST("/result")
+    Call<List<Map<String, String>>> predictOrdersAndViewers(@Body RequestBody body);
 }

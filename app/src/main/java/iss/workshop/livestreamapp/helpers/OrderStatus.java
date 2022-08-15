@@ -2,5 +2,6 @@ package iss.workshop.livestreamapp.helpers;
 
 public enum OrderStatus {
     PENDING,
-    CONFIRMED
+    CONFIRMED,
+    CANCELLED
 }
