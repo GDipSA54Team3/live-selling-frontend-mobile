@@ -17,8 +17,8 @@
     <string name="menu_slideshow">Slideshow</string>
     <string name="appId">813f22ea50924b43ae8488edb975d02c</string>
     <string name="appCert">980df78128884816b442609b829a7743</string>
-    <string name="token_for_jamesseah">006813f22ea50924b43ae8488edb975d02cIACswbGX2Cj89/WutRMQNgTGGSvZxxNCj95Vs0xJHNCzHlcjNjcAAAAAEAD9yyE21Af7YgEA6APUB/ti</string>
-    <string name="token_for_amandachong">006813f22ea50924b43ae8488edb975d02cIAASghvsxJtNFlfle2Xf+6W0kEWMOK7wbD6j9Bmbov4DNA0Iz6cAAAAAEAD9yyE28Ab7YgEA6APwBvti</string>
+    <string name="token_for_jamesseah">006813f22ea50924b43ae8488edb975d02cIAAwyJU57vvdqWkIVywSXfCxDgSlMnoPlzNsKIWzE/5HHFcjNjcAAAAAEAD9yyE2HxL7YgEA6AMfEvti</string>
+    <string name="token_for_amandachong">006813f22ea50924b43ae8488edb975d02cIAAFj9M4VpIoDBPtuEJCwuaXLh4d6oFvxzhTvTiFhIlYWA0Iz6cAAAAAEAD9yyE2DxL7YgEA6AMPEvti</string>
     <string name="token_for_new_acct"></string>
     <string name="stream_token">006813f22ea50924b43ae8488edb975d02cIADqQ4xBAs5rJflEhbIXTpKMmBHQNmrJOeuZpOUJRrxR5ablnUYAAAAAEACLq5A0YAf7YgEAAQBeB/ti</string>
 </resources>

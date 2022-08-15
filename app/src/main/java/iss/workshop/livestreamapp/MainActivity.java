@@ -230,8 +230,8 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
 
                 @Override
                 public void onMessageReceived(RtmMessage rtmMessage, String s) {
-                    //String text =  user.getUsername() + ": " + rtmMessage.getText() + "\n";
-                    //writeToMessageHistory(text);
+                    String text =  user.getUsername() + ": " + rtmMessage.getText() + "\n";
+                    writeToMessageHistory(text);
                 }
 
                 @Override
@@ -307,8 +307,7 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
 
             @Override
             public void onMessageReceived(RtmMessage rtmMessage, RtmChannelMember rtmChannelMember) {
-
-                String message_text = "Message received from " + rtmChannelMember.getUserId() + " : " + rtmMessage + "\n";
+                String message_text = "Message received from " + rtmChannelMember.getUserId() + " : " + rtmMessage.getText() + "\n";
                 writeToMessageHistory(message_text);
             }
 
@@ -546,7 +545,7 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
                 mRtcEngine.stopPreview();
                 mRtcEngine.leaveChannel();
                 //stop chat
-                //mRtmClient.logout(null);
+                mRtmClient.logout(null);
                 mRtmChannel.leave(null);
 
                 this.finish();
