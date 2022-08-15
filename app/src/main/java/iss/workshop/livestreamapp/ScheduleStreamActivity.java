@@ -59,9 +59,9 @@ public class ScheduleStreamActivity extends AppCompatActivity implements IMenuAc
 
         setupSidebarMenu();
 
+        //Calendar
         dateTxt = findViewById(R.id.date);
         cal = findViewById(R.id.datePicker);
-
         cal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,7 +78,7 @@ public class ScheduleStreamActivity extends AppCompatActivity implements IMenuAc
                 datePickerDialog.show();
             }
         });
-
+        //chooseDate
         timeTxt = findViewById(R.id.time);
         clock = findViewById(R.id.timePicker);
         clock.setOnClickListener(new View.OnClickListener(){

@@ -50,7 +50,7 @@ public class PurchaseAdapter extends BaseAdapter {
 
         //getUser
         TextView userName = view.findViewById(R.id.profile_Image);
-        userName.setText(orders.getUser().getId());
+        userName.setText(orders.getUser().getUsername());
 
         TextView totalPurchase = view.findViewById(R.id.total_Purchase);
 

@@ -74,7 +74,15 @@
             android:alpha="1.0"
             android:padding="30dp"
             android:text="Hello World!"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"/>
+
+        <Button
+            android:id="@+id/follow_Channel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/blue"
+            android:text="Follow"
+            />
 
 
     </LinearLayout>
