@@ -194,11 +194,15 @@
 
                 <Button
                     android:id="@+id/createEventBtn"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:layout_gravity="center_horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginBottom="5dp"
+                    android:backgroundTint="@color/black"
                     android:text="Create Event"/>
             </LinearLayout>
 

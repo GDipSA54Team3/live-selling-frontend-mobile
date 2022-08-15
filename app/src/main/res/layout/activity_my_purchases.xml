@@ -5,25 +5,62 @@
     android:layout_height="match_parent"
     tools:context=".MyPurchasesActivity"
     tools:ignore="HardcodedText">
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Purchases:"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:textColor="@color/black"/>
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="110dp"
+                android:layout_height="30dp"
+                android:padding="3dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:text="Total Purchase:" />
+
+            <TextView
+                android:id="@+id/total_Purchase"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/white"
+                android:hint="0"
+                android:gravity="center"
+                android:inputType="text"
+                android:textColorHint="@color/grey"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ListView
+                android:id="@+id/purchaseList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@color/blue"
+                android:dividerHeight="1dp"
+                android:listSelector="@color/yellow">
+
+            </ListView>
+
+        </LinearLayout>
+
     </LinearLayout>
-    <ListView
-        android:id="@+id/purchaseList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:divider="@color/black"
-        android:dividerHeight="1dp"
-        android:listSelector="@color/pink">
-    </ListView>
+
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"

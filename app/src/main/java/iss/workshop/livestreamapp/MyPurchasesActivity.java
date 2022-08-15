@@ -51,8 +51,8 @@ public class MyPurchasesActivity extends AppCompatActivity implements IMenuAcces
         Intent intent = getIntent();
         user = (User) intent.getSerializableExtra("user");
         //get channel
-        channel = (ChannelStream) intent.getSerializableExtra("channel");
-        invokeToken(channel);
+//        channel = (ChannelStream) intent.getSerializableExtra("channel");
+//        invokeToken(channel);
         setupSidebarMenu();
 
         //fetch orders API
@@ -64,7 +64,8 @@ public class MyPurchasesActivity extends AppCompatActivity implements IMenuAcces
             public void onResponse(Call<List<Orders>> call, Response<List<Orders>> response) {
                 if(response.code() == 200){
                     populatePurchaseList(response.body());
-                    Toast.makeText(MyPurchasesActivity.this, response.body().size() + " orders found.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MyPurchasesActivity.this, response.body().size() +
+                            " Orders found.", Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
