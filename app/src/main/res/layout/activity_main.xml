@@ -38,6 +38,7 @@
         android:text="Products"
         app:cornerRadius="40dp"
         app:icon="@drawable/ic_baseline_send_24"
+        android:onClick="onClickSendChannelMsg"
         app:iconGravity="start"
         app:iconSize="35dp"
         app:iconTint="@color/white"
@@ -93,6 +94,8 @@
         android:elevation="10dp"
         android:padding="30dp"
         android:text="TextView"
+
+        android:gravity="bottom|right"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/local_video_view_container"

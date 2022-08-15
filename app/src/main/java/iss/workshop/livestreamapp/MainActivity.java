@@ -6,6 +6,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -21,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.os.Bundle;
@@ -95,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
     private ListView productsListing;
     private List<Product> channelProducts;
     private Button sendOrder;
+    private boolean entered = false;
 
     //for orders
     private ProductsStreamAdapter prodStreamAdapter;
@@ -215,14 +220,18 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
             mRtmClient = RtmClient.createInstance(getBaseContext(), appId, new RtmClientListener() {
                 @Override
                 public void onConnectionStateChanged(int state, int reason) {
-                    String text = "Connection state changed to " + state + "Reason: " + reason + "\n";
-                    writeToMessageHistory(text);
+                    if (!entered){
+                        String text = "Welcome to " + channelName + "! Please remember to be polite and patient with the seller and other participants in the chat." + "\n";
+                        writeToMessageHistory(text);
+                        entered = true;
+                    }
+
                 }
 
                 @Override
                 public void onMessageReceived(RtmMessage rtmMessage, String s) {
-                    String text = "Message received from " + s + " Message: " + rtmMessage.getText() + "\n";
-                    writeToMessageHistory(text);
+                    //String text =  user.getUsername() + ": " + rtmMessage.getText() + "\n";
+                    //writeToMessageHistory(text);
                 }
 
                 @Override
@@ -362,8 +371,8 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
         switch(user.getUsername()){
             case "jamesseah":
                 return getResources().getString(R.string.token_for_jamesseah);
-            case "jacklee":
-                return getResources().getString(R.string.token_for_jacklee);
+            case "amandachong":
+                return getResources().getString(R.string.token_for_amandachong);
             default:
                 return getResources().getString(R.string.token_for_new_acct);
         }
@@ -382,8 +391,9 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
         mRtmChannel.sendMessage(message, new ResultCallback<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                String text = "Message sent to channel " + mRtmChannel.getId() + " : " + message.getText() + "\n";
+                String text = user.getUsername() + ": " + message.getText() + "\n";
                 writeToMessageHistory(text);
+                messageBox.setText("");
             }
 
             @Override
@@ -392,8 +402,6 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
                 writeToMessageHistory(text);
             }
         });
-
-
     }
 
     private void populateListView() {
@@ -538,7 +546,7 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
                 mRtcEngine.stopPreview();
                 mRtcEngine.leaveChannel();
                 //stop chat
-                mRtmClient.logout(null);
+                //mRtmClient.logout(null);
                 mRtmChannel.leave(null);
 
                 this.finish();
@@ -546,4 +554,5 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }
