@@ -164,11 +164,8 @@ public class MyStreamsActivity extends AppCompatActivity implements IMenuAccess,
         intent.putExtra("channel", channel);
         intent.putExtra("seller-stream", channel);
         intent.putExtra("calling-activity", "entrance");
-        if (role.equals("seller")){
-            intent.putExtra("clientRole", Constants.CLIENT_ROLE_BROADCASTER);
-        } else {
-            intent.putExtra("clientRole", Constants.CLIENT_ROLE_AUDIENCE);
-        }
+        intent.putExtra("clientRole", Constants.CLIENT_ROLE_BROADCASTER);
+
         startActivity(intent);
     }
 

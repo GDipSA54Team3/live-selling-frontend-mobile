@@ -124,7 +124,7 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
 
                 currStream = (Stream) streamAdapter.getItem(i);
                 invokeToken(currStream.getChannelStream());
-                Toast.makeText(EntranceActivity.this, currStream.getTitle(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(EntranceActivity.this, currStream.getChannelStream().getName(), Toast.LENGTH_SHORT).show();
                 openStreamPage("buyer", currStream.getChannelStream(), currStream);
             }
 
@@ -137,18 +137,14 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
         Intent intent = new Intent(this, MainActivity.class);
         //check if sellerStream == channelStream?
 
-        intent.putExtra("channelName", sellerStream.getName());
+        intent.putExtra("channelName", currStream.getChannelStream().getName());
         intent.putExtra("appID", getAppID());
         intent.putExtra("streamObj", currStream);
         intent.putExtra("user", user);
         intent.putExtra("channel", channelStream);
         intent.putExtra("seller-stream", sellerStream);
         intent.putExtra("calling-activity", "entrance");
-        if (role.equals("seller")){
-            intent.putExtra("clientRole", Constants.CLIENT_ROLE_BROADCASTER);
-        } else {
-            intent.putExtra("clientRole", Constants.CLIENT_ROLE_AUDIENCE);
-        }
+        intent.putExtra("clientRole", Constants.CLIENT_ROLE_AUDIENCE);
         startActivity(intent);
     }
 

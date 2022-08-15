@@ -27,8 +27,12 @@ public interface IStreamDetails {
     };
 
     default void invokeToken(ChannelStream channel){
-        channel.setToken("006813f22ea50924b43ae8488edb975d02cIABuOpRvb069KHmOzzmtCLAHV7RLGBtNNvZh8JBNchc6dqHYMoUAAAAAEABiLYCEkb/5YgEAAQCRv/li");
+        channel.setToken("006813f22ea50924b43ae8488edb975d02cIADqQ4xBAs5rJflEhbIXTpKMmBHQNmrJOeuZpOUJRrxR5ablnUYAAAAAEACLq5A0YAf7YgEAAQBeB/ti");
     };
+
+    default String fetchToken(){
+        return "006813f22ea50924b43ae8488edb975d02cIADqQ4xBAs5rJflEhbIXTpKMmBHQNmrJOeuZpOUJRrxR5ablnUYAAAAAEACLq5A0YAf7YgEAAQBeB/ti";
+    }
 
     /*
     default List<Stream> generateStreams(ChannelStream channelStream){
