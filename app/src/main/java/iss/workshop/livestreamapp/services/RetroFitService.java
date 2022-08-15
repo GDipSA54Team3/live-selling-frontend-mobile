@@ -82,6 +82,7 @@ public class RetroFitService {
             case("save-logs"):
             case("save-product"):
             case("get-products"):
+            case("delete-product"):
             case("get-channel-from-id"):
             case("save-user"):
             case("save-channel"):

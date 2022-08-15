@@ -421,7 +421,7 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
         List<Product> productsToOrder = prodStreamAdapter.getProducts();
         List<Integer> amtToOrder = prodStreamAdapter.getProductQty();
         Orders newOrder = new Orders(user, null);
-        newOrder.setChannel(sellerChannel);
+        //newOrder.setChannel(sellerChannel);
 
         for(int i = 0; i < productsToOrder.size(); i++){
             if(amtToOrder.get(i) > 0){

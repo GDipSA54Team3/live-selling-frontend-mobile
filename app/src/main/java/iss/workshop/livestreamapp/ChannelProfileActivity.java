@@ -27,6 +27,11 @@ import iss.workshop.livestreamapp.models.ChannelStream;
 import iss.workshop.livestreamapp.models.Rating;
 import iss.workshop.livestreamapp.models.Stream;
 import iss.workshop.livestreamapp.models.User;
+import iss.workshop.livestreamapp.services.ChannelsApi;
+import iss.workshop.livestreamapp.services.RetroFitService;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ChannelProfileActivity extends AppCompatActivity implements IMenuAccess, IStreamDetails {
 
@@ -54,8 +59,25 @@ public class ChannelProfileActivity extends AppCompatActivity implements IMenuAc
         user = (User) intent.getSerializableExtra("user");
         //get channel
 
-        channel = (ChannelStream) intent.getSerializableExtra("channel");
-        invokeToken(channel);
+        if(intent.getSerializableExtra("channel") == null){
+            //find the channel here
+            RetroFitService rfServ = new RetroFitService("get-channel-from-id");
+            ChannelsApi channelAPI = rfServ.getRetrofit().create(ChannelsApi.class);
+
+            channelAPI.findChannelByUserId(user.getId()).enqueue(new Callback<ChannelStream>() {
+                @Override
+                public void onResponse(Call<ChannelStream> call, Response<ChannelStream> response) {
+                    channel = response.body();
+                }
+
+                @Override
+                public void onFailure(Call<ChannelStream> call, Throwable t) {
+                    Toast.makeText(ChannelProfileActivity.this, "Channel for user not found.", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            channel = (ChannelStream) intent.getSerializableExtra("channel");
+        }
 
         //rating bar
         rateCount = findViewById(R.id.rate_Count);

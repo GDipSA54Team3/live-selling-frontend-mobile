@@ -52,6 +52,7 @@ public class MyProductsActivity extends AppCompatActivity implements IMenuAccess
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private ListView productsListView;
     private ActivityResultLauncher<Intent> rlAddProduct;
+    private ActivityResultLauncher<Intent> rlUpdateProduct;
     private Button btnAdd_product;
 
     @Override
@@ -83,10 +84,41 @@ public class MyProductsActivity extends AppCompatActivity implements IMenuAccess
                 RetroFitService rfServ = new RetroFitService("save-product");
                 ProductsApi productAPI = rfServ.getRetrofit().create(ProductsApi.class);
 
-                productAPI.addToStore(product).enqueue(new Callback<Product>() {
+                productAPI.addToStore(user.getId(), product).enqueue(new Callback<Product>() {
                     @Override
                     public void onResponse(Call<Product> call, Response<Product> response) {
                         Toast.makeText(MyProductsActivity.this, response.body().getName() + " has been added to your store!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Product> call, Throwable t) {
+                        Toast.makeText(MyProductsActivity.this, "Your product was not added to the store. Please try again in a bit.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                //do the thing you want to happen, add to list
+            }
+        });
+
+        rlUpdateProduct = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == AppCompatActivity.RESULT_OK) {
+                Intent productToEditIntent = result.getData();
+                Product productToEdit = (Product) productToEditIntent.getSerializableExtra("product");
+                String product_name = productToEditIntent.getStringExtra("product_name");
+                Double product_price = productToEditIntent.getDoubleExtra("product_price",0);
+                String product_desc = productToEditIntent.getStringExtra("product_desc");
+                ProductCategories category = (ProductCategories) productToEditIntent.getSerializableExtra("category");
+                int quantity = productToEditIntent.getIntExtra("quantity", 1);
+
+                Product product = new Product(product_name, category, product_desc, product_price, quantity, channel);
+
+                RetroFitService rfServ = new RetroFitService("save-product");
+                ProductsApi productAPI = rfServ.getRetrofit().create(ProductsApi.class);
+
+                productAPI.editProduct(productToEdit.getId(), product).enqueue(new Callback<Product>() {
+                    @Override
+                    public void onResponse(Call<Product> call, Response<Product> response) {
+                        Toast.makeText(MyProductsActivity.this, response.code() + " has been edited!", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -118,6 +150,7 @@ public class MyProductsActivity extends AppCompatActivity implements IMenuAccess
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MyProductsActivity.this, AddProductActivity.class);
+                intent.setAction("add-product");
                 intent.putExtra("user", user);
                 intent.putExtra("channel", channel);
                 rlAddProduct.launch(intent);
@@ -128,7 +161,7 @@ public class MyProductsActivity extends AppCompatActivity implements IMenuAccess
 
     private void populateListView(List<Product> body) {
         TextView numOfProd = findViewById(R.id.num_of_products);
-        MyProductsAdapter prodAdapter = new MyProductsAdapter(this, body);
+        MyProductsAdapter prodAdapter = new MyProductsAdapter(this, body, rlUpdateProduct);
         productsListView.setAdapter(prodAdapter);
         int num = prodAdapter.getCount();
         numOfProd.setText(Integer.toString(num));
