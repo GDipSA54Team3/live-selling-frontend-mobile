@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
         channel = (ChannelStream) streamDetails.getSerializableExtra("channel");
         invokeToken(channel);
 
-
+        //setting dialog box
         dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.product_list_layout);
@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
                 }
             });
         }
-
+        //clicking the button opens the dialog
         showProducts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

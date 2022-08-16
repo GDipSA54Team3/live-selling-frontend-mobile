@@ -81,8 +81,6 @@ public class OrdersAdapter extends BaseAdapter {
                 //code to reject
             }
         });
-
-
         return view;
     }
 }

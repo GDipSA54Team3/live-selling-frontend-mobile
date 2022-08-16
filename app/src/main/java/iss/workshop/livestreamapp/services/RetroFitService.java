@@ -7,9 +7,11 @@ import java.lang.reflect.Type;
 
 import iss.workshop.livestreamapp.helpers.ChannelDeserializer;
 import iss.workshop.livestreamapp.helpers.OrderDeserializer;
+import iss.workshop.livestreamapp.helpers.OrderProductDeserializer;
 import iss.workshop.livestreamapp.helpers.StreamDeserializer;
 import iss.workshop.livestreamapp.helpers.UserDeserializer;
 import iss.workshop.livestreamapp.models.ChannelStream;
+import iss.workshop.livestreamapp.models.OrderProduct;
 import iss.workshop.livestreamapp.models.Orders;
 import iss.workshop.livestreamapp.models.Product;
 import iss.workshop.livestreamapp.models.Stream;
@@ -70,14 +72,24 @@ public class RetroFitService {
                         .addConverterFactory(createGsonConverter(Orders.class, new OrderDeserializer()))
                         .build();
                 break;
-
+            case("order-status"):
+                retrofit = new Retrofit.Builder()
+                        .baseUrl(API_URL)
+                        .addConverterFactory(createGsonConverter(Orders.class, new OrderDeserializer()))
+                        .build();
+                break;
+            case("order-product"):
+                retrofit = new Retrofit.Builder()
+                        .baseUrl(API_URL)
+                        .addConverterFactory(createGsonConverter(OrderProduct.class, new OrderProductDeserializer()))
+                        .build();
+                break;
             case("product"):
                 retrofit = new Retrofit.Builder()
                         .baseUrl(API_URL)
                         .addConverterFactory(createGsonConverter(Product.class, new OrderDeserializer()))
                         .build();
                 break;
-
             case("verify-user"):
             case("save-logs"):
             case("save-product"):

@@ -6,26 +6,34 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import iss.workshop.livestreamapp.adapters.PurchaseAdapter;
 import iss.workshop.livestreamapp.interfaces.IMenuAccess;
 import iss.workshop.livestreamapp.interfaces.IStreamDetails;
 import iss.workshop.livestreamapp.models.ChannelStream;
+import iss.workshop.livestreamapp.models.OrderProduct;
 import iss.workshop.livestreamapp.models.Orders;
 import iss.workshop.livestreamapp.models.Stream;
 import iss.workshop.livestreamapp.models.User;
 import iss.workshop.livestreamapp.services.OrdersApi;
+import iss.workshop.livestreamapp.services.ProductsApi;
 import iss.workshop.livestreamapp.services.RetroFitService;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,10 +43,14 @@ import retrofit2.Response;
 public class MyPurchasesActivity extends AppCompatActivity implements IMenuAccess, IStreamDetails {
 
     private User user;
+
     private ChannelStream channel;
     private Stream currStream;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
+    private Button mOrderDetails;
+    private Dialog dialog;
+    private ListView purchase_listview;
 
     public MyPurchasesActivity() {
     }
@@ -50,10 +62,16 @@ public class MyPurchasesActivity extends AppCompatActivity implements IMenuAcces
 
         Intent intent = getIntent();
         user = (User) intent.getSerializableExtra("user");
+
         //get channel
-//        channel = (ChannelStream) intent.getSerializableExtra("channel");
-//        invokeToken(channel);
+        channel = (ChannelStream) intent.getSerializableExtra("channel");
+        invokeToken(channel);
         setupSidebarMenu();
+
+        //setting up dialog
+        dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.orderproduct_details_listview);
 
         //fetch orders API
         RetroFitService rfServ = new RetroFitService("orders");
@@ -77,9 +95,17 @@ public class MyPurchasesActivity extends AppCompatActivity implements IMenuAcces
     }
 
     private void populatePurchaseList(List<Orders> body) {
-        ListView purchase_listview = findViewById(R.id.purchaseList);
-        PurchaseAdapter pAdapter = new PurchaseAdapter(this,  body);
+        purchase_listview = findViewById(R.id.purchaseList);
+        PurchaseAdapter pAdapter = new PurchaseAdapter(this,  body,dialog);
         purchase_listview.setAdapter(pAdapter);
+    }
+    private void openProductDialog(){
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                (int) (getResources().getDisplayMetrics().heightPixels*0.60));
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
     @Override

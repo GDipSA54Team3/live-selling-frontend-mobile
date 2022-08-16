@@ -62,9 +62,6 @@ public class ProductDeserializer implements JsonDeserializer<Product> {
                     product.setCategory(ProductCategories.OTHERS);
                     break;
         }
-
-
-
         return null;
     }
 }
