@@ -71,7 +71,6 @@ public interface IMenuAccess extends NavigationView.OnNavigationItemSelectedList
                 pageToOpen = LoginActivity.class;
                 break;
         }
-
         if (!context.getClass().getName().equals(pageToOpen.getName())){
             Intent intent = new Intent(context, pageToOpen);
             intent.putExtra("user", user);

@@ -1,13 +1,16 @@
 package iss.workshop.livestreamapp;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-
+import androidx.annotation.NonNull;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,6 +22,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.Picasso;
 
 import java.time.format.DateTimeFormatter;
@@ -27,6 +31,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import iss.workshop.livestreamapp.interfaces.IMenuAccess;
+import iss.workshop.livestreamapp.interfaces.IStreamDetails;
 import iss.workshop.livestreamapp.models.ChannelStream;
 import iss.workshop.livestreamapp.models.Stream;
 import iss.workshop.livestreamapp.models.User;
@@ -39,8 +45,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DashboardActivity extends AppCompatActivity {
+public class DashboardActivity extends AppCompatActivity implements IStreamDetails, IMenuAccess {
 
+    Context context;
+    ChannelStream channelStream;
     private Spinner spinnerCategory, spinnerDay, spinnerPeriod;
     private Button btnPredict;
     private User user;
@@ -61,6 +69,7 @@ public class DashboardActivity extends AppCompatActivity {
     List<String> timePeriodList = new ArrayList<>(Arrays.asList
             ("12am-6am", "6am-12pm", "12pm-6pm", "6pm-12am"));
 
+
     private ChannelStream channel;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
@@ -77,30 +86,30 @@ public class DashboardActivity extends AppCompatActivity {
         final Handler handler = new Handler();
         Intent intent = getIntent();
         user = (User) intent.getSerializableExtra("user");
-
-//        channel = (ChannelStream) intent.getSerializableExtra("channel");
-//        invokeToken(channel);
-//        setupSidebarMenu();
+        channel = (ChannelStream) intent.getSerializableExtra("channel");
+        invokeToken(channel);
+        setupSidebarMenu();
 
         addItemsOnSpinnerCategory();
         addItemsOnSpinnerDay();
         addItemsOnSpinnerPeriod();
         addListenerOnPredictionButton();
-//        addListenerOnSpinnerItemSelection();
 
-
+        //update features
         setUserRating();
         setPopularityView();
         setPengingOrders();
+        updatePrediction();
 
         //View All Streams
-        Button btnviewAllStream = findViewById(R.id.view_all_stream);
-        btnviewAllStream.setOnClickListener(view -> {
-            Intent intent2 = new Intent(DashboardActivity.this, MyStreamsActivity.class);
-            startActivity(intent2);
+        Button btnViewAllStream = findViewById(R.id.view_all_stream);
+        btnViewAllStream.setOnClickListener(view -> {
+            intent.putExtra("user", user);
+            intent.putExtra("channel", channelStream);
+            Intent intent2 = new Intent(context, MyStreamsActivity.class);
+            context.startActivity(intent2);
         });
-
-        // Getting all the charts
+        // update all the charts
         setPopularityChart();
         handler.postDelayed(new Runnable() {
             @Override
@@ -120,9 +129,7 @@ public class DashboardActivity extends AppCompatActivity {
                 getUpcomingStreams();
             }
         }, 3000);
-
     }
-
     public void addItemsOnSpinnerCategory() {
         spinnerCategory = (Spinner) findViewById(R.id.spinner_category);
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
@@ -145,51 +152,42 @@ public class DashboardActivity extends AppCompatActivity {
         spinnerPeriod.setAdapter(dataAdapter);
     }
     public void addListenerOnPredictionButton() {
-        spinnerCategory = (Spinner) findViewById(R.id.spinner_category);
-        spinnerDay = (Spinner) findViewById(R.id.spinner_day);
-        spinnerPeriod = (Spinner) findViewById(R.id.spinner_period);
-        btnPredict = (Button) findViewById(R.id.btn_predict);
+        btnPredict = findViewById(R.id.btn_predict);
+        btnPredict.setOnClickListener(v -> updatePrediction());
+    }
+    public void updatePrediction(){
+        spinnerCategory = findViewById(R.id.spinner_category);
+        spinnerDay = findViewById(R.id.spinner_day);
+        spinnerPeriod = findViewById(R.id.spinner_period);
+        btnPredict = findViewById(R.id.btn_predict);
         String[] categoryMapping = {"CLOTHING", "FOOD", "APPLIANCES", "FURNITURES",
                 "TECHNOLOGY", "BABY", "HEALTH", "SPORTS", "GROCERIES", "OTHERS"};
         String[] dayMapping =
                 {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"};
-        btnPredict.setOnClickListener(new View.OnClickListener() {
+        TextView expectedOrders = findViewById(R.id.expected_orders);
+        TextView expectedViewers = findViewById(R.id.expected_viewers);
+        String selectedCategory = String.valueOf(spinnerCategory.getSelectedItem());
+        String selectedDay = String.valueOf(spinnerDay.getSelectedItem());
+        String mappedCategory = categoryMapping[categoryList.indexOf(selectedCategory)];
+        String mappedDay = dayMapping[dayList.indexOf(selectedDay)];
+        String selectedPeriod = String.valueOf(spinnerPeriod.getSelectedItem());
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("product_category", mappedCategory)
+                .addFormDataPart("day", mappedDay)
+                .addFormDataPart("time_period", selectedPeriod)
+                .build();
+        dashboardPredictionApi.predictOrdersAndViewers(requestBody).enqueue(new Callback<List<Map<String, String>>>() {
             @Override
-            public void onClick(View v) {
+            public void onResponse(Call<List<Map<String, String>>> call, Response<List<Map<String, String>>> response) {
+                List<Map<String, String>> predictionResult  = response.body();
+                expectedOrders.setText(predictionResult.get(0).get("order"));
+                expectedViewers.setText(predictionResult.get(1).get("viewer"));
 
-                TextView expectedOrders = findViewById(R.id.expected_orders);
-                TextView expectedViewers = findViewById(R.id.expected_viewers);
-                String selectedCategory = String.valueOf(spinnerCategory.getSelectedItem());
-                String selectedDay = String.valueOf(spinnerDay.getSelectedItem());
-                String mappedCategory = categoryMapping[categoryList.indexOf(selectedCategory)];
-                String mappedDay = dayMapping[dayList.indexOf(selectedDay)];
-                String selectedPeriod = String.valueOf(spinnerPeriod.getSelectedItem());
-//                Toast.makeText(DashboardActivity.this,
-//                        "OnClickListener : " +
-//                                "\nSpinner 1 : " + mappedCategory +
-//                                "\nSpinner 2 : " + mappedDay +
-//                                "\nSpinner 3 : " + String.valueOf(spinnerPeriod.getSelectedItem()),
-//                        Toast.LENGTH_SHORT).show();
-                RequestBody requestBody = new MultipartBody.Builder()
-                        .setType(MultipartBody.FORM)
-                        .addFormDataPart("product_category", mappedCategory)
-                        .addFormDataPart("day", mappedDay)
-                        .addFormDataPart("time_period", selectedPeriod)
-                        .build();
-
-                dashboardPredictionApi.predictOrdersAndViewers(requestBody).enqueue(new Callback<List<Map<String, String>>>() {
-                    @Override
-                    public void onResponse(Call<List<Map<String, String>>> call, Response<List<Map<String, String>>> response) {
-                        List<Map<String, String>> predictionResult  = response.body();
-                        expectedOrders.setText(predictionResult.get(0).get("order"));
-                        expectedViewers.setText(predictionResult.get(1).get("viewer"));
-
-                    }
-                    @Override
-                    public void onFailure(Call<List<Map<String, String>>> call, Throwable t) {
-                        Toast.makeText(DashboardActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+            }
+            @Override
+            public void onFailure(Call<List<Map<String, String>>> call, Throwable t) {
+                Toast.makeText(DashboardActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -264,7 +262,6 @@ public class DashboardActivity extends AppCompatActivity {
                     "Good job!. Check if you can improve even further");
         }
     }
-
     public void setTimeSeriesChart(){
         String userId = user.getId();
         String imageUri = "http://10.0.2.2:5000/charts?name=movavg";
@@ -399,31 +396,31 @@ public class DashboardActivity extends AppCompatActivity {
                 }
             });
         }
-//    @Override
-//    public void setupSidebarMenu() {
-//        drawerLayout = findViewById(R.id.my_drawer_layout);
-//        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close);
-//        drawerLayout.addDrawerListener(actionBarDrawerToggle);
-//        actionBarDrawerToggle.syncState();
-//
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//
-//        NavigationView navigationView = findViewById(R.id.nav_view);
-//        navigationView.setNavigationItemSelectedListener(this);
-//    }
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//
-//        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
-//            return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
-//    //make nav clickable
-//    @Override
-//    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//        plantOnClickItems(this, item, user, channel);
-//        drawerLayout.closeDrawer(GravityCompat.START);
-//        return true;
-//    }
+    @Override
+    public void setupSidebarMenu() {
+        drawerLayout = findViewById(R.id.my_drawer_layout);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close);
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    //make nav clickable
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        plantOnClickItems(this, item, user, channel);
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
 }

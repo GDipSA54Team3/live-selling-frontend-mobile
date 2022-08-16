@@ -33,7 +33,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class OrdersActivity extends AppCompatActivity implements IMenuAccess, IStreamDetails{
+public class OrdersActivity extends AppCompatActivity implements IMenuAccess, IStreamDetails {
 
     private User user;
     private ChannelStream channel;
