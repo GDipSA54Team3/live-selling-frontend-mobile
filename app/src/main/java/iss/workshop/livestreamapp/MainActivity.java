@@ -508,7 +508,7 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
             intent.putExtra("seller", user);
             intent.putExtra("stream", currStream);
             intent.putExtra("duration", 5);
-            startService(intent);
+            //startService(intent);
         }
         // Pass the SurfaceView object to Agora so that it renders the local video.
 

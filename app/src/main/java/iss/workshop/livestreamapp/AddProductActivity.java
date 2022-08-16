@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputLayout;
@@ -28,8 +29,14 @@ import iss.workshop.livestreamapp.helpers.ProductCategories;
 import iss.workshop.livestreamapp.interfaces.IMenuAccess;
 import iss.workshop.livestreamapp.interfaces.IStreamDetails;
 import iss.workshop.livestreamapp.models.ChannelStream;
+import iss.workshop.livestreamapp.models.Product;
 import iss.workshop.livestreamapp.models.Stream;
 import iss.workshop.livestreamapp.models.User;
+import iss.workshop.livestreamapp.services.ProductsApi;
+import iss.workshop.livestreamapp.services.RetroFitService;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AddProductActivity extends AppCompatActivity implements IMenuAccess, IStreamDetails {
 
@@ -38,21 +45,22 @@ public class AddProductActivity extends AppCompatActivity implements IMenuAccess
     private Stream currStream;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
+    private Product product;
 
 
     //in, de qty
-   private TextView qtyValue;
-   int count = 0;
-   private ImageView up, down;
+    private TextView qtyValue;
+    int count = 0;
+    private ImageView up, down;
 
-   //drop down category
+    //drop down category
     String [] items = ProductCategories.names();
     AutoCompleteTextView autoCompleteTxt;
     TextInputLayout textInputLayout;
 
     //Add Product
     EditText productName, productPrice, productDescription;
-    Button addProduct;
+    Button addProduct, deleteProduct;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +97,42 @@ public class AddProductActivity extends AppCompatActivity implements IMenuAccess
         productPrice = findViewById(R.id.pPrice);
         productDescription = findViewById(R.id.pDesc);
         addProduct = findViewById(R.id.createProduct);
+        deleteProduct = findViewById(R.id.deleteProduct);
+
+        if(intent.getAction().equals("add-product")){
+            addProduct.setText("ADD PRODUCT");
+            deleteProduct.setVisibility(View.GONE);
+        } else {
+            product = (Product) intent.getSerializableExtra("product");
+            addProduct.setText("UPDATE PRODUCT");
+            productName.setText(product.getName());
+            productPrice.setText(Double.toString(product.getPrice()));
+            productDescription.setText(product.getDescription());
+            autoCompleteTxt.setText(product.getCategory().toString());
+            qtyValue.setText(Integer.toString(product.getQuantity()));
+
+            deleteProduct.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    RetroFitService rfServ = new RetroFitService("delete-product");
+                    ProductsApi productAPI = rfServ.getRetrofit().create(ProductsApi.class);
+                    productAPI.deleteProduct(product.getId()).enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
+                            if(response.code() == 200){
+                                Toast.makeText(AddProductActivity.this, "Item has been deleted!", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+
+                        }
+                    });
+                }
+            });
+        }
 
         addProduct.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,6 +144,9 @@ public class AddProductActivity extends AppCompatActivity implements IMenuAccess
                 response.putExtra("category", fetchCategory(autoCompleteTxt.getText().toString()));
                 response.putExtra("quantity", Integer.parseInt(qtyValue.getText().toString()));
                 //response.putExtra(“computedSum", 100);
+                if(intent.getAction().equals("edit-product")) {
+                    response.putExtra("product", product);
+                }
                 setResult(RESULT_OK, response);
                 finish();
             }

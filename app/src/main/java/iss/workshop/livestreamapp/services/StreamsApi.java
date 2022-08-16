@@ -28,5 +28,6 @@ public interface StreamsApi {
     @POST("/api/user/addstream/{userId}")
     Call<Stream> addNewStream(@Body Stream newStream, @Path("userId") String userId);
 
-
+    @GET("/api/user/searchstreams/{searchterm}")
+    Call<List<Stream>> getStreamsBySearchTerm(@Path("searchterm") String searchTerm);
 }

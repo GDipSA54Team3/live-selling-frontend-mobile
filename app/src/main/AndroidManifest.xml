@@ -23,6 +23,10 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31" >
         <activity
+            android:name=".SearchResultsActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
             android:name=".DashboardActivity"
             android:exported="false" />
         <activity
@@ -36,7 +40,8 @@
             android:exported="false" />
         <activity
             android:name=".AddProductActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ChannelProfileActivity"
             android:exported="false" />
@@ -73,10 +78,12 @@
         </activity>
         <activity
             android:name=".ScheduleStreamActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".EntranceActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".MainActivity"
             android:exported="false" />
