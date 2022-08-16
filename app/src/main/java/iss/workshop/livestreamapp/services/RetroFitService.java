@@ -7,9 +7,11 @@ import java.lang.reflect.Type;
 
 import iss.workshop.livestreamapp.helpers.ChannelDeserializer;
 import iss.workshop.livestreamapp.helpers.OrderDeserializer;
+import iss.workshop.livestreamapp.helpers.OrderProductDeserializer;
 import iss.workshop.livestreamapp.helpers.StreamDeserializer;
 import iss.workshop.livestreamapp.helpers.UserDeserializer;
 import iss.workshop.livestreamapp.models.ChannelStream;
+import iss.workshop.livestreamapp.models.OrderProduct;
 import iss.workshop.livestreamapp.models.Orders;
 import iss.workshop.livestreamapp.models.Product;
 import iss.workshop.livestreamapp.models.Stream;
@@ -22,7 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Data
 public class RetroFitService {
 
-    private final String API_URL = "http://10.50.4.140:8080";
+    private final String API_URL = "http://10.249.174.3:8080"; //"https://live-stream-team3.azurewebsites.net";
 
     private final String PREDICTION_API_URL = "http://10.0.2.2:5000";
 
@@ -70,18 +72,31 @@ public class RetroFitService {
                         .addConverterFactory(createGsonConverter(Orders.class, new OrderDeserializer()))
                         .build();
                 break;
-
+            case("order-status"):
+                retrofit = new Retrofit.Builder()
+                        .baseUrl(API_URL)
+                        .addConverterFactory(createGsonConverter(Orders.class, new OrderProductDeserializer()))
+                        .build();
+                break;
+            case("order-product"):
+                retrofit = new Retrofit.Builder()
+                        .baseUrl(API_URL)
+                        .addConverterFactory(createGsonConverter(OrderProduct.class, new OrderProductDeserializer()))
+                        .build();
+                break;
             case("product"):
                 retrofit = new Retrofit.Builder()
                         .baseUrl(API_URL)
                         .addConverterFactory(createGsonConverter(Product.class, new OrderDeserializer()))
                         .build();
                 break;
-
-
+            case("verify-user"):
+            case("get-rating"):
+            case("rating"):
             case("save-logs"):
             case("save-product"):
             case("get-products"):
+            case("delete-product"):
             case("get-channel-from-id"):
             case("save-user"):
             case("save-channel"):

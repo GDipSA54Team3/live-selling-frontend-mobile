@@ -17,9 +17,9 @@
             android:title="My Profile" />
 
         <item
-            android:id="@+id/nav_favorites"
+            android:id="@+id/nav_channels"
             android:icon="@drawable/favorite"
-            android:title="Favorites" />
+            android:title="Channels" />
     </group>
 
     <group android:checkableBehavior="single">

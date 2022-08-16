@@ -6,47 +6,48 @@
     android:id="@+id/my_drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyProductsActivity"
+    tools:context=".ViewChannelsActivity"
     tools:ignore="HardcodedText">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <Button
-            android:id="@+id/add_product"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ADD NEW PRODUCT"
-            android:layout_marginLeft="15dp"
-            android:backgroundTint="@color/black"/>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Channels:"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:layout_weight="3"
+                android:textColor="@color/black"/>
 
             <TextView
-                android:layout_width="0dp"
+                android:id="@+id/channels_count"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="5"
-                android:text="Products in your channel:"/>
-
-            <TextView
-                android:id="@+id/num_of_products"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:text="number"
                 android:layout_weight="2"
-                android:text="0"/>
-
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
         </LinearLayout>
-
         <ListView
-            android:id="@+id/list_products"
+            android:id="@+id/channelsList"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:divider="@color/black"
+            android:dividerHeight="1dp"
+            android:listSelector="@color/pink">
+        </ListView>
 
     </LinearLayout>
+
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"

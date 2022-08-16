@@ -19,19 +19,11 @@ public class ChannelStream implements Serializable {
     private String id;
     private String name;
     private User user;
-
-
-    //private List<Rating> ratings;
-
-    //private List<OrderProduct> orders;
-
     private List<Stream> streams;
 
     public ChannelStream(String name, User user) {
         this.name = name;
         this.products = new ArrayList<>();
-        //this.ratings = new ArrayList<>();
-        //this.orders = new ArrayList<>();
         this.streams = new ArrayList<>();
         this.user = user;
     }

@@ -9,42 +9,39 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-import iss.workshop.livestreamapp.adapters.OrdersAdapter;
+import iss.workshop.livestreamapp.adapters.ChannelsAdapter;
 import iss.workshop.livestreamapp.interfaces.IMenuAccess;
 import iss.workshop.livestreamapp.interfaces.IStreamDetails;
 import iss.workshop.livestreamapp.models.ChannelStream;
-import iss.workshop.livestreamapp.models.Orders;
 import iss.workshop.livestreamapp.models.Stream;
 import iss.workshop.livestreamapp.models.User;
-import iss.workshop.livestreamapp.services.OrdersApi;
+import iss.workshop.livestreamapp.services.ChannelsApi;
 import iss.workshop.livestreamapp.services.RetroFitService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class OrdersActivity extends AppCompatActivity implements IMenuAccess, IStreamDetails {
+public class ViewChannelsActivity extends AppCompatActivity implements IMenuAccess, IStreamDetails {
 
     private User user;
     private ChannelStream channel;
     private Stream currStream;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
+    private ListView channelList;
+    private TextView listSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_orders);
+        setContentView(R.layout.activity_view_channels);
 
         Intent intent = getIntent();
         user = (User) intent.getSerializableExtra("user");
@@ -53,45 +50,36 @@ public class OrdersActivity extends AppCompatActivity implements IMenuAccess, IS
         invokeToken(channel);
         setupSidebarMenu();
 
-        //fetch order API
-        RetroFitService rfServ = new RetroFitService("orders");
-        OrdersApi ordersAPI = rfServ.getRetrofit().create(OrdersApi.class);
+        channelList = findViewById(R.id.channelsList);
+        listSize = findViewById(R.id.channels_count);
 
-        ordersAPI.getChannelOrders(channel.getId()).enqueue(new Callback<List<Orders>>() {
+        RetroFitService rfServ = new RetroFitService("channel");
+        ChannelsApi channelAPI = rfServ.getRetrofit().create(ChannelsApi.class);
+        channelAPI.getAllVerifiedChannels().enqueue(new Callback<List<ChannelStream>>() {
             @Override
-            public void onResponse(Call<List<Orders>> call, Response<List<Orders>> response) {
-                if(response.code() == 200) {
-                    populateOrdersList(response.body());
-                    Toast.makeText(OrdersActivity.this, response.body().size() + " orders found.", Toast.LENGTH_SHORT).show();
-                }
+            public void onResponse(Call<List<ChannelStream>> call, Response<List<ChannelStream>> response) {
+                populateListView(response.body());
             }
 
             @Override
-            public void onFailure(Call<List<Orders>> call, Throwable t) {
-                Toast.makeText(OrdersActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<List<ChannelStream>> call, Throwable t) {
 
             }
         });
 
     }
 
-    private void populateOrdersList(List<Orders> body) {
-        ListView orders_listview = findViewById(R.id.orders_listview);
-        OrdersAdapter ordersAdapter = new OrdersAdapter(this,body);
-        orders_listview.setAdapter(ordersAdapter);
-
-        orders_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-            }
-        });
+    private void populateListView(List<ChannelStream> body) {
+        ChannelsAdapter channelsAdapter = new ChannelsAdapter(this, body, user, channel);
+        channelList.setAdapter(channelsAdapter);
+        listSize.setText(Integer.toString(channelsAdapter.getCount()));
     }
 
     @Override
     public void setupSidebarMenu() {
         drawerLayout = findViewById(R.id.my_drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close);
+
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 

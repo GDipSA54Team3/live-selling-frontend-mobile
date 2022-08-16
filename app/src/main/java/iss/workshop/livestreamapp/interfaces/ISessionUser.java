@@ -6,9 +6,16 @@ import android.content.SharedPreferences;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import iss.workshop.livestreamapp.EntranceActivity;
 import iss.workshop.livestreamapp.LoginActivity;
 import iss.workshop.livestreamapp.R;
+import iss.workshop.livestreamapp.models.ChannelStream;
 import iss.workshop.livestreamapp.models.User;
+import iss.workshop.livestreamapp.services.ChannelsApi;
+import iss.workshop.livestreamapp.services.RetroFitService;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public interface ISessionUser {
 
@@ -31,5 +38,7 @@ public interface ISessionUser {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         context.startActivity(intent);
     }
+
+
 
 }

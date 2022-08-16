@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -29,6 +30,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText txtFirstName;
     private EditText txtLastName;
     private EditText txtAddress;
+    private CheckBox ckbxVerify;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +42,11 @@ public class RegisterActivity extends AppCompatActivity {
         txtUsername = findViewById(R.id.username);
         txtPassword = findViewById(R.id.password);
         txtConfirmPassword = findViewById(R.id.confirm_password);
-        txtChannelName = findViewById(R.id.channel_name);
+        //txtChannelName = findViewById(R.id.channel_name);
         txtAddress = findViewById(R.id.address);
         txtFirstName = findViewById(R.id.first_name);
         txtLastName = findViewById(R.id.last_name);
+        ckbxVerify = findViewById(R.id.checkbox_verify);
 
 
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +68,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String address = txtAddress.getText().toString();
                 String firstName = txtFirstName.getText().toString();
                 String lastName = txtLastName.getText().toString();
+                boolean isVerified = ckbxVerify.isChecked();
 
                 if(!password.equals(confirm)){
                     //not confirmed
@@ -78,11 +82,11 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this, "Submit complete form, and try again", Toast.LENGTH_SHORT).show();
                 } else {
                     //confirmed
-                    User user = new User(firstName, lastName, address, username, password, true);
+                    User user = new User(firstName, lastName, address, username, password, isVerified);
                     System.out.println(user.getUsername() + " " + user.getPassword());
                     RetroFitService rfServ = new RetroFitService("save-user");
                     UserApi userAPI = rfServ.getRetrofit().create(UserApi.class);
-                    userAPI.addNewUser(user, username, password, address, channelName).enqueue(new Callback<User>() {
+                    userAPI.addNewUser(user, username, password, address, firstName + "'s Channel").enqueue(new Callback<User>() {
                         @Override
                         public void onResponse(Call<User> call, Response<User> response) {
                             if(response.code() == 409){
