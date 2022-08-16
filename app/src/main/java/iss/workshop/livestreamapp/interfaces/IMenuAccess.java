@@ -24,6 +24,7 @@ import iss.workshop.livestreamapp.LoginActivity;
 import iss.workshop.livestreamapp.MyStreamsActivity;
 import iss.workshop.livestreamapp.R;
 import iss.workshop.livestreamapp.TestActivity;
+import iss.workshop.livestreamapp.ViewChannelsActivity;
 import iss.workshop.livestreamapp.models.ChannelStream;
 import iss.workshop.livestreamapp.models.User;
 
@@ -38,9 +39,9 @@ public interface IMenuAccess extends NavigationView.OnNavigationItemSelectedList
             case R.id.nav_home:
                 pageToOpen = EntranceActivity.class;
                 break;
-            case R.id.nav_favorites:
-                Toast.makeText(context, "Favorites", Toast.LENGTH_SHORT).show();
-                pageToOpen = EntranceActivity.class;
+            case R.id.nav_channels:
+                Toast.makeText(context, "Channels", Toast.LENGTH_SHORT).show();
+                pageToOpen = ViewChannelsActivity.class;
                 break;
             case R.id.nav_purchases:
                 Toast.makeText(context, "Purchases", Toast.LENGTH_SHORT).show();
@@ -77,6 +78,9 @@ public interface IMenuAccess extends NavigationView.OnNavigationItemSelectedList
             intent.putExtra("channel", channelStream);
             if (pageToOpen == LoginActivity.class){
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            } else if (pageToOpen == ChannelProfileActivity.class){
+                intent.setAction("view-as-own");
+                intent.putExtra("channel-to-view", channelStream);
             }
             context.startActivity(intent);
         }

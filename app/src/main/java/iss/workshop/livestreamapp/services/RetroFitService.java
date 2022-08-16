@@ -75,7 +75,7 @@ public class RetroFitService {
             case("order-status"):
                 retrofit = new Retrofit.Builder()
                         .baseUrl(API_URL)
-                        .addConverterFactory(createGsonConverter(Orders.class, new OrderDeserializer()))
+                        .addConverterFactory(createGsonConverter(Orders.class, new OrderProductDeserializer()))
                         .build();
                 break;
             case("order-product"):
@@ -91,6 +91,8 @@ public class RetroFitService {
                         .build();
                 break;
             case("verify-user"):
+            case("get-rating"):
+            case("rating"):
             case("save-logs"):
             case("save-product"):
             case("get-products"):

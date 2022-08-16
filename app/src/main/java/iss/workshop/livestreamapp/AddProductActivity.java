@@ -121,7 +121,7 @@ public class AddProductActivity extends AppCompatActivity implements IMenuAccess
                         public void onResponse(Call<String> call, Response<String> response) {
                             if(response.code() == 200){
                                 Toast.makeText(AddProductActivity.this, "Item has been deleted!", Toast.LENGTH_SHORT).show();
-                                finish();
+
                             }
                         }
 
@@ -130,6 +130,8 @@ public class AddProductActivity extends AppCompatActivity implements IMenuAccess
 
                         }
                     });
+
+                    goBack();
                 }
             });
         }
@@ -162,6 +164,12 @@ public class AddProductActivity extends AppCompatActivity implements IMenuAccess
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    void goBack() {
+        Intent intent = new Intent();
+        setResult(RESULT_CANCELED, intent);
+        this.finish();
     }
 
     //make nav clickable

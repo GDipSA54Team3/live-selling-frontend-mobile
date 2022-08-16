@@ -118,7 +118,7 @@ public class MyProductsActivity extends AppCompatActivity implements IMenuAccess
                 productAPI.editProduct(productToEdit.getId(), product).enqueue(new Callback<Product>() {
                     @Override
                     public void onResponse(Call<Product> call, Response<Product> response) {
-                        Toast.makeText(MyProductsActivity.this, response.code() + " has been edited!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MyProductsActivity.this, response.body().getName() + " has been edited!", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -128,6 +128,10 @@ public class MyProductsActivity extends AppCompatActivity implements IMenuAccess
                 });
 
                 //do the thing you want to happen, add to list
+            } else {
+                startActivity(getIntent());
+                finish();
+                overridePendingTransition(0, 0);
             }
         });
 
