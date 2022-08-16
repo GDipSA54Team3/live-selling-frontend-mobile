@@ -82,4 +82,7 @@ public class OrderDeserializer implements JsonDeserializer<Orders> {
 
         return order;
     }
+    private void setStatus(){
+
+    }
 }

@@ -2,25 +2,38 @@ package iss.workshop.livestreamapp.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.chip.Chip;
 
 import java.util.List;
+import java.util.Objects;
 
+import iss.workshop.livestreamapp.MyPurchasesActivity;
+import iss.workshop.livestreamapp.OrdersActivity;
 import iss.workshop.livestreamapp.R;
 import iss.workshop.livestreamapp.models.Orders;
 import iss.workshop.livestreamapp.models.Product;
+import iss.workshop.livestreamapp.models.Stream;
+import iss.workshop.livestreamapp.services.OrdersApi;
+import iss.workshop.livestreamapp.services.RetroFitService;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class OrdersAdapter extends BaseAdapter {
 
     private Context context;
     private List<Orders> orders;
+    private Orders orderStatus;
 
     public OrdersAdapter(Context context, List<Orders> orders){
         this.context = context;
@@ -63,22 +76,58 @@ public class OrdersAdapter extends BaseAdapter {
 
         Chip orderStatus = view.findViewById(R.id.btn_order_status);
         orderStatus.setText(orders.get(i).getOrderStatus().toString());
+        //RetroFitService rfServ = new RetroFitService("order-status");
+        //                OrdersApi ordersApi = rfServ.getRetrofit().create(OrdersApi.class);
 
         Button btnConfirm = view.findViewById(R.id.btn_order_confirm);
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Orders orderToConfirm = orders.get(i);
-                //code to confirm
+            public void onClick(View v) {
+                RetroFitService rfServ = new RetroFitService("order-status");
+                OrdersApi ordersApi = rfServ.getRetrofit().create(OrdersApi.class);
+                ordersApi.updateOrderStatus(currOrder.getId(), currOrder.getOrderStatus().toString()).enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if(response.code() == 200){
+                            Toast.makeText(context, "Order Confirmed", Toast.LENGTH_SHORT).show();
+
+                            //startActivity(getIntent());
+                            //finish();
+                            //overridePendingTransition(0,0);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        t.printStackTrace();
+                        Toast.makeText(context,t.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
-
         Button btnReject = view.findViewById(R.id.btn_order_reject);
         btnReject.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Orders orderToReject = orders.get(i);
-                //code to reject
+            public void onClick(View v) {
+                RetroFitService rfServ = new RetroFitService("order-status");
+                OrdersApi ordersApi = rfServ.getRetrofit().create(OrdersApi.class);
+                ordersApi.updateOrderStatus(currOrder.getId(), currOrder.getOrderStatus().toString()).enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if(response.code() == 200){
+                            Toast.makeText(context, "Order Rejected", Toast.LENGTH_SHORT).show();
+
+                            //startActivity(getIntent());
+                            //finish();
+                            //overridePendingTransition(0,0);
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        t.printStackTrace();
+                        Toast.makeText(context,t.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
         return view;
