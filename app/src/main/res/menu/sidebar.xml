@@ -19,7 +19,7 @@
         <item
             android:id="@+id/nav_favorites"
             android:icon="@drawable/favorite"
-            android:title="Favorites" />
+            android:title="Channels" />
     </group>
 
     <group android:checkableBehavior="single">

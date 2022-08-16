@@ -53,17 +53,7 @@
                         android:textColor="@color/black"
                         android:layout_weight="1"
                         android:padding="3dp"
-                        android:text="Channel Name" />
-
-                    <TextView
-                        android:id="@+id/num_streams"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:textColor="@color/black"
-                        android:padding="3dp"
-                        android:text="157 Followers"
-                        android:textStyle="bold" />
+                        android:text="ADD NEW STREAM" />
 
                     <TextView
                         android:id="@+id/stream_desc"
@@ -72,7 +62,7 @@
                         android:textColor="@color/black"
                         android:layout_weight="2"
                         android:padding="3dp"
-                        android:text="Next schedule Stream at:2pm" />
+                        android:text="Fill in the details of your coming stream." />
                 </LinearLayout>
 
             </LinearLayout>

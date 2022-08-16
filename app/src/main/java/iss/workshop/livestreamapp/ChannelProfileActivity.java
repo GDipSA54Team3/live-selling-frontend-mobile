@@ -27,6 +27,12 @@ import iss.workshop.livestreamapp.models.ChannelStream;
 import iss.workshop.livestreamapp.models.Rating;
 import iss.workshop.livestreamapp.models.Stream;
 import iss.workshop.livestreamapp.models.User;
+import iss.workshop.livestreamapp.services.ChannelsApi;
+import iss.workshop.livestreamapp.services.RetroFitService;
+import iss.workshop.livestreamapp.services.UserApi;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ChannelProfileActivity extends AppCompatActivity implements IMenuAccess, IStreamDetails {
 
@@ -38,6 +44,7 @@ public class ChannelProfileActivity extends AppCompatActivity implements IMenuAc
 
     private RatingBar ratingBar;
     private Button btnSubmit;
+    private Button btnVerify;
     private TextView rateCount, showRating;
     EditText review;
     float rateValue; String temp;
@@ -47,19 +54,37 @@ public class ChannelProfileActivity extends AppCompatActivity implements IMenuAc
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_channel_profile);
 
-        setupSidebarMenu();
+
 
         //get user
         Intent intent = getIntent();
         user = (User) intent.getSerializableExtra("user");
         //get channel
 
-        channel = (ChannelStream) intent.getSerializableExtra("channel");
-        invokeToken(channel);
+        if(intent.getSerializableExtra("channel") == null){
+            //find the channel here
+            RetroFitService rfServ = new RetroFitService("get-channel-from-id");
+            ChannelsApi channelAPI = rfServ.getRetrofit().create(ChannelsApi.class);
 
+            channelAPI.findChannelByUserId(user.getId()).enqueue(new Callback<ChannelStream>() {
+                @Override
+                public void onResponse(Call<ChannelStream> call, Response<ChannelStream> response) {
+                    channel = response.body();
+                }
+
+                @Override
+                public void onFailure(Call<ChannelStream> call, Throwable t) {
+                    Toast.makeText(ChannelProfileActivity.this, "Channel for user not found.", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            channel = (ChannelStream) intent.getSerializableExtra("channel");
+        }
+        setupSidebarMenu();
         //rating bar
         rateCount = findViewById(R.id.rate_Count);
         ratingBar = findViewById(R.id.rating_bar);
+        btnVerify = findViewById(R.id.verify_account);
         btnSubmit = findViewById(R.id.rating_submit);
         review = findViewById(R.id.write_Review);
         showRating = findViewById(R.id.showRating);
@@ -81,6 +106,34 @@ public class ChannelProfileActivity extends AppCompatActivity implements IMenuAc
                     rateCount.setText("Best" + rateValue + "/5");
             }
         });
+
+        if(user.getIsVerified()){
+            btnVerify.setVisibility(View.GONE);
+        } else {
+            btnVerify.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    RetroFitService rfServ = new RetroFitService("verify-user");
+                    UserApi userAPI = rfServ.getRetrofit().create(UserApi.class);
+                    userAPI.verifyUser(user.getId()).enqueue(new Callback<User>() {
+                        @Override
+                        public void onResponse(Call<User> call, Response<User> response) {
+                            user.setIsVerified(true);
+                            Toast.makeText(ChannelProfileActivity.this, "You are now verified!", Toast.LENGTH_SHORT).show();
+                            //refresh on load
+                            startActivity(getIntent());
+                            finish();
+                            overridePendingTransition(0, 0);
+                        }
+
+                        @Override
+                        public void onFailure(Call<User> call, Throwable t) {
+
+                        }
+                    });
+                }
+            });
+        }
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,6 +175,22 @@ public class ChannelProfileActivity extends AppCompatActivity implements IMenuAc
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
+        if (!user.getIsVerified()){
+            MenuItem streamsnav = navigationView.getMenu().findItem(R.id.nav_streams);
+            streamsnav.setVisible(false);
+
+            MenuItem productsnav = navigationView.getMenu().findItem(R.id.nav_products);
+            productsnav.setVisible(false);
+
+            MenuItem ordersnav = navigationView.getMenu().findItem(R.id.nav_orders);
+            ordersnav.setVisible(false);
+
+            MenuItem dashboardnav = navigationView.getMenu().findItem(R.id.nav_dashboard);
+            dashboardnav.setVisible(false);
+        }
+        navigationView.setNavigationItemSelectedListener(this);
+
+
         navigationView.setNavigationItemSelectedListener(this);
     }
 

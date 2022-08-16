@@ -421,7 +421,7 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
         List<Product> productsToOrder = prodStreamAdapter.getProducts();
         List<Integer> amtToOrder = prodStreamAdapter.getProductQty();
         Orders newOrder = new Orders(user, null);
-        newOrder.setChannel(sellerChannel);
+        //newOrder.setChannel(sellerChannel);
 
         for(int i = 0; i < productsToOrder.size(); i++){
             if(amtToOrder.get(i) > 0){
@@ -508,7 +508,7 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
             intent.putExtra("seller", user);
             intent.putExtra("stream", currStream);
             intent.putExtra("duration", 5);
-            startService(intent);
+            //startService(intent);
         }
         // Pass the SurfaceView object to Agora so that it renders the local video.
 

@@ -47,6 +47,8 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
     private Stream currStream;
     private TextView welcomeUser;
     private User user;
+    private Button searchForStreams;
+    private TextView searchTermBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +108,31 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
                 Toast.makeText(EntranceActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
             }
         });
+
+        searchForStreams = findViewById(R.id.search_layout)
+                .findViewById(R.id.search);
+        searchForStreams.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchTermBox = findViewById(R.id.search_term);
+                String searchTerm = searchTermBox.getText().toString();
+                Toast.makeText(EntranceActivity.this, "see this", Toast.LENGTH_SHORT).show();
+                openSearchResults(searchTerm);
+
+            }
+        });
+    }
+
+    private void openSearchResults(String searchTerm) {
+        if (searchTerm.length() < 3){
+            Toast.makeText(this, "Your search term is too short. Please put a more relevant search term.", Toast.LENGTH_SHORT).show();
+        } else {
+            Intent intent = new Intent(this, SearchResultsActivity.class);
+            intent.putExtra("user", user);
+            intent.putExtra("channel", channelStream);
+            intent.putExtra("searchTerm", searchTerm);
+            startActivity(intent);
+        }
     }
 
     private void populateStreamList(List<Stream> body) {
@@ -178,6 +205,19 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
             NavigationView navigationView = findViewById(R.id.nav_view);
+            if (!user.getIsVerified()){
+                MenuItem streamsnav = navigationView.getMenu().findItem(R.id.nav_streams);
+                streamsnav.setVisible(false);
+
+                MenuItem productsnav = navigationView.getMenu().findItem(R.id.nav_products);
+                productsnav.setVisible(false);
+
+                MenuItem ordersnav = navigationView.getMenu().findItem(R.id.nav_orders);
+                ordersnav.setVisible(false);
+
+                MenuItem dashboardnav = navigationView.getMenu().findItem(R.id.nav_dashboard);
+                dashboardnav.setVisible(false);
+            }
             navigationView.setNavigationItemSelectedListener(this);
 
     }
