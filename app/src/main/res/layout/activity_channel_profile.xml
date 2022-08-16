@@ -26,11 +26,79 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Channel:"
+                android:text=" Channel:"
                 android:textStyle="bold"
-                android:textSize="20dp"
+                android:textSize="25dp"
                 android:textColor="@color/black"/>
         </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="220dp">
+
+
+            <RelativeLayout
+                android:layout_margin="20dp"
+                android:background="@drawable/channel_row_background"
+                android:layout_width="match_parent"
+                android:layout_height="180dp">
+
+
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+        <androidx.cardview.widget.CardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/card_view"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            app:cardElevation="12dp"
+            app:cardCornerRadius="12dp"
+            android:layout_margin="10dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardMaxElevation="12dp"
+            app:cardPreventCornerOverlap="true"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:text="Channel Name: "/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:text="Role: "/>
+
+
+
+
+
+
+            </LinearLayout>
+
+
+
+
+
+
+        </androidx.cardview.widget.CardView>
+
         <LinearLayout
             android:id="@+id/top_container"
             android:layout_width="match_parent"
@@ -58,6 +126,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:padding="3dp"
+                    android:textSize="16dp"
                     android:text="Channel Name" />
 
                 <TextView
@@ -67,13 +136,13 @@
                     android:layout_weight="1"
                     android:padding="3dp"
                     android:text="Role: Seller, Buyer"
-                    android:textStyle="bold" />
+                     />
 
                 <TextView
                     android:id="@+id/rating"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="2"
+                    android:layout_weight="1"
                     android:padding="3dp"
                     android:text="Average Rating : 4.5" />
             </LinearLayout>
