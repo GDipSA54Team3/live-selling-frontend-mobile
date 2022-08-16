@@ -8,25 +8,47 @@
 
 
     <com.google.android.material.button.MaterialButton
-        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
         android:id="@+id/open_product_list"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:backgroundTint="@color/purple_500"
-        app:cornerRadius="40dp"
         android:text="Products"
+        app:cornerRadius="40dp"
+        app:icon="@drawable/ic_baseline_shopping_bag_24"
+        app:iconGravity="start"
+        app:iconSize="35dp"
+        app:iconTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintHorizontal_bias="0.04"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.95"
-        app:icon="@drawable/ic_baseline_shopping_bag_24"
-        app:iconTint="@color/white"
-        app:iconSize="35dp"
-        app:iconGravity="start"
+        app:layout_constraintVertical_bias="0.78"
         tools:ignore="MissingConstraints" />
 
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/send_message"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:backgroundTint="@color/purple_500"
+        android:text="Products"
+        app:cornerRadius="40dp"
+        app:icon="@drawable/ic_baseline_send_24"
+        android:onClick="onClickSendChannelMsg"
+        app:iconGravity="start"
+        app:iconSize="35dp"
+        app:iconTint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.96"
+        tools:ignore="MissingConstraints" />
 
     <FrameLayout
         android:id="@+id/local_video_view_container"
@@ -60,22 +82,59 @@
             android:alpha="1.0"
             android:padding="30dp"
             android:text="Hello World!"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"/>
+
+        <Button
+            android:id="@+id/follow_Channel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/blue"
+            android:text="Follow"
+            />
 
 
     </LinearLayout>
 
     <TextView
         android:id="@+id/stream_status"
-        android:layout_width="276dp"
-        android:layout_height="wrap_content"
+        android:layout_width="278dp"
+        android:layout_height="291dp"
         android:elevation="10dp"
         android:padding="30dp"
         android:text="TextView"
+
+        android:gravity="bottom|right"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/local_video_view_container"
+        app:layout_constraintHorizontal_bias="0.8"
         app:layout_constraintStart_toStartOf="@+id/local_video_view_container"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.65999997" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="297dp"
+        android:layout_height="76dp"
+        android:hint="enter message..."
+        app:boxCornerRadiusBottomEnd="5dp"
+        app:boxCornerRadiusBottomStart="5dp"
+        app:boxCornerRadiusTopEnd="5dp"
+        app:boxCornerRadiusTopStart="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/send_message"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.97">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/message_to_send"
+            android:layout_width="match_parent"
+            android:layout_height="66dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            tools:ignore="KeyboardInaccessibleWidget" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

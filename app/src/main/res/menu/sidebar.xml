@@ -3,40 +3,56 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="HardcodedText">
 
-    <item
-        android:id="@+id/nav_home"
-        android:title="Home" />
+    <group android:checkableBehavior="single">
 
-    <item
-        android:id="@+id/nav_favorites"
-        android:title="Favorites" />
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/home"
 
-    <item
-        android:id="@+id/nav_purchases"
-        android:title="My Purchases" />
+            android:title="Home" />
 
-    <item
-        android:id="@+id/nav_streams"
-        android:title="My Streams" />
+        <item
+            android:id="@+id/nav_myProfile"
+            android:icon="@drawable/account"
+            android:title="My Profile" />
 
-    <item
-        android:id="@+id/nav_products"
-        android:title="My Products" />
+        <item
+            android:id="@+id/nav_favorites"
+            android:icon="@drawable/favorite"
+            android:title="Favorites" />
+    </group>
 
-    <item
-        android:id="@+id/nav_dashboard"
-        android:title="Dashboard" />
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_streams"
+            android:icon="@drawable/phone"
+            android:title="My Streams" />
 
-    <item
-        android:id="@+id/nav_myProfile"
-        android:title="My Profile" />
+        <item
+            android:id="@+id/nav_products"
+            android:icon="@drawable/product"
+            android:title="My Products" />
 
-    <item
-        android:id="@+id/nav_orders"
-        android:title="My Orders" />
+        <item
+            android:id="@+id/nav_purchases"
+            android:icon="@drawable/payment"
+            android:title="My Purchases" />
 
-    <item
-        android:id="@+id/nav_logout"
-        android:title="Logout" />
+        <item
+            android:id="@+id/nav_orders"
+            android:icon="@drawable/order"
+            android:title="My Orders" />
 
+        <item
+            android:id="@+id/nav_dashboard"
+            android:icon="@drawable/dashboard_24"
+            android:title="Dashboard" />
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/logout"
+            android:title="Logout" />
+    </group>
 </menu>
