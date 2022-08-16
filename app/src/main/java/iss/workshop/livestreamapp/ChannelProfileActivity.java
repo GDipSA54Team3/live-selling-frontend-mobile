@@ -12,12 +12,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.nio.channels.Channel;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,15 +39,18 @@ import retrofit2.Response;
 public class ChannelProfileActivity extends AppCompatActivity implements IMenuAccess, IStreamDetails {
 
     private User user;
-    private ChannelStream channel;
+    private ChannelStream channelOfUser;
+    private ChannelStream channelToView;
     private Stream currStream;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
-
+    private String action;
     private RatingBar ratingBar;
     private Button btnSubmit;
     private Button btnVerify;
     private TextView rateCount, showRating;
+    private TextView channelName;
+    private Double ratingToDisplay;
     EditText review;
     float rateValue; String temp;
 
@@ -53,8 +58,6 @@ public class ChannelProfileActivity extends AppCompatActivity implements IMenuAc
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_channel_profile);
-
-
 
         //get user
         Intent intent = getIntent();
@@ -69,7 +72,7 @@ public class ChannelProfileActivity extends AppCompatActivity implements IMenuAc
             channelAPI.findChannelByUserId(user.getId()).enqueue(new Callback<ChannelStream>() {
                 @Override
                 public void onResponse(Call<ChannelStream> call, Response<ChannelStream> response) {
-                    channel = response.body();
+                    channelOfUser = response.body();
                 }
 
                 @Override
@@ -78,73 +81,139 @@ public class ChannelProfileActivity extends AppCompatActivity implements IMenuAc
                 }
             });
         } else {
-            channel = (ChannelStream) intent.getSerializableExtra("channel");
+            channelOfUser = (ChannelStream) intent.getSerializableExtra("channel");
         }
-        setupSidebarMenu();
+
+        action = intent.getAction();
+
+        if (action.equals("view-as-own")){
+            channelToView = channelOfUser;
+        } else {
+            channelToView = (ChannelStream) intent.getSerializableExtra("channel-to-view");
+        }
+
         //rating bar
+        channelName = findViewById(R.id.channel_name);
+        channelName.setText(channelToView.getName());
+
+        TextView channelUsername = findViewById(R.id.role_name);
+        channelUsername.setText(channelToView.getUser().getFirstName() + " " + channelToView.getUser().getLastName());
+
+        TextView avgRating = findViewById(R.id.rating);
+
+        RetroFitService rfServ = new RetroFitService("get-rating");
+        ChannelsApi channelAPI = rfServ.getRetrofit().create(ChannelsApi.class);
+        channelAPI.getChannelAvgRating(channelToView.getId()).enqueue(new Callback<Double>() {
+            @Override
+            public void onResponse(Call<Double> call, Response<Double> response) {
+                ratingToDisplay = response.body();
+                avgRating.setText("AVERAGE RATING: " + Double.toString(Math.round(ratingToDisplay)));
+            }
+
+            @Override
+            public void onFailure(Call<Double> call, Throwable t) {
+
+            }
+        });
+
+        btnVerify = findViewById(R.id.verify_account);
+        btnVerify.setVisibility(View.GONE);
+
         rateCount = findViewById(R.id.rate_Count);
         ratingBar = findViewById(R.id.rating_bar);
-        btnVerify = findViewById(R.id.verify_account);
         btnSubmit = findViewById(R.id.rating_submit);
         review = findViewById(R.id.write_Review);
         showRating = findViewById(R.id.showRating);
 
-        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-                rateValue = ratingBar.getRating();
-
-                if(rateValue <=1 && rateValue>0)
-                    rateCount.setText("Bad" + rateValue + "/5");
-                else if(rateValue <=2 && rateValue>1)
-                    rateCount.setText("Ok" + rateValue + "/5");
-                else if(rateValue <=3 && rateValue>2)
-                    rateCount.setText("Good" + rateValue + "/5");
-                else if(rateValue <=4 && rateValue>3)
-                    rateCount.setText("Very Good" + rateValue + "/5");
-                else if(rateValue <=5 && rateValue>4)
-                    rateCount.setText("Best" + rateValue + "/5");
-            }
-        });
-
-        if(user.getIsVerified()){
-            btnVerify.setVisibility(View.GONE);
-        } else {
-            btnVerify.setOnClickListener(new View.OnClickListener() {
+        if(action.equals("view-as-other")){
+            //if seeing from perspective of other user
+            channelToView = (ChannelStream) intent.getSerializableExtra("channel-to-view");
+            ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
                 @Override
-                public void onClick(View view) {
-                    RetroFitService rfServ = new RetroFitService("verify-user");
-                    UserApi userAPI = rfServ.getRetrofit().create(UserApi.class);
-                    userAPI.verifyUser(user.getId()).enqueue(new Callback<User>() {
-                        @Override
-                        public void onResponse(Call<User> call, Response<User> response) {
-                            user.setIsVerified(true);
-                            Toast.makeText(ChannelProfileActivity.this, "You are now verified!", Toast.LENGTH_SHORT).show();
-                            //refresh on load
-                            startActivity(getIntent());
-                            finish();
-                            overridePendingTransition(0, 0);
-                        }
+                public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                    rateValue = ratingBar.getRating();
 
-                        @Override
-                        public void onFailure(Call<User> call, Throwable t) {
-
-                        }
-                    });
+                    if(rateValue <=1 && rateValue>0)
+                        rateCount.setText("Bad" + rateValue + "/5");
+                    else if(rateValue <=2 && rateValue>1)
+                        rateCount.setText("Ok" + rateValue + "/5");
+                    else if(rateValue <=3 && rateValue>2)
+                        rateCount.setText("Good" + rateValue + "/5");
+                    else if(rateValue <=4 && rateValue>3)
+                        rateCount.setText("Very Good" + rateValue + "/5");
+                    else if(rateValue <=5 && rateValue>4)
+                        rateCount.setText("Best" + rateValue + "/5");
                 }
             });
+
+            btnSubmit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int rate = (int) ratingBar.getRating();
+                    Rating rating = new Rating();
+                    rating.setRate(rate);
+
+                    RetroFitService rfServ = new RetroFitService("rating");
+                    ChannelsApi channelAPI = rfServ.getRetrofit().create(ChannelsApi.class);
+
+                    channelAPI.saveRating(rating, channelToView.getId(), user.getId()).enqueue(new Callback<Rating>() {
+                        @Override
+                        public void onResponse(Call<Rating> call, Response<Rating> response) {
+                            Toast.makeText(ChannelProfileActivity.this, "Sent a rating of " + rate + " to " +
+                                    channelToView.getUser().getFirstName() + " " + channelToView.getUser().getLastName(), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFailure(Call<Rating> call, Throwable t) {
+                            Toast.makeText(ChannelProfileActivity.this, "Not able to send rating.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    btnSubmit.setEnabled(false);
+                    temp = rateCount.getText().toString();
+                    showRating.setText("Your Rating: \n"+ temp+ "\n"+ review.getText());
+                    review.setText("");
+                    ratingBar.setRating(0);
+                    rateCount.setText("");
+                }
+            });
+        } else {
+            //if looking from own perspective
+            //verify button
+            if(!user.getIsVerified()){
+                btnVerify.setVisibility(View.VISIBLE);
+                btnVerify.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        RetroFitService rfServ = new RetroFitService("verify-user");
+                        UserApi userAPI = rfServ.getRetrofit().create(UserApi.class);
+                        userAPI.verifyUser(user.getId()).enqueue(new Callback<User>() {
+                            @Override
+                            public void onResponse(Call<User> call, Response<User> response) {
+                                user.setIsVerified(true);
+                                Toast.makeText(ChannelProfileActivity.this, "You are now verified!", Toast.LENGTH_SHORT).show();
+                                //refresh on load
+                                startActivity(getIntent());
+                                finish();
+                                overridePendingTransition(0, 0);
+                            }
+
+                            @Override
+                            public void onFailure(Call<User> call, Throwable t) {
+
+                            }
+                        });
+                    }
+                });
+            }
+            LinearLayout ratingPanel = findViewById(R.id.rating_panel);
+            ratingPanel.setVisibility(View.INVISIBLE);
+
         }
 
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                temp = rateCount.getText().toString();
-                showRating.setText("Your Rating: \n"+ temp+ "\n"+ review.getText());
-                review.setText("");
-                ratingBar.setRating(0);
-                rateCount.setText("");
-            }
-        });
+        setupSidebarMenu();
+
+
     }
 
     @Override
@@ -159,7 +228,7 @@ public class ChannelProfileActivity extends AppCompatActivity implements IMenuAc
     //make nav clickable
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        plantOnClickItems(this, item, user, channel);
+        plantOnClickItems(this, item, user, channelOfUser);
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }

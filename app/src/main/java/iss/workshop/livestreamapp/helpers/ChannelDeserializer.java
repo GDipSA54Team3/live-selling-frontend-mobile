@@ -39,7 +39,6 @@ public class ChannelDeserializer implements JsonDeserializer<ChannelStream> {
         user.setIsVerified(isVerified);
 
         channel.setUser(user);
-        user.setChannel(channel);
 
         return channel;
     }

@@ -85,6 +85,8 @@ public class RetroFitService {
                         .build();
                 break;
             case("verify-user"):
+            case("get-rating"):
+            case("rating"):
             case("save-logs"):
             case("save-product"):
             case("get-products"):

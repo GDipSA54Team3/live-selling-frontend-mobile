@@ -31,7 +31,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginBottom="15dp"
-                android:background="@color/white"
+                android:background="@drawable/edit_text_border"
                 android:hint="Enter product name"
                 android:inputType="text"
                 android:paddingLeft="10dp"
@@ -69,7 +69,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginBottom="15dp"
-                android:background="@color/white"
+                android:background="@drawable/edit_text_border"
                 android:drawableLeft="@drawable/money"
                 android:hint="Enter price"
                 android:inputType="number"
@@ -86,7 +86,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginBottom="0dp"
-                android:background="@color/white"
+                android:background="@drawable/edit_text_border"
                 android:gravity="top"
                 android:hint="Enter product description"
                 android:inputType="text"
@@ -104,7 +104,7 @@
                 android:layout_margin="20dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="15dp"
-                android:background="@color/white"
+                android:background="@drawable/edit_text_border"
                 android:gravity="center_vertical"
                 android:hint="Enter quantity"
                 android:inputType=""
@@ -120,6 +120,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="20dp"/>
+
             <Button
                 android:id="@+id/deleteProduct"
                 android:layout_width="wrap_content"
@@ -128,6 +132,10 @@
                 android:backgroundTint="@color/black"
                 android:text="Delete Product"
                 android:textColor="@color/white" />
+
+            <Space
+                android:layout_width="55dp"
+                android:layout_height="20dp"/>
 
             <Button
                 android:id="@+id/createProduct"
