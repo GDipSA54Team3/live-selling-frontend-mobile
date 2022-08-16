@@ -77,6 +77,8 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
                     Toast.makeText(EntranceActivity.this, "Channel for user not found.", Toast.LENGTH_SHORT).show();
                 }
             });
+        } else {
+            channelStream = (ChannelStream) intent.getSerializableExtra("channel");
         }
 
 
