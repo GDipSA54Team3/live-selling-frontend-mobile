@@ -1,7 +1,6 @@
 package iss.workshop.livestreamapp.adapters;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +18,6 @@ public class OrderProductAdapter extends BaseAdapter {
 
     private Context context;
     private List<OrderProduct> oProducts;
-    //private List<Orders> purchases;
-    //private Orders orders;
 
     public OrderProductAdapter(Context context, List<OrderProduct> orderProducts){
         this.context = context;
@@ -33,7 +30,7 @@ public class OrderProductAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int i) {
-        return oProducts.get(i);
+        return null;
     }
 
     @Override
@@ -47,20 +44,19 @@ public class OrderProductAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.order_product_row, viewGroup, false);
         }
-        OrderProduct orderProducts = oProducts.get(i);
+        OrderProduct orderProduct = oProducts.get(i);
 
         TextView productName = view.findViewById(R.id.product_Name);
-        productName.setText(orderProducts.getProduct().getName());
+        productName.setText(orderProduct.getProduct().getName());
 
         TextView productQty = view.findViewById(R.id.product_Qty);
-        productQty.setText(Integer.toString(orderProducts.getProduct().getQuantity()));
-        //txtQty.setText(Integer.toString(productQty.get(i)));
+        productQty.setText(Integer.toString(orderProduct.getProduct().getQuantity()));
 
         TextView productDesc = view.findViewById(R.id.product_desc);
-        productDesc.setText(orderProducts.getProduct().getDescription());
+        productDesc.setText(orderProduct.getProduct().getDescription());
 
         TextView productPrice = view.findViewById(R.id.product_price);
-        productPrice.setText(Double.toString(orderProducts.getProduct().getPrice()));
+        productPrice.setText(Double.toString(orderProduct.getProduct().getPrice()));
 
         return view;
     }

@@ -131,9 +131,4 @@ public class PurchaseAdapter extends BaseAdapter {
         OrderProductAdapter orderProductAdapter = new OrderProductAdapter(context,body);
         orderProductListView.setAdapter(orderProductAdapter);
     }
-    //private void populatePurchaseList(List<Orders> body) {
-    //        purchase_listview = findViewById(R.id.purchaseList);
-    //        PurchaseAdapter pAdapter = new PurchaseAdapter(this,  body, dialog);
-    //        purchase_listview.setAdapter(pAdapter);
-    //    }
 }
