@@ -3,6 +3,7 @@ package iss.workshop.livestreamapp.services;
 import java.util.List;
 
 import iss.workshop.livestreamapp.models.ChannelStream;
+import iss.workshop.livestreamapp.models.Rating;
 import iss.workshop.livestreamapp.models.Stream;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -23,5 +24,14 @@ public interface ChannelsApi {
 
     @GET("/api/user/channels/finduser/{userId}")
     Call<ChannelStream> findChannelByUserId(@Path("userId") String userId);
+
+    @GET("/api/user/getverifiedchannels")
+    Call<List<ChannelStream>> getAllVerifiedChannels();
+
+    @GET("/api/rating/channelrating/{channelId}")
+    Call<Double> getChannelAvgRating(@Path("channelId") String channelId);
+
+    @POST("/api/rating/sendrating/{channelId}/{userId}")
+    Call<Rating> saveRating(@Body Rating rating, @Path("channelId") String channelId, @Path("userId") String userId);
 
 }

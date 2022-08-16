@@ -118,6 +118,19 @@ public class MyPurchasesActivity extends AppCompatActivity implements IMenuAcces
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
+        if (!user.getIsVerified()){
+            MenuItem streamsnav = navigationView.getMenu().findItem(R.id.nav_streams);
+            streamsnav.setVisible(false);
+
+            MenuItem productsnav = navigationView.getMenu().findItem(R.id.nav_products);
+            productsnav.setVisible(false);
+
+            MenuItem ordersnav = navigationView.getMenu().findItem(R.id.nav_orders);
+            ordersnav.setVisible(false);
+
+            MenuItem dashboardnav = navigationView.getMenu().findItem(R.id.nav_dashboard);
+            dashboardnav.setVisible(false);
+        }
         navigationView.setNavigationItemSelectedListener(this);
     }
     @Override
