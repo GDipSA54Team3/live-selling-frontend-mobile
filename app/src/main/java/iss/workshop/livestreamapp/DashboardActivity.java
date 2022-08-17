@@ -109,6 +109,14 @@ public class DashboardActivity extends AppCompatActivity implements IStreamDetai
             Intent intent2 = new Intent(context, MyStreamsActivity.class);
             context.startActivity(intent2);
         });
+        //View Pending orders
+        TextView pendingOrders = findViewById(R.id.pending_order_count);
+        pendingOrders.setOnClickListener(view -> {
+            intent.putExtra("user", user);
+            intent.putExtra("channel", channelStream);
+            Intent intent2 = new Intent(context, OrdersActivity.class);
+            context.startActivity(intent2);
+        });
         // update all the charts
         setPopularityChart();
         handler.postDelayed(new Runnable() {
