@@ -99,11 +99,10 @@ public class ChStreamAdapter extends BaseAdapter {
 
             if (currentStream.getStatus() == StreamStatus.PENDING) {
                 liveChip.setText("SCHEDULED");
-
+                liveChip.setChipBackgroundColor(context.getResources().getColorStateList(R.color.grey, null));
             } else if (currentStream.getStatus() == StreamStatus.ONGOING) {
                 liveChip.setText("ONGOING");
                 liveChip.setChipBackgroundColor(context.getResources().getColorStateList(R.color.red,null));
-
             }
 
 
