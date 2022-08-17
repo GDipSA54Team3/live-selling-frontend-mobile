@@ -107,7 +107,7 @@ public class ChannelProfileActivity extends AppCompatActivity implements IMenuAc
             @Override
             public void onResponse(Call<Double> call, Response<Double> response) {
                 ratingToDisplay = response.body();
-                avgRating.setText("AVERAGE RATING: " + Double.toString(Math.round(ratingToDisplay)));
+                avgRating.setText("AVERAGE RATING: " + Double.toString(ratingToDisplay));
             }
 
             @Override
