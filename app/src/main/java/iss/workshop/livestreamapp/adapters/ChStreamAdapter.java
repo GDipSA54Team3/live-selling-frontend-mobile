@@ -14,6 +14,7 @@ import com.google.android.material.chip.Chip;
 import iss.workshop.livestreamapp.R;
 import java.util.List;
 
+import iss.workshop.livestreamapp.helpers.StreamStatus;
 import iss.workshop.livestreamapp.models.Stream;
 
 public class ChStreamAdapter extends BaseAdapter {
@@ -95,7 +96,17 @@ public class ChStreamAdapter extends BaseAdapter {
             Chip liveChip = (Chip) view
                     .findViewById(R.id.bottom_container)
                     .findViewById(R.id.live_chip);
-            liveChip.setText("LIVE");
+
+            if (currentStream.getStatus() == StreamStatus.PENDING) {
+                liveChip.setText("SCHEDULED");
+
+            } else if (currentStream.getStatus() == StreamStatus.ONGOING) {
+                liveChip.setText("ONGOING");
+                liveChip.setChipBackgroundColor(context.getResources().getColorStateList(R.color.red,null));
+
+            }
+
+
         }
 
 
