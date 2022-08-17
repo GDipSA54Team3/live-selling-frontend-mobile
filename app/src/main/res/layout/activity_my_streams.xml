@@ -25,6 +25,7 @@
             android:textStyle="bold"
             android:textSize="20dp"/>
 
+        <!--
         <Button
             android:id="@+id/btn_start_now"
             android:layout_width="match_parent"
@@ -33,7 +34,7 @@
             android:layout_marginRight="15dp"
             android:text="START A STREAM NOW"
             android:backgroundTint="@color/black"/>
-
+        -->
         <Button
 
             android:id="@+id/btn_create_stream"
