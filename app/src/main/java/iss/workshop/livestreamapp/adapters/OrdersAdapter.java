@@ -103,7 +103,7 @@ public class OrdersAdapter extends BaseAdapter {
             public void onClick(View v) {
                 RetroFitService rfServ = new RetroFitService("order-status");
                 OrdersApi ordersApi = rfServ.getRetrofit().create(OrdersApi.class);
-                ordersApi.updateOrderStatus(currOrder.getId(), currOrder.getOrderStatus().toString()).enqueue(new Callback<ResponseBody>() {
+                ordersApi.updateOrderStatus(currOrder.getId(), "CONFIRMED").enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         if(response.code() == 200){
@@ -134,7 +134,7 @@ public class OrdersAdapter extends BaseAdapter {
             public void onClick(View v) {
                 RetroFitService rfServ = new RetroFitService("order-status");
                 OrdersApi ordersApi = rfServ.getRetrofit().create(OrdersApi.class);
-                ordersApi.updateOrderStatus(currOrder.getId(), currOrder.getOrderStatus().toString()).enqueue(new Callback<ResponseBody>() {
+                ordersApi.updateOrderStatus(currOrder.getId(), "CANCELLED").enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         if(response.code() == 200){
