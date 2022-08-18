@@ -1,15 +1,25 @@
 package iss.workshop.livestreamapp.adapters;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.text.Layout;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.NonNull;
 
 import com.google.android.material.chip.Chip;
 
@@ -19,9 +29,12 @@ import java.util.Objects;
 import iss.workshop.livestreamapp.MyPurchasesActivity;
 import iss.workshop.livestreamapp.OrdersActivity;
 import iss.workshop.livestreamapp.R;
+import iss.workshop.livestreamapp.models.ChannelStream;
+import iss.workshop.livestreamapp.models.Message;
 import iss.workshop.livestreamapp.models.Orders;
 import iss.workshop.livestreamapp.models.Product;
 import iss.workshop.livestreamapp.models.Stream;
+import iss.workshop.livestreamapp.models.User;
 import iss.workshop.livestreamapp.services.OrdersApi;
 import iss.workshop.livestreamapp.services.RetroFitService;
 import okhttp3.ResponseBody;
@@ -33,11 +46,18 @@ public class OrdersAdapter extends BaseAdapter {
 
     private Context context;
     private List<Orders> orders;
-    private Orders orderStatus;
+    ListView orders_listview;
+    private User user;
+    private ChannelStream channel;
+    private ActivityResultLauncher<Intent> rlRefresh;
 
-    public OrdersAdapter(Context context, List<Orders> orders){
+
+    public OrdersAdapter(Context context, List<Orders> orders, User user, ChannelStream channel,ActivityResultLauncher<Intent> rlRefresh ){
         this.context = context;
         this.orders = orders;
+        this.user = user;
+        this.channel = channel;
+        this.rlRefresh = rlRefresh;
     }
 
     @Override
@@ -47,7 +67,7 @@ public class OrdersAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int i) {
-        return null;
+        return orders.get(i);
     }
 
     @Override
@@ -76,8 +96,6 @@ public class OrdersAdapter extends BaseAdapter {
 
         Chip orderStatus = view.findViewById(R.id.btn_order_status);
         orderStatus.setText(orders.get(i).getOrderStatus().toString());
-        //RetroFitService rfServ = new RetroFitService("order-status");
-        //                OrdersApi ordersApi = rfServ.getRetrofit().create(OrdersApi.class);
 
         Button btnConfirm = view.findViewById(R.id.btn_order_confirm);
         btnConfirm.setOnClickListener(new View.OnClickListener() {
@@ -89,11 +107,13 @@ public class OrdersAdapter extends BaseAdapter {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         if(response.code() == 200){
+
+                            Intent intent = new Intent(context, OrdersActivity.class);
+                            intent.putExtra("user", user);
+                            intent.putExtra("channel", channel);
+                            rlRefresh.launch(intent);
                             Toast.makeText(context, "Order Confirmed", Toast.LENGTH_SHORT).show();
 
-                            //startActivity(getIntent());
-                            //finish();
-                            //overridePendingTransition(0,0);
                         }
                     }
 
@@ -103,8 +123,11 @@ public class OrdersAdapter extends BaseAdapter {
                         Toast.makeText(context,t.toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
+
             }
         });
+
+
         Button btnReject = view.findViewById(R.id.btn_order_reject);
         btnReject.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,11 +138,12 @@ public class OrdersAdapter extends BaseAdapter {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         if(response.code() == 200){
-                            Toast.makeText(context, "Order Rejected", Toast.LENGTH_SHORT).show();
 
-                            //startActivity(getIntent());
-                            //finish();
-                            //overridePendingTransition(0,0);
+                            Intent intent = new Intent(context, OrdersActivity.class);
+                            intent.putExtra("user", user);
+                            intent.putExtra("channel", channel);
+                            rlRefresh.launch(intent);
+                            Toast.makeText(context, "Order Rejected", Toast.LENGTH_SHORT).show();
                         }
                     }
                     @Override
@@ -132,4 +156,5 @@ public class OrdersAdapter extends BaseAdapter {
         });
         return view;
     }
+
 }
