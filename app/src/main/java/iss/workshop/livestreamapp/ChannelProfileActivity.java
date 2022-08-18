@@ -122,7 +122,7 @@ public class ChannelProfileActivity extends AppCompatActivity implements IMenuAc
         rateCount = findViewById(R.id.rate_Count);
         ratingBar = findViewById(R.id.rating_bar);
         btnSubmit = findViewById(R.id.rating_submit);
-        review = findViewById(R.id.write_Review);
+        //review = findViewById(R.id.write_Review);
         showRating = findViewById(R.id.showRating);
 
         if(action.equals("view-as-other")){
@@ -134,15 +134,15 @@ public class ChannelProfileActivity extends AppCompatActivity implements IMenuAc
                     rateValue = ratingBar.getRating();
 
                     if(rateValue <=1 && rateValue>0)
-                        rateCount.setText("Bad" + rateValue + "/5");
+                        rateCount.setText("Bad " + rateValue + "/5");
                     else if(rateValue <=2 && rateValue>1)
-                        rateCount.setText("Ok" + rateValue + "/5");
+                        rateCount.setText("Ok " + rateValue + "/5");
                     else if(rateValue <=3 && rateValue>2)
-                        rateCount.setText("Good" + rateValue + "/5");
+                        rateCount.setText("Good " + rateValue + "/5");
                     else if(rateValue <=4 && rateValue>3)
-                        rateCount.setText("Very Good" + rateValue + "/5");
+                        rateCount.setText("Very Good " + rateValue + "/5");
                     else if(rateValue <=5 && rateValue>4)
-                        rateCount.setText("Best" + rateValue + "/5");
+                        rateCount.setText("Best " + rateValue + "/5");
                 }
             });
 
@@ -171,8 +171,8 @@ public class ChannelProfileActivity extends AppCompatActivity implements IMenuAc
 
                     btnSubmit.setEnabled(false);
                     temp = rateCount.getText().toString();
-                    showRating.setText("Your Rating: \n"+ temp+ "\n"+ review.getText());
-                    review.setText("");
+                    showRating.setText("Your Rating: \n"+ temp+ "\n");
+                    //review.setText("");
                     ratingBar.setRating(0);
                     rateCount.setText("");
                 }

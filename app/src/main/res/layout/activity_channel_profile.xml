@@ -132,6 +132,7 @@
                 android:layout_height="0dp"
                 android:text=" Rate the Seller:"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:textStyle="bold"
                 android:textSize="20dp"
                 android:textColor="@color/black"/>
@@ -148,21 +149,12 @@
 
             <TextView
                 android:id="@+id/rate_Count"
-                android:layout_width="40dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:textAppearance="?android:textAppearanceMedium"/>
-
-
-            <EditText
-                android:id="@+id/write_Review"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:gravity="center"
                 android:layout_weight="1"
-                android:hint="Write Review...."
-                android:layout_gravity="left"
-                android:paddingLeft="10dp"
                 android:textAppearance="?android:textAppearanceMedium"/>
+
 
             <Button
                 android:id="@+id/rating_submit"
@@ -173,10 +165,11 @@
 
             <TextView
                 android:id="@+id/showRating"
-                android:layout_width="40dp"
+                android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:layout_marginTop="10dp"
+                android:gravity="center"
                 android:textAppearance="?android:textAppearanceMedium" />
         </LinearLayout>
 
