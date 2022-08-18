@@ -1,11 +1,15 @@
 package iss.workshop.livestreamapp;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -40,6 +44,8 @@ public class OrdersActivity extends AppCompatActivity implements IMenuAccess, IS
     private Stream currStream;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
+    ListView orders_listview;
+    private ActivityResultLauncher<Intent> rlRefresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +58,13 @@ public class OrdersActivity extends AppCompatActivity implements IMenuAccess, IS
         channel = (ChannelStream) intent.getSerializableExtra("channel");
         invokeToken(channel);
         setupSidebarMenu();
+
+        rlRefresh = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if(result.getResultCode() == AppCompatActivity.RESULT_OK){
+                startActivity(getIntent());
+                finish();
+            }
+        });
 
         //fetch order API
         RetroFitService rfServ = new RetroFitService("orders");
@@ -69,20 +82,19 @@ public class OrdersActivity extends AppCompatActivity implements IMenuAccess, IS
             @Override
             public void onFailure(Call<List<Orders>> call, Throwable t) {
                 Toast.makeText(OrdersActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
-
             }
         });
-
     }
 
-    private void populateOrdersList(List<Orders> body) {
-        ListView orders_listview = findViewById(R.id.orders_listview);
-        OrdersAdapter ordersAdapter = new OrdersAdapter(this,body);
+
+    public void populateOrdersList(List<Orders> body) {
+        orders_listview = findViewById(R.id.orders_listview);
+        OrdersAdapter ordersAdapter = new OrdersAdapter(this,body, user,channel, rlRefresh);
         orders_listview.setAdapter(ordersAdapter);
 
         orders_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
             }
         });

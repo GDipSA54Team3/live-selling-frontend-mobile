@@ -121,9 +121,6 @@ public class MyStreamsActivity extends AppCompatActivity implements IMenuAccess,
                                 Toast.makeText(MyStreamsActivity.this, "Stream was not saved. Try again", Toast.LENGTH_SHORT).show();
                             }
                 });
-
-
-
             }
         });
 

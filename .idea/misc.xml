@@ -26,6 +26,7 @@
         <entry key="..\:/ADProject/Android/new6/live-selling-frontend-mobile/app/src/main/res/layout/activity_orders.xml" value="0.1766304347826087" />
         <entry key="..\:/ADProject/Android/new6/live-selling-frontend-mobile/app/src/main/res/layout/list_category.xml" value="0.21927083333333333" />
         <entry key="..\:/ADProject/Android/new6/live-selling-frontend-mobile/app/src/main/res/layout/my_stream_row.xml" value="0.21927083333333333" />
+
         <entry key="..\:/ADProject/Android/new8/live-selling-frontend-mobile/app/src/main/res/drawable-v24/blue_line_background.xml" value="0.1" />
         <entry key="..\:/ADProject/Android/new8/live-selling-frontend-mobile/app/src/main/res/drawable-v24/fill_background.xml" value="0.1" />
         <entry key="..\:/ADProject/Android/new8/live-selling-frontend-mobile/app/src/main/res/drawable-v24/fill_background_pink.xml" value="0.1" />
@@ -36,6 +37,7 @@
         <entry key="..\:/ADProject/Android/new8/live-selling-frontend-mobile/app/src/main/res/layout/activity_channel_profile.xml" value="0.1" />
         <entry key="..\:/ADProject/Android/new8/live-selling-frontend-mobile/app/src/main/res/layout/activity_dashboard.xml" value="0.1" />
         <entry key="..\:/ADProject/Android/new8/live-selling-frontend-mobile/app/src/main/res/layout/activity_my_streams.xml" value="0.1" />
+
         <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/drawable/ic_shopping_bag.xml" value="0.1805" />
         <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/activity_add_product.xml" value="0.15760869565217392" />
         <entry key="..\:/ADProjectFolder/live-selling-frontend-mobile/live-selling-frontend-mobile/app/src/main/res/layout/activity_channel_profile.xml" value="0.15760869565217392" />
@@ -126,6 +128,7 @@
         <entry key="app/src/main/res/layout/activity_orders.xml" value="0.192481884057971" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_schedule_stream.xml" value="0.18115942028985507" />
+        <entry key="app/src/main/res/layout/activity_test.xml" value="0.196875" />
         <entry key="app/src/main/res/layout/channelrow.xml" value="0.1" />
         <entry key="app/src/main/res/layout/custom_dialog.xml" value="0.1" />
         <entry key="app/src/main/res/layout/list_category.xml" value="0.18115942028985507" />

@@ -111,8 +111,6 @@ public class ProductsStreamAdapter extends BaseAdapter {
             }
         });
         //for subtract btn: onClickListener(subtractItemQty i)
-
-
         return view;
     }
 }
