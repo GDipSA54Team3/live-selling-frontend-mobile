@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
     private boolean entered = false;
     private StreamLog streamLog;
     private int numLikes;
+    private int maxViewers;
 
     //for orders
     private ProductsStreamAdapter prodStreamAdapter;
@@ -333,6 +334,9 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
                 } else {
                     numberOfViewers.setText(i + " Viewers");
                 }
+                if (maxViewers < i){
+                    maxViewers = i;
+                }
             }
 
             @Override
@@ -502,7 +506,7 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
 
         RetroFitService rfServ = new RetroFitService("new-orders");
         OrdersApi orderAPI = rfServ.getRetrofit().create(OrdersApi.class);
-        orderAPI.addNewOrder(newOrder, user.getId(), sellerChannel.getId()).enqueue(new Callback<Orders>() {
+        orderAPI.addNewOrder(newOrder, user.getId(), sellerChannel.getId(), currStream.getId()).enqueue(new Callback<Orders>() {
             @Override
             public void onResponse(Call<Orders> call, Response<Orders> response) {
                 if (response.code() == 201){
@@ -615,6 +619,7 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
                 if(clientRole == Constants.CLIENT_ROLE_BROADCASTER){
                     streamLog = new StreamLog();
                     streamLog.setNumLikes(numLikes);
+                    streamLog.setNumViewers(maxViewers);
                     //write new API
                     RetroFitService rfServ = new RetroFitService("save-logs");
                     StreamLogApi streamLogAPI = rfServ.getRetrofit().create(StreamLogApi.class);
