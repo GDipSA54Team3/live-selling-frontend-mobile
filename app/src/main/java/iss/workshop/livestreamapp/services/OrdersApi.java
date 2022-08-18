@@ -19,8 +19,9 @@ public interface OrdersApi {
     @GET("/api/orders/channelorders/{channelId}")
     Call<List<Orders>> getChannelOrders(@Path("channelId") String channelId);
 
-    @POST("/api/orders/addorder/{userId}/{channelId}")
-    Call<Orders> addNewOrder(@Body Orders order, @Path("userId") String userId, @Path("channelId") String channelId);
+    @POST("/api/orders/addorder/{userId}/{channelId}/{streamId}")
+    Call<Orders> addNewOrder(@Body Orders order, @Path("userId") String userId,
+                             @Path("channelId") String channelId, @Path("streamId") String streamId);
 
     @PUT("/api/orders/updateorderstatus/{orderId}/{status}")
     Call<ResponseBody> updateOrderStatus(@Path("orderId") String orderId, @Path("status") String status);
