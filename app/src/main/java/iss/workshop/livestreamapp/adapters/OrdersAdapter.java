@@ -91,7 +91,7 @@ public class OrdersAdapter extends BaseAdapter {
         TextView txtTime = view.findViewById(R.id.order_time);
         txtTime.setText(orders.get(i).getOrderDateTime().toString());
 
-        TextView txtDes = view.findViewById(R.id.order_description);
+        TextView txtDes = view.findViewById(R.id.order_placed_user);
         txtDes.setText(orders.get(i).getUser().getUsername());
 
         Chip orderStatus = view.findViewById(R.id.btn_order_status);

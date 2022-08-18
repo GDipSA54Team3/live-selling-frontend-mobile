@@ -27,7 +27,26 @@
         app:layout_constraintVertical_bias="0.78"
         tools:ignore="MissingConstraints" />
 
-
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/send_like"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:backgroundTint="@color/purple_500"
+        android:text="Products"
+        app:cornerRadius="40dp"
+        android:onClick="onClickSendLikeToChannel"
+        app:icon="@drawable/ic_baseline_favorite_24"
+        app:iconGravity="start"
+        app:iconSize="35dp"
+        app:iconTint="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/send_message"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.04"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.74"
+        tools:ignore="MissingConstraints" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/send_message"
@@ -79,38 +98,39 @@
             android:id="@+id/channel_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textStyle="bold"
             android:alpha="1.0"
             android:padding="30dp"
             android:text="Hello World!"
             android:textColor="@color/white"/>
 
-        <Button
-            android:id="@+id/follow_Channel"
+        <TextView
+            android:id="@+id/number_viewers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/blue"
-            android:text="Follow"
-            />
-
-
+            android:alpha="1.0"
+            android:textSize="20dp"
+            android:textStyle="italic"
+            android:padding="30dp"
+            android:text="0 Members"
+            android:textColor="@color/white"/>
     </LinearLayout>
 
     <TextView
         android:id="@+id/stream_status"
         android:layout_width="278dp"
-        android:layout_height="291dp"
+        android:layout_height="254dp"
         android:elevation="10dp"
-        android:padding="30dp"
-        android:text="TextView"
-
         android:gravity="bottom|right"
+        android:padding="30dp"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/local_video_view_container"
         app:layout_constraintHorizontal_bias="0.8"
         app:layout_constraintStart_toStartOf="@+id/local_video_view_container"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.65999997" />
+        app:layout_constraintVertical_bias="0.39" />
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -121,6 +141,7 @@
         app:boxCornerRadiusBottomStart="5dp"
         app:boxCornerRadiusTopEnd="5dp"
         app:boxCornerRadiusTopStart="5dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/send_message"
         app:layout_constraintStart_toStartOf="parent"
@@ -131,6 +152,7 @@
             android:id="@+id/message_to_send"
             android:layout_width="match_parent"
             android:layout_height="66dp"
+            android:background="@color/white"
             android:ellipsize="end"
             android:maxLines="1"
             tools:ignore="KeyboardInaccessibleWidget" />

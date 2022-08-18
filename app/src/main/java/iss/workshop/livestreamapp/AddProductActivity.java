@@ -54,7 +54,7 @@ public class AddProductActivity extends AppCompatActivity implements IMenuAccess
     private ImageView up, down;
 
     //drop down category
-    String [] items = ProductCategories.names();
+    private String [] items;
     AutoCompleteTextView autoCompleteTxt;
     TextInputLayout textInputLayout;
 
@@ -78,14 +78,13 @@ public class AddProductActivity extends AppCompatActivity implements IMenuAccess
         //dropdown category
         textInputLayout = findViewById(R.id.menu_drop);
         autoCompleteTxt = findViewById(R.id.auto_complete_txt);
+        items = ProductCategories.names();
         ArrayAdapter<String> itemAdapter = new ArrayAdapter<String>(this,R.layout.list_category, items);
         autoCompleteTxt.setAdapter(itemAdapter);
         autoCompleteTxt.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                //textView.setText((String)parents.getItemPosition(position));
 
-                //Toast.makeText(getApplicationContext(), "Item"+ item, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -108,9 +107,20 @@ public class AddProductActivity extends AppCompatActivity implements IMenuAccess
             productName.setText(product.getName());
             productPrice.setText(Double.toString(product.getPrice()));
             productDescription.setText(product.getDescription());
-            autoCompleteTxt.setText(product.getCategory().toString());
-            qtyValue.setText(Integer.toString(product.getQuantity()));
 
+            int pos = 0;
+            for (int i = 0; i < items.length - 1; i++){
+                if(items[i].equals(product.getCategory().toString())){
+                    pos = i;
+                    break;
+                }
+            }
+            autoCompleteTxt.setListSelection(pos);
+            autoCompleteTxt.setText(product.getCategory().toString(), false);
+
+
+
+            qtyValue.setText(Integer.toString(product.getQuantity()));
             deleteProduct.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

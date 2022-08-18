@@ -13,8 +13,12 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -65,11 +69,14 @@ import iss.workshop.livestreamapp.models.OrderProduct;
 import iss.workshop.livestreamapp.models.Orders;
 import iss.workshop.livestreamapp.models.Product;
 import iss.workshop.livestreamapp.models.Stream;
+import iss.workshop.livestreamapp.models.StreamLog;
 import iss.workshop.livestreamapp.models.User;
 import iss.workshop.livestreamapp.services.FetchStreamLog;
 import iss.workshop.livestreamapp.services.OrdersApi;
 import iss.workshop.livestreamapp.services.ProductsApi;
 import iss.workshop.livestreamapp.services.RetroFitService;
+import iss.workshop.livestreamapp.services.StreamLogApi;
+import iss.workshop.livestreamapp.services.StreamsApi;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -83,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
     // Fill the temp token generated on Agora Console.
     private String token;
     private Stream currStream;
-    private String numberOfViewers;
+    private TextView numberOfViewers;
     private TextView streamStatus;
     private ChannelStream channel;
     private ChannelStream sellerChannel;
@@ -95,11 +102,15 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
     private User user;
     //button that shows the products
     private Button showProducts;
+    private Button sendLike;
     private Dialog dialog;
     private ListView productsListing;
     private List<Product> channelProducts;
     private Button sendOrder;
     private boolean entered = false;
+    private StreamLog streamLog;
+    private int numLikes;
+    private int maxViewers;
 
     //for orders
     private ProductsStreamAdapter prodStreamAdapter;
@@ -160,6 +171,10 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
         user = (User) streamDetails.getSerializableExtra("user");
         channel = (ChannelStream) streamDetails.getSerializableExtra("channel");
         invokeToken(channel);
+        streamLog = new StreamLog();
+        numLikes = 0;
+        numberOfViewers = findViewById(R.id.number_viewers);
+
 
         //setting dialog box
         dialog = new Dialog(this);
@@ -170,12 +185,27 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
         messageHistory = findViewById(R.id.stream_status);
         messageBox = findViewById(R.id.message_to_send);
         sendMessage = findViewById(R.id.send_message);
+        sendLike = findViewById(R.id.send_like);
 
         showProducts = findViewById(R.id.open_product_list);
         //if clientRole is buyer (audience) or seller (broadcaster)
         if(clientRole == Constants.CLIENT_ROLE_BROADCASTER){
             showProducts.setVisibility(View.INVISIBLE);
+            sendLike.setVisibility(View.INVISIBLE);
+            sellerChannel = channel;
+            RetroFitService rfServ = new RetroFitService("save-stream");
+            StreamsApi streamAPI = rfServ.getRetrofit().create(StreamsApi.class);
+            streamAPI.setStreamToOngoing(currStream.getId()).enqueue(new Callback<Stream>() {
+                @Override
+                public void onResponse(Call<Stream> call, Response<Stream> response) {
+                    Toast.makeText(MainActivity.this, "Stream is now ongoing!", Toast.LENGTH_SHORT).show();
+                }
 
+                @Override
+                public void onFailure(Call<Stream> call, Throwable t) {
+
+                }
+            });
         } else {
             sellerChannel = (ChannelStream) streamDetails.getSerializableExtra("seller-stream");
             invokeToken(sellerChannel);
@@ -225,13 +255,15 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
                         writeToMessageHistory(text);
                         entered = true;
                     }
-
                 }
 
                 @Override
                 public void onMessageReceived(RtmMessage rtmMessage, String s) {
-                    String text =  user.getUsername() + ": " + rtmMessage.getText() + "\n";
+                    /*
+                    String text =  user.getUsername() + ": " + rtmMessage.getText() + "\n\n";
                     writeToMessageHistory(text);
+
+                     */
                 }
 
                 @Override
@@ -297,7 +329,14 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
         RtmChannelListener mRtmChannelListener = new RtmChannelListener() {
             @Override
             public void onMemberCountUpdated(int i) {
-
+                if (i == 1){
+                    numberOfViewers.setText(i + " Viewer");
+                } else {
+                    numberOfViewers.setText(i + " Viewers");
+                }
+                if (maxViewers < i){
+                    maxViewers = i;
+                }
             }
 
             @Override
@@ -307,7 +346,14 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
 
             @Override
             public void onMessageReceived(RtmMessage rtmMessage, RtmChannelMember rtmChannelMember) {
-                String message_text = "Message received from " + rtmChannelMember.getUserId() + " : " + rtmMessage.getText() + "\n";
+                String message_text = "";
+                if(rtmMessage.getText().startsWith("LIKE")){
+                    message_text = rtmMessage.getText() + "\n\n";
+                    numLikes++;
+                } else {
+                    message_text = rtmChannelMember.getUserId() + " : " + rtmMessage.getText() + "\n\n";
+                }
+
                 writeToMessageHistory(message_text);
             }
 
@@ -390,9 +436,32 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
         mRtmChannel.sendMessage(message, new ResultCallback<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                String text = user.getUsername() + ": " + message.getText() + "\n";
+                SpannableString usernameTxt = new SpannableString(user.getUsername());
+                usernameTxt.setSpan(new StyleSpan(Typeface.BOLD), 0, user.getUsername().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                String text = usernameTxt  + ": " + message.getText() + "\n\n";
                 writeToMessageHistory(text);
                 messageBox.setText("");
+            }
+
+            @Override
+            public void onFailure(ErrorInfo errorInfo) {
+                String text = "Message fails to send to channel " + mRtmChannel.getId() + " Error: " + errorInfo + "\n";
+                writeToMessageHistory(text);
+            }
+        });
+    }
+
+    public void onClickSendLikeToChannel(View v)
+    {
+        RtmMessage message = mRtmClient.createMessage();
+        message.setText("LIKE: You sent a like to " + channelName + "!");
+
+        // Send message to channel
+        mRtmChannel.sendMessage(message, new ResultCallback<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                messageBox.setText("");
+                writeToMessageHistory(message.getText() + "\n\n");
             }
 
             @Override
@@ -437,7 +506,7 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
 
         RetroFitService rfServ = new RetroFitService("new-orders");
         OrdersApi orderAPI = rfServ.getRetrofit().create(OrdersApi.class);
-        orderAPI.addNewOrder(newOrder, user.getId(), sellerChannel.getId()).enqueue(new Callback<Orders>() {
+        orderAPI.addNewOrder(newOrder, user.getId(), sellerChannel.getId(), currStream.getId()).enqueue(new Callback<Orders>() {
             @Override
             public void onResponse(Call<Orders> call, Response<Orders> response) {
                 if (response.code() == 201){
@@ -547,7 +616,26 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
                 //stop chat
                 mRtmClient.logout(null);
                 mRtmChannel.leave(null);
+                if(clientRole == Constants.CLIENT_ROLE_BROADCASTER){
+                    streamLog = new StreamLog();
+                    streamLog.setNumLikes(numLikes);
+                    streamLog.setNumViewers(maxViewers);
+                    //write new API
+                    RetroFitService rfServ = new RetroFitService("save-logs");
+                    StreamLogApi streamLogAPI = rfServ.getRetrofit().create(StreamLogApi.class);
+                    streamLogAPI.addNewLogList(streamLog, user.getId(), currStream.getId()).enqueue(new Callback<StreamLog>() {
+                        @Override
+                        public void onResponse(Call<StreamLog> call, Response<StreamLog> response) {
+                            Toast.makeText(MainActivity.this, "Stream Log have been saved!", Toast.LENGTH_SHORT).show();
+                        }
 
+                        @Override
+                        public void onFailure(Call<StreamLog> call, Throwable t) {
+
+                        }
+                    });
+
+                }
                 this.finish();
                 return true;
         }

@@ -9,6 +9,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface StreamsApi {
@@ -23,6 +24,9 @@ public interface StreamsApi {
 
     @GET("/api/user/notuserstreams/{channelId}")
     Call<List<Stream>> getAllStreamsNotByUser(@Path("channelId") String channelId);
+
+    @PUT("api/user/setstreamtoongoing/{streamId}")
+    Call<Stream> setStreamToOngoing(@Path("streamId") String streamId);
 
 
     @POST("/api/user/addstream/{userId}")

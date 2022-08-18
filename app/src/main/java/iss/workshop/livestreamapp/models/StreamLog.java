@@ -16,9 +16,16 @@ public class StreamLog implements Serializable {
     private Stream stream;
     private User seller;
     private List<Message> messages;
+    private int numViewers;
 
     public StreamLog(int numLikes) {
         this.numLikes = numLikes;
         this.messages = new ArrayList<Message>();
+    }
+
+    public StreamLog(int numLikes, User seller, Stream stream) {
+        this.numLikes = numLikes;
+        this.seller = seller;
+        this.stream = stream;
     }
 }
