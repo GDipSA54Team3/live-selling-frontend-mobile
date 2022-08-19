@@ -66,7 +66,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String username = txtUsername.getText().toString();
                 String password = txtPassword.getText().toString();
                 String confirm = txtConfirmPassword.getText().toString();
-                String channelName = txtChannelName.getText().toString();
+                //String channelName = txtChannelName.getText().toString();
                 String address = txtAddress.getText().toString();
                 String firstName = txtFirstName.getText().toString();
                 String lastName = txtLastName.getText().toString();
@@ -79,7 +79,7 @@ public class RegisterActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
 
                 } else if (username.isEmpty() || password.isEmpty() || confirm.isEmpty() ||
-                    channelName.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || address.isEmpty()){
+                        firstName.isEmpty() || lastName.isEmpty() || address.isEmpty()){
                     //empty fields
                     Toast.makeText(RegisterActivity.this, "Submit complete form, and try again", Toast.LENGTH_SHORT).show();
                 } else {
