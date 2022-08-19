@@ -9,11 +9,13 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -45,7 +47,7 @@ public class OrdersActivity extends AppCompatActivity implements IMenuAccess, IS
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     ListView orders_listview;
-    private ActivityResultLauncher<Intent> rlRefresh;
+    private Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,17 +56,16 @@ public class OrdersActivity extends AppCompatActivity implements IMenuAccess, IS
 
         Intent intent = getIntent();
         user = (User) intent.getSerializableExtra("user");
+
         //get channel
         channel = (ChannelStream) intent.getSerializableExtra("channel");
         invokeToken(channel);
         setupSidebarMenu();
 
-        rlRefresh = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            if(result.getResultCode() == AppCompatActivity.RESULT_OK){
-                startActivity(getIntent());
-                finish();
-            }
-        });
+        //set up dialog in activity
+        dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.orderproduct_details_listview);
 
         //fetch order API
         RetroFitService rfServ = new RetroFitService("orders");
@@ -89,7 +90,7 @@ public class OrdersActivity extends AppCompatActivity implements IMenuAccess, IS
 
     public void populateOrdersList(List<Orders> body) {
         orders_listview = findViewById(R.id.orders_listview);
-        OrdersAdapter ordersAdapter = new OrdersAdapter(this,body, user,channel, rlRefresh);
+        OrdersAdapter ordersAdapter = new OrdersAdapter(this,body, user,channel, dialog);
         orders_listview.setAdapter(ordersAdapter);
 
         orders_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {

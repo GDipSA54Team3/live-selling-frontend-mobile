@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.google.android.material.chip.Chip;
 
 import iss.workshop.livestreamapp.R;
+
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import iss.workshop.livestreamapp.helpers.StreamStatus;
@@ -21,6 +23,7 @@ public class ChStreamAdapter extends BaseAdapter {
     private Context context;
     protected List<Stream> streams;
     protected boolean myStreamOrNot;
+    DateTimeFormatter df = DateTimeFormatter.ofPattern("MMM dd, yyyy h:mm a");
 
 
     public ChStreamAdapter (Context context, List<Stream> streams, boolean mystreamornot){
@@ -77,7 +80,7 @@ public class ChStreamAdapter extends BaseAdapter {
         TextView streamDate = (TextView) view
                 .findViewById(R.id.bottom_container)
                 .findViewById(R.id.date_of_stream);
-        streamDate.setText(currentStream.getSchedule().toString());
+        streamDate.setText(currentStream.getSchedule().format(df));
 
         if (myStreamOrNot){
             Button btnCheckStreams = view

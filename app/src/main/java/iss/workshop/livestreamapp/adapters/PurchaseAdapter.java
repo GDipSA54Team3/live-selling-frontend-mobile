@@ -3,6 +3,7 @@ package iss.workshop.livestreamapp.adapters;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
@@ -17,17 +18,25 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+
 import com.google.gson.Gson;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import iss.workshop.livestreamapp.MyPurchasesActivity;
+import iss.workshop.livestreamapp.OrdersActivity;
 import iss.workshop.livestreamapp.R;
+import iss.workshop.livestreamapp.models.ChannelStream;
 import iss.workshop.livestreamapp.models.OrderProduct;
 import iss.workshop.livestreamapp.models.Orders;
 import iss.workshop.livestreamapp.models.Product;
+import iss.workshop.livestreamapp.models.User;
+import iss.workshop.livestreamapp.services.OrdersApi;
 import iss.workshop.livestreamapp.services.ProductsApi;
 import iss.workshop.livestreamapp.services.RetroFitService;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -41,12 +50,16 @@ public class PurchaseAdapter extends BaseAdapter {
     private Dialog dialog;
     private ListView orderProductListView;
     private Orders orders;
+    private User user;
+    private ChannelStream channel;
 
-
-    public PurchaseAdapter(Context context, List<Orders> purchases,Dialog dialog){ //add dialog
+    public PurchaseAdapter(Context context, List<Orders> purchases, Dialog dialog, User user, ChannelStream channel){ //add dialog
         this.context = context;
         this.purchases = purchases;
         this.dialog = dialog;
+        this.user = user;
+        this.channel = channel;
+
     }
     @Override
     public int getCount() {
@@ -74,6 +87,7 @@ public class PurchaseAdapter extends BaseAdapter {
         //getChannelName
         TextView profileName = view.findViewById(R.id.profile_Name);
         profileName.setText(orders.getChannel().getName());
+
 
         //orderStatus
         TextView orderStatus = view.findViewById(R.id.order_status);
@@ -112,6 +126,30 @@ public class PurchaseAdapter extends BaseAdapter {
                     }
                 });
                 openProductDialog();
+            }
+        });
+        //reject button for buyer
+        Button btnCancelled = view.findViewById(R.id.cancel_order);
+        btnCancelled.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RetroFitService rfServ = new RetroFitService("order-status");
+                OrdersApi ordersApi = rfServ.getRetrofit().create(OrdersApi.class);
+                ordersApi.updateOrderStatus(orders.getId(), "CANCELLED").enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if(response.code() == 200){
+                            purchases.remove(orders);
+                            notifyDataSetChanged();
+                            Toast.makeText(context, "Order Cancelled", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        t.printStackTrace();
+                        Toast.makeText(context,t.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
         return view;

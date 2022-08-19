@@ -1,5 +1,7 @@
 package iss.workshop.livestreamapp;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,13 +45,13 @@ import retrofit2.Response;
 public class MyPurchasesActivity extends AppCompatActivity implements IMenuAccess, IStreamDetails {
 
     private User user;
-
     private ChannelStream channel;
     private Stream currStream;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private Button mOrderDetails;
     private Dialog dialog;
+    private ActivityResultLauncher<Intent> rlRefresh;
     private ListView purchase_listview;
 
     public MyPurchasesActivity() {
@@ -72,6 +74,13 @@ public class MyPurchasesActivity extends AppCompatActivity implements IMenuAcces
         dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.orderproduct_details_listview);
+
+        rlRefresh = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if(result.getResultCode() == AppCompatActivity.RESULT_OK){
+                startActivity(getIntent());
+                finish();
+            }
+        });
 
         //fetch orders API
         RetroFitService rfServ = new RetroFitService("orders");
@@ -96,7 +105,7 @@ public class MyPurchasesActivity extends AppCompatActivity implements IMenuAcces
 
     private void populatePurchaseList(List<Orders> body) {
         purchase_listview = findViewById(R.id.purchaseList);
-        PurchaseAdapter pAdapter = new PurchaseAdapter(this,  body,dialog);
+        PurchaseAdapter pAdapter = new PurchaseAdapter(this,  body,dialog, user, channel);
         purchase_listview.setAdapter(pAdapter);
     }
     private void openProductDialog(){

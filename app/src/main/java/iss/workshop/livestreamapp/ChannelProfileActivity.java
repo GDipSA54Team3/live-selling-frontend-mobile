@@ -122,7 +122,6 @@ public class ChannelProfileActivity extends AppCompatActivity implements IMenuAc
         rateCount = findViewById(R.id.rate_Count);
         ratingBar = findViewById(R.id.rating_bar);
         btnSubmit = findViewById(R.id.rating_submit);
-        review = findViewById(R.id.write_Review);
         showRating = findViewById(R.id.showRating);
 
         if(action.equals("view-as-other")){

@@ -17,8 +17,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        tools:layout_editor_absoluteX="-16dp"
-        tools:layout_editor_absoluteY="-81dp">
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="-93dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -46,7 +46,7 @@
                 android:background="@color/white"
                 android:hint="Username"
                 android:padding="10dp"
-                android:textSize="25dp"
+                android:textSize="20dp"
                 app:layout_constraintBottom_toTopOf="@+id/password"
                 app:layout_constraintTop_toBottomOf="@id/reg_text" />
 
@@ -58,7 +58,7 @@
                 android:background="@color/white"
                 android:hint="Password"
                 android:padding="10dp"
-                android:textSize="25dp"
+                android:textSize="20dp"
                 app:layout_constraintBottom_toTopOf="@+id/confirm_password"
                 app:layout_constraintTop_toBottomOf="@id/username" />
 
@@ -71,7 +71,7 @@
                 android:background="@color/white"
                 android:hint="Confirm password"
                 android:padding="10dp"
-                android:textSize="25dp"
+                android:textSize="20dp"
                 app:layout_constraintBottom_toTopOf="@+id/first_name"
                 app:layout_constraintTop_toBottomOf="@id/password" />
 
@@ -83,7 +83,7 @@
                 android:background="@color/white"
                 android:hint="First Name"
                 android:padding="10dp"
-                android:textSize="25dp"
+                android:textSize="20dp"
                 app:layout_constraintBottom_toTopOf="@+id/last_name"
                 app:layout_constraintTop_toBottomOf="@id/confirm_password"
                 tools:layout_editor_absoluteX="0dp" />
@@ -96,7 +96,7 @@
                 android:background="@color/white"
                 android:hint="Last Name"
                 android:padding="10dp"
-                android:textSize="25dp"
+                android:textSize="20dp"
                 app:layout_constraintBottom_toTopOf="@+id/address"
                 app:layout_constraintTop_toBottomOf="@id/first_name"
                 tools:layout_editor_absoluteX="16dp" />
@@ -109,7 +109,7 @@
                 android:background="@color/white"
                 android:hint="Address"
                 android:padding="10dp"
-                android:textSize="25dp"
+                android:textSize="20dp"
                 app:layout_constraintBottom_toTopOf="@+id/checkbox_verify"
                 app:layout_constraintTop_toBottomOf="@id/last_name"
                 tools:layout_editor_absoluteX="-16dp" />
@@ -118,14 +118,14 @@
                 android:id="@+id/checkbox_verify"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Become a verified user on creation of account"
-                android:textColor="@color/white"
                 android:buttonTint="@color/white"
                 android:gravity="left|center_vertical"
+                android:text="Become a verified user on creation of account"
+                android:textColor="@color/white"
                 app:layout_constraintBottom_toTopOf="@+id/btnRegister"
                 app:layout_constraintTop_toBottomOf="@id/address"
                 tools:ignore="MissingConstraints" />
-<!--
+            <!--
             <EditText
                 android:id="@+id/channel_name"
                 android:layout_width="match_parent"
@@ -141,7 +141,7 @@
             <Button
                 android:id="@+id/btnRegister"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="40dp"
                 android:backgroundTint="@color/black"
                 android:text="Register"
                 app:layout_constraintBottom_toTopOf="@+id/btnBack"
@@ -151,13 +151,12 @@
             <Button
                 android:id="@+id/btnBack"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="40dp"
                 android:backgroundTint="@color/black"
                 android:text="Back"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btnRegister"
                 tools:ignore="MissingConstraints" />
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

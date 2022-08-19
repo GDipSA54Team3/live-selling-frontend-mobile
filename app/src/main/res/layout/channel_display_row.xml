@@ -41,6 +41,8 @@
             android:id="@+id/btn_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/light_Blue"
+            android:textSize="12sp"
             android:text="VIEW CHANNEL"/>
 
 
