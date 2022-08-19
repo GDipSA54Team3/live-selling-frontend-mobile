@@ -85,7 +85,7 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
         SharedPreferences sPref = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
         if (isValidated(sPref, user.getUsername(), user.getPassword())){
             welcomeUser = findViewById(R.id.welcome_user);
-            welcomeUser.setText("Welcome " + user.getFirstName() + ", to your Channel!");
+            welcomeUser.setText("Welcome " + user.getFirstName() + " to the Live Shopping App!");
         } else {
             logOut(sPref, this);
         }
@@ -98,7 +98,7 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
         RetroFitService rfServ = new RetroFitService("stream");
         StreamsApi streamAPI = rfServ.getRetrofit().create(StreamsApi.class);
 
-        streamAPI.getAllStreams().enqueue(new Callback<List<Stream>>() {
+        streamAPI.getAllNotCompletedStreams().enqueue(new Callback<List<Stream>>() {
             @Override
             public void onResponse(Call<List<Stream>> call, Response<List<Stream>> response)
             {
@@ -138,12 +138,12 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
     }
 
     private void populateStreamList(List<Stream> body) {
-        ChStreamAdapter streamAdapter = new ChStreamAdapter(this, body, false);
+        ChStreamAdapter streamAdapter = new ChStreamAdapter(this, body, false, user);
         listOfStreams.setAdapter(streamAdapter);
-
         listOfStreams.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
                 TextView channelNameTxt = view
                         .findViewById(R.id.entire_row)
                         .findViewById(R.id.top_container)
@@ -152,9 +152,14 @@ public class EntranceActivity extends AppCompatActivity implements IStreamDetail
                 String channel = channelNameTxt.getText().toString();
 
                 currStream = (Stream) streamAdapter.getItem(i);
-                invokeToken(currStream.getChannelStream());
-                Toast.makeText(EntranceActivity.this, currStream.getChannelStream().getName(), Toast.LENGTH_SHORT).show();
-                openStreamPage("buyer", currStream.getChannelStream(), currStream);
+                if (currStream.getChannelStream().getUser().getId().equals(user.getId())){
+                    Toast.makeText(EntranceActivity.this, "This is your stream! Start your stream in your My Streams Page.", Toast.LENGTH_SHORT).show();
+                } else {
+                    invokeToken(currStream.getChannelStream());
+                    Toast.makeText(EntranceActivity.this, currStream.getChannelStream().getName(), Toast.LENGTH_SHORT).show();
+                    openStreamPage("buyer", currStream.getChannelStream(), currStream);
+                }
+
             }
 
         });

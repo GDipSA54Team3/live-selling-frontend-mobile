@@ -25,8 +25,10 @@ public interface ChannelsApi {
     @GET("/api/user/channels/finduser/{userId}")
     Call<ChannelStream> findChannelByUserId(@Path("userId") String userId);
 
-    @GET("/api/user/getverifiedchannels")
-    Call<List<ChannelStream>> getAllVerifiedChannels();
+
+
+    @GET("/api/user/getverifiedchannels/{channelId}")
+    Call<List<ChannelStream>> getAllVerifiedChannels(@Path("channelId") String channelId);
 
     @GET("/api/rating/channelrating/{channelId}")
     Call<Double> getChannelAvgRating(@Path("channelId") String channelId);

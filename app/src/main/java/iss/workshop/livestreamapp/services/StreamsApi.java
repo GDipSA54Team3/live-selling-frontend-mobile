@@ -5,6 +5,7 @@ import java.util.List;
 import iss.workshop.livestreamapp.models.Stream;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -22,8 +23,11 @@ public interface StreamsApi {
     Call<List<Stream>> getAllUserStreams(@Path("userId") String userId);
 
 
-    @GET("/api/user/notuserstreams/{channelId}")
-    Call<List<Stream>> getAllStreamsNotByUser(@Path("channelId") String channelId);
+    @GET("/api/user/notuserstreams/{userId}")
+    Call<List<Stream>> getAllStreamsNotByUser(@Path("userId") String userId);
+
+    @GET("/api/user/notcompletedstreams")
+    Call<List<Stream>> getAllNotCompletedStreams();
 
     @PUT("api/user/setstreamtoongoing/{streamId}")
     Call<Stream> setStreamToOngoing(@Path("streamId") String streamId);
@@ -31,6 +35,9 @@ public interface StreamsApi {
 
     @POST("/api/user/addstream/{userId}")
     Call<Stream> addNewStream(@Body Stream newStream, @Path("userId") String userId);
+
+    @DELETE("/api/user/deletestream/{streamId}")
+    Call<String> deleteStream(@Path("streamId") String streamId);
 
     @GET("/api/user/searchstreams/{searchterm}")
     Call<List<Stream>> getStreamsBySearchTerm(@Path("searchterm") String searchTerm);
