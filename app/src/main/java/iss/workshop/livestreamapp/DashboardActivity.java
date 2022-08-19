@@ -87,7 +87,7 @@ public class DashboardActivity extends AppCompatActivity implements IStreamDetai
         Intent intent = getIntent();
         user = (User) intent.getSerializableExtra("user");
         channel = (ChannelStream) intent.getSerializableExtra("channel");
-        invokeToken(channel);
+        //invokeToken(channel);
         setupSidebarMenu();
 
         addItemsOnSpinnerCategory();
@@ -104,18 +104,19 @@ public class DashboardActivity extends AppCompatActivity implements IStreamDetai
         //View All Streams
         Button btnViewAllStream = findViewById(R.id.view_all_stream);
         btnViewAllStream.setOnClickListener(view -> {
-            intent.putExtra("user", user);
-            intent.putExtra("channel", channelStream);
-            Intent intent2 = new Intent(context, MyStreamsActivity.class);
-            context.startActivity(intent2);
+            Intent intent2 = new Intent(this, MyStreamsActivity.class);
+            intent2.putExtra("user", user);
+            intent2.putExtra("channel", channel);
+            startActivity(intent2);
         });
         //View Pending orders
         TextView pendingOrders = findViewById(R.id.pending_order_count);
         pendingOrders.setOnClickListener(view -> {
-            intent.putExtra("user", user);
-            intent.putExtra("channel", channelStream);
-            Intent intent2 = new Intent(context, OrdersActivity.class);
-            context.startActivity(intent2);
+
+            Intent intent2 = new Intent(this, OrdersActivity.class);
+            intent2.putExtra("user", user);
+            intent2.putExtra("channel", channel);
+            startActivity(intent2);
         });
         // update all the charts
         setPopularityChart();

@@ -60,7 +60,6 @@ public class OrdersActivity extends AppCompatActivity implements IMenuAccess, IS
 
         //get channel
         channel = (ChannelStream) intent.getSerializableExtra("channel");
-        invokeToken(channel);
         setupSidebarMenu();
 
         //set up dialog in activity
