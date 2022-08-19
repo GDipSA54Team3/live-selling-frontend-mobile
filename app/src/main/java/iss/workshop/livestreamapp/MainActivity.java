@@ -16,6 +16,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
@@ -113,7 +114,6 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
     private int numLikes;
     private int maxViewers;
 
-
     //for orders
     private ProductsStreamAdapter prodStreamAdapter;
 
@@ -176,8 +176,6 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
         streamLog = new StreamLog();
         numLikes = 0;
         numberOfViewers = findViewById(R.id.number_viewers);
-
-
 
         //setting dialog box
         dialog = new Dialog(this);

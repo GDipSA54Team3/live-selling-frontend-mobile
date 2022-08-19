@@ -102,6 +102,7 @@
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_schedule_stream.xml" value="0.18115942028985507" />
         <entry key="app/src/main/res/layout/activity_search_results.xml" value="0.223731884057971" />
+        <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_test.xml" value="0.196875" />
         <entry key="app/src/main/res/layout/activity_view_channels.xml" value="0.223731884057971" />
         <entry key="app/src/main/res/layout/channel_display_row.xml" value="0.223731884057971" />
