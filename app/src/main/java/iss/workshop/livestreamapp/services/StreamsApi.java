@@ -3,6 +3,7 @@ package iss.workshop.livestreamapp.services;
 import java.util.List;
 
 import iss.workshop.livestreamapp.models.Stream;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -37,7 +38,7 @@ public interface StreamsApi {
     Call<Stream> addNewStream(@Body Stream newStream, @Path("userId") String userId);
 
     @DELETE("/api/user/deletestream/{streamId}")
-    Call<String> deleteStream(@Path("streamId") String streamId);
+    Call<ResponseBody> deleteStream(@Path("streamId") String streamId);
 
     @GET("/api/user/searchstreams/{searchterm}")
     Call<List<Stream>> getStreamsBySearchTerm(@Path("searchterm") String searchTerm);
