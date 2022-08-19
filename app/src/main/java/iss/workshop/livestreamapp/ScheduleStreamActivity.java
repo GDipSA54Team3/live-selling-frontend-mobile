@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -110,7 +111,6 @@ public class ScheduleStreamActivity extends AppCompatActivity implements IMenuAc
         });
         mEName = findViewById(R.id.eventName);
 
-        mEDes = findViewById(R.id.eventDesc);
 
         //AddProduct = findViewById(R.id.addProductBtn);
         CreateEvent = findViewById(R.id.createEventBtn);
@@ -120,22 +120,24 @@ public class ScheduleStreamActivity extends AppCompatActivity implements IMenuAc
             public void onClick(View view) {
                 Intent response = new Intent();
                 String streamName = mEName.getText().toString();
-                //String eventDesc = mEDes.getText().toString();
 
                 String sDate1 = dateTxt.getText().toString();
                 String sTime1 = timeTxt.getText().toString();
                 String str = sDate1 + " " + sTime1;
-                System.out.println(str);
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy hh:mm a");
                 LocalDateTime schedule = LocalDateTime.parse(str, formatter);
 
-                response.putExtra("user", user);
-                response.putExtra("channel", channel);
-                response.putExtra("title", streamName);
-                response.putExtra("schedule", schedule);
-                //response.putExtra(“computedSum", 100);
-                setResult(RESULT_OK, response);
-                finish();
+                if(schedule.isBefore(LocalDateTime.now())){
+                    Toast.makeText(ScheduleStreamActivity.this, "Cannot schedule a stream earlier than now. Check the schedule again.", Toast.LENGTH_SHORT).show();
+                } else {
+                    response.putExtra("user", user);
+                    response.putExtra("channel", channel);
+                    response.putExtra("title", streamName);
+                    response.putExtra("schedule", schedule);
+                    //response.putExtra(“computedSum", 100);
+                    setResult(RESULT_OK, response);
+                    finish();
+                }
             }
         });
 

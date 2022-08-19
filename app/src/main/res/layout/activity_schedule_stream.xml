@@ -63,6 +63,7 @@
                         android:layout_weight="2"
                         android:padding="3dp"
                         android:text="Fill in the details of your coming stream." />
+
                 </LinearLayout>
 
             </LinearLayout>
@@ -90,7 +91,7 @@
                     android:ems="10"
                     android:inputType="textPersonName"
                     android:hint="Event Name" />
-
+<!--
                 <EditText
                     android:id="@+id/eventDesc"
                     android:layout_width="match_parent"
@@ -98,7 +99,7 @@
                     android:ems="10"
                     android:inputType="textPersonName"
                     android:hint="Even Description" />
-
+-->
             </LinearLayout>
 
             <LinearLayout
