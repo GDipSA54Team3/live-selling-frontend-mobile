@@ -35,6 +35,7 @@ import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -112,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
     private int numLikes;
     private int maxViewers;
 
+
     //for orders
     private ProductsStreamAdapter prodStreamAdapter;
 
@@ -174,6 +176,7 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
         streamLog = new StreamLog();
         numLikes = 0;
         numberOfViewers = findViewById(R.id.number_viewers);
+
 
 
         //setting dialog box
