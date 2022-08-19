@@ -3,6 +3,7 @@ package iss.workshop.livestreamapp;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -66,6 +67,7 @@ public class OrdersActivity extends AppCompatActivity implements IMenuAccess, IS
         dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.orderproduct_details_listview);
+
 
         //fetch order API
         RetroFitService rfServ = new RetroFitService("orders");
@@ -142,5 +144,11 @@ public class OrdersActivity extends AppCompatActivity implements IMenuAccess, IS
         plantOnClickItems(this, item, user, channel);
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        recreate();
     }
 }

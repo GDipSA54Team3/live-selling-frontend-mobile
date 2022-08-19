@@ -2,34 +2,59 @@ package iss.workshop.livestreamapp.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.chip.Chip;
 
+import io.agora.rtc2.Constants;
+import iss.workshop.livestreamapp.MainActivity;
+import iss.workshop.livestreamapp.MyStreamsActivity;
 import iss.workshop.livestreamapp.R;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import iss.workshop.livestreamapp.helpers.StreamStatus;
+import iss.workshop.livestreamapp.models.ChannelStream;
 import iss.workshop.livestreamapp.models.Stream;
+import iss.workshop.livestreamapp.models.User;
+import iss.workshop.livestreamapp.services.RetroFitService;
+import iss.workshop.livestreamapp.services.StreamsApi;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ChStreamAdapter extends BaseAdapter {
+
     private Context context;
     protected List<Stream> streams;
     protected boolean myStreamOrNot;
     DateTimeFormatter df = DateTimeFormatter.ofPattern("MMM dd, yyyy h:mm a");
+    private User user;
+    private ChannelStream channel;
 
 
-    public ChStreamAdapter (Context context, List<Stream> streams, boolean mystreamornot){
+
+    public ChStreamAdapter (Context context, List<Stream> streams, boolean mystreamornot, User user){
         this.context = context;
         this.streams = streams;
         this.myStreamOrNot = mystreamornot;
+        this.user = user;
+    }
+
+    public ChStreamAdapter (Context context, List<Stream> streams, boolean mystreamornot, User user, ChannelStream channel){
+        this.context = context;
+        this.streams = streams;
+        this.myStreamOrNot = mystreamornot;
+        this.user = user;
+        this.channel = channel;
     }
 
     @Override
@@ -86,13 +111,40 @@ public class ChStreamAdapter extends BaseAdapter {
             Button btnCheckStreams = view
                     .findViewById(R.id.bottom_container)
                     .findViewById(R.id.btn_check_stream);
-            btnCheckStreams.setText("Start this stream");
+            btnCheckStreams.setText("Start stream");
 
             btnCheckStreams.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Stream stream = streams.get(i);
+                    Toast.makeText(context, stream.getTitle(), Toast.LENGTH_SHORT).show();
+                    openStreamPage("seller", stream);
+                }
+            });
 
+            Button btnDeleteStream = view
+                    .findViewById(R.id.bottom_container)
+                    .findViewById(R.id.btn_delete_stream);
+
+            btnDeleteStream.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Stream stream = streams.get(i);
+                    RetroFitService rfServ = new RetroFitService("delete-stream");
+                    StreamsApi streamAPI = rfServ.getRetrofit().create(StreamsApi.class);
+                    streamAPI.deleteStream(stream.getId()).enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
+                            Toast.makeText(context, "Stream has been deleted!", Toast.LENGTH_SHORT).show();
+                            streams.remove(stream);
+                            notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+
+                        }
+                    });
                 }
             });
         } else {
@@ -108,11 +160,26 @@ public class ChStreamAdapter extends BaseAdapter {
                 liveChip.setChipBackgroundColor(context.getResources().getColorStateList(R.color.red,null));
             }
 
-
         }
 
 
         return view;
+    }
+
+    private void openStreamPage(String role, Stream currStream) {
+        Intent intent = new Intent(context, MainActivity.class);
+        //check if sellerStream == channelStream?
+
+        intent.putExtra("channelName", channel.getName());
+        intent.putExtra("appID", context.getResources().getString(R.string.appId));
+        intent.putExtra("streamObj", currStream);
+        intent.putExtra("user", user);
+        intent.putExtra("channel", channel);
+        intent.putExtra("seller-stream", channel);
+        intent.putExtra("calling-activity", "mystreams");
+        intent.putExtra("clientRole", Constants.CLIENT_ROLE_BROADCASTER);
+
+        context.startActivity(intent);
     }
 
 

@@ -55,7 +55,7 @@ public class ViewChannelsActivity extends AppCompatActivity implements IMenuAcce
 
         RetroFitService rfServ = new RetroFitService("channel");
         ChannelsApi channelAPI = rfServ.getRetrofit().create(ChannelsApi.class);
-        channelAPI.getAllVerifiedChannels().enqueue(new Callback<List<ChannelStream>>() {
+        channelAPI.getAllVerifiedChannels(channel.getId()).enqueue(new Callback<List<ChannelStream>>() {
             @Override
             public void onResponse(Call<List<ChannelStream>> call, Response<List<ChannelStream>> response) {
                 populateListView(response.body());

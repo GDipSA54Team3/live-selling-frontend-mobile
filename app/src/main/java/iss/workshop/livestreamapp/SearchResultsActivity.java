@@ -78,7 +78,7 @@ public class SearchResultsActivity extends AppCompatActivity implements IStreamD
     }
 
     private void populateStreamList(List<Stream> body) {
-        ChStreamAdapter streamAdapter = new ChStreamAdapter(this, body, false);
+        ChStreamAdapter streamAdapter = new ChStreamAdapter(this, body, false, user);
         searchResults.setAdapter(streamAdapter);
 
         searchResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -92,9 +92,13 @@ public class SearchResultsActivity extends AppCompatActivity implements IStreamD
                 String channelName = channelNameTxt.getText().toString();
 
                 Stream currStream = (Stream) streamAdapter.getItem(i);
-                invokeToken(currStream.getChannelStream());
-                Toast.makeText(SearchResultsActivity.this, currStream.getChannelStream().getName(), Toast.LENGTH_SHORT).show();
-                openStreamPage("buyer", currStream.getChannelStream(), currStream);
+                if (currStream.getChannelStream().getUser().getId().equals(user.getId())){
+                    Toast.makeText(SearchResultsActivity.this, "This is your stream! Start your stream in your My Streams Page.", Toast.LENGTH_SHORT).show();
+                } else {
+                    invokeToken(currStream.getChannelStream());
+                    Toast.makeText(SearchResultsActivity.this, currStream.getChannelStream().getName(), Toast.LENGTH_SHORT).show();
+                    openStreamPage("buyer", currStream.getChannelStream(), currStream);
+                }
             }
 
         });

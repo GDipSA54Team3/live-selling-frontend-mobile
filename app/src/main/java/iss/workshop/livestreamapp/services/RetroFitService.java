@@ -25,7 +25,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetroFitService {
 
     //private final String API_URL = "http://10.0.2.2:8080"; 
-    private final String API_URL = "http://10.50.1.54:8080"; //"https://live-stream-team3.azurewebsites.net";// "http://10.249.174.3:8080";
+
+    private final String API_URL = "http://10.249.134.145:8080"; //"https://live-stream-team3.azurewebsites.net";// "http://10.249.174.3:8080";
 
     private final String PREDICTION_API_URL = "http://10.0.2.2:5000";
 
@@ -91,6 +92,7 @@ public class RetroFitService {
             case("save-product"):
             case("get-products"):
             case("order-status"):
+            case("delete-stream"):
             case("delete-product"):
             case("get-channel-from-id"):
             case("save-user"):
