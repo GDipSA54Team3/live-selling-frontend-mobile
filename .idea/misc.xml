@@ -96,7 +96,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.11381025248661056" />
         <entry key="app/src/main/res/layout/activity_my_products.xml" value="0.18115942028985507" />
         <entry key="app/src/main/res/layout/activity_my_profile.xml" value="0.18115942028985507" />
-        <entry key="app/src/main/res/layout/activity_my_purchases.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_my_purchases.xml" value="0.2442977905273438" />
         <entry key="app/src/main/res/layout/activity_my_streams.xml" value="0.2164855072463768" />
         <entry key="app/src/main/res/layout/activity_orders.xml" value="0.192481884057971" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.25" />
@@ -108,7 +108,7 @@
         <entry key="app/src/main/res/layout/channelrow.xml" value="0.214404296875" />
         <entry key="app/src/main/res/layout/custom_dialog.xml" value="0.1" />
         <entry key="app/src/main/res/layout/list_category.xml" value="0.18115942028985507" />
-        <entry key="app/src/main/res/layout/my_stream_row.xml" value="0.2938852503679801" />
+        <entry key="app/src/main/res/layout/my_stream_row.xml" value="0.23778501628664495" />
         <entry key="app/src/main/res/layout/order_product_row.xml" value="0.25" />
         <entry key="app/src/main/res/layout/orderproduct_details_listview.xml" value="0.13627152988855115" />
         <entry key="app/src/main/res/layout/orders_row.xml" value="0.2151268115942029" />

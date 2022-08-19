@@ -4,13 +4,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="80dp"
+    android:background="@drawable/purchase_row_background"
     android:orientation="horizontal">
 
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_weight="4"
+        android:layout_weight="3.5"
         android:layout_height="match_parent"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
         android:orientation="vertical">
 
         <TextView
@@ -41,6 +44,7 @@
             android:id="@+id/btn_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
             android:backgroundTint="@color/light_Blue"
             android:textSize="12sp"
             android:text="VIEW CHANNEL"/>

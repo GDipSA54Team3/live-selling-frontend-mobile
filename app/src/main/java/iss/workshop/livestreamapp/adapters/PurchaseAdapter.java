@@ -92,6 +92,12 @@ public class PurchaseAdapter extends BaseAdapter {
         //orderStatus
         TextView orderStatus = view.findViewById(R.id.order_status);
         orderStatus.setText(orders.getOrderStatus().name());
+        if (orderStatus.getText().toString().equals("PENDING")) {
+                orderStatus.setBackgroundColor(context.getResources().getColor(R.color.grey, null));
+        } else if (orderStatus.getText().toString().equals("CONFIRMED")) {
+            orderStatus.setBackgroundColor(context.getResources().getColor(R.color.green, null));
+        }
+
         Button cancelOrder = view.findViewById(R.id.cancel_order);
 
         //setting up dialog
