@@ -29,6 +29,9 @@ public class ProductDeserializer implements JsonDeserializer<Product> {
         String productPrice = productJson.get("price").getAsString();
         product.setPrice(Double.parseDouble(productPrice));
 
+        String productQty = productJson.get("quantity").getAsString();
+        product.setQuantity(Integer.parseInt(productQty));
+
         String category = productJson.get("category").getAsString();
         switch(category){
                 case("HEALTH"):
