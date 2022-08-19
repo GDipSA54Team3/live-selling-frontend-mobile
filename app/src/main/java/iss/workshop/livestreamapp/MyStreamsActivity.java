@@ -137,9 +137,10 @@ public class MyStreamsActivity extends AppCompatActivity implements IMenuAccess,
     }
 
     private void populateMyStreamList(List<Stream> body) {
-        streamAdapter = new ChStreamAdapter(this, body, true);
+        streamAdapter = new ChStreamAdapter(this, body, true, user, channel);
         listOfStreams.setAdapter(streamAdapter);
 
+        /*
         listOfStreams.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -149,8 +150,10 @@ public class MyStreamsActivity extends AppCompatActivity implements IMenuAccess,
                 openStreamPage("seller", currStream);
             }
         });
-    }
 
+         */
+    }
+    /*
     private void openStreamPage(String role, Stream currStream) {
         Intent intent = new Intent(this, MainActivity.class);
         //check if sellerStream == channelStream?
@@ -166,6 +169,8 @@ public class MyStreamsActivity extends AppCompatActivity implements IMenuAccess,
 
         startActivity(intent);
     }
+
+     */
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
