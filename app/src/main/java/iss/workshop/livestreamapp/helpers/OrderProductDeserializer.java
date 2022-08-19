@@ -32,6 +32,9 @@ public class OrderProductDeserializer implements JsonDeserializer<OrderProduct> 
         String oProdId = jsonOrderProduct.get("id").getAsString();
         oProduct.setId(oProdId);
 
+        String orderProductQty = jsonOrderProduct.get("quantity").getAsString();
+        oProduct.setQuantity(Integer.parseInt(orderProductQty));
+
         //set product
         JsonObject productJson = jsonOrderProduct.getAsJsonObject("product");
         //Id

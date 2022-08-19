@@ -50,7 +50,7 @@ public class OrderProductAdapter extends BaseAdapter {
         productName.setText(orderProduct.getProduct().getName());
 
         TextView productQty = view.findViewById(R.id.product_Qty);
-        productQty.setText(Integer.toString(orderProduct.getProduct().getQuantity()));
+        productQty.setText(Integer.toString(orderProduct.getQuantity()));
 
         TextView productDesc = view.findViewById(R.id.product_desc);
         productDesc.setText(orderProduct.getProduct().getDescription());
