@@ -102,6 +102,13 @@ public class ChStreamAdapter extends BaseAdapter {
                 .findViewById(R.id.stream_name);
         streamName.setText(currentStream.getTitle());
 
+        TextView streamDesc = (TextView) view
+                .findViewById(R.id.entire_row)
+                .findViewById(R.id.top_container)
+                .findViewById(R.id.text_fields)
+                .findViewById(R.id.stream_desc);
+        streamDesc.setText(currentStream.getChannelStream().getUser().getFirstName() + " " + currentStream.getChannelStream().getUser().getLastName());
+
         //stream name
         TextView streamDate = (TextView) view
                 .findViewById(R.id.bottom_container)

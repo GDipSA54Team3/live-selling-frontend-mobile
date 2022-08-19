@@ -48,9 +48,15 @@ public class ProductsStreamAdapter extends BaseAdapter {
         return productQty.get(i);
     }
 
-    public void addItemQty(int i){
+    public void addItemQty(int i, TextView txtQty){
+        Integer currentStock = products.get(i).getQuantity();
         Integer qty = productQty.get(i);
-        productQty.set(i, qty + 1);
+        if (currentStock >= qty + 1){
+            productQty.set(i, qty + 1);
+            txtQty.setText(Integer.toString(Integer.parseInt(txtQty.getText().toString()) + 1));
+        } else {
+            Toast.makeText(context, "No more stock for this product. Try another one", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public boolean subtractItemQty(int i){
@@ -93,8 +99,7 @@ public class ProductsStreamAdapter extends BaseAdapter {
         addProd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                txtQty.setText(Integer.toString(Integer.parseInt(txtQty.getText().toString()) + 1));
-                addItemQty(i);
+                addItemQty(i, txtQty);
             }
         });
 
