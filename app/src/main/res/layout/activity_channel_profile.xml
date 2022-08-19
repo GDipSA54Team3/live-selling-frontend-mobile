@@ -117,34 +117,36 @@
                 android:id="@+id/verify_account"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:backgroundTint="@color/light_Blue"
                 android:text="VERIFY ACCOUNT"/>
 
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/rating_panel"
             android:layout_width="410dp"
             android:layout_height="270dp"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:text=" Rate the Seller:"
                 android:layout_weight="1"
+                android:text=" Rate the Seller:"
+                android:textColor="@color/black"
                 android:gravity="center"
-                android:textStyle="bold"
                 android:textSize="20dp"
-                android:textColor="@color/black"/>
+                android:textStyle="bold" />
 
             <RatingBar
                 android:id="@+id/rating_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_weight="1.5"
                 android:layout_gravity="center"
-                android:paddingLeft="4dp"
+                android:layout_weight="1.5"
                 android:numStars="5"
+                android:paddingLeft="4dp"
                 android:stepSize="0.5" />
 
             <TextView
@@ -156,19 +158,21 @@
                 android:textAppearance="?android:textAppearanceMedium"/>
 
 
+
             <Button
                 android:id="@+id/rating_submit"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_weight="1.5"
-                android:text="submit"/>
+                android:layout_weight="1"
+                android:backgroundTint="@color/light_Blue"
+                android:text="submit" />
 
             <TextView
                 android:id="@+id/showRating"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
                 android:layout_marginTop="10dp"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:textAppearance="?android:textAppearanceMedium" />
         </LinearLayout>

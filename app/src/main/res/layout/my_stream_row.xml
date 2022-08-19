@@ -10,6 +10,10 @@
         android:layout_height="150dp"
         android:orientation="vertical"
         tools:ignore="MissingConstraints"
+        android:layout_marginLeft="7dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="7dp"
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="1dp"
         android:descendantFocusability="blocksDescendants">
@@ -84,12 +88,18 @@
                 android:id="@+id/btn_check_stream"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/light_Blue"
                 android:text="Start"/>
+
+            <Space
+                android:layout_width="8dp"
+                android:layout_height="1dp"/>
 
             <Button
                 android:id="@+id/btn_delete_stream"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/light_Blue"
                 android:text="Delete"/>
         </LinearLayout>
     </LinearLayout>

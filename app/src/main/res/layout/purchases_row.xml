@@ -8,6 +8,8 @@
     android:layout_height="170dp"
     android:orientation="vertical"
     android:layout_marginLeft="7dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
     android:layout_marginRight="7dp"
     android:background="@drawable/purchase_row_background">
 
@@ -41,8 +43,9 @@
             <TextView
                 android:id="@+id/order_status"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_height="30dp"
+                android:layout_weight="1.5"
+                android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:background="#1EA471"
                 android:textColor="@color/white"
@@ -61,7 +64,7 @@
             <Button
                 android:id="@+id/viewOrderDetails"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="60dp"
                 android:layout_gravity="center"
                 android:text="View order details"
                 android:textSize="16sp"
@@ -82,13 +85,13 @@
 
         <Button
             android:id="@+id/cancel_order"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
+            android:layout_width="140dp"
+            android:layout_height="40dp"
             android:layout_gravity="center"
             android:text="Cancel Order"
             android:textSize="12sp"
             android:textColor="@color/white"
-            android:backgroundTint="#8527CB"/>
+            android:backgroundTint="#ADFF1B1B"/>
     </LinearLayout>
 </LinearLayout>
 
