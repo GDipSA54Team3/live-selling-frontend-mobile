@@ -41,7 +41,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.5.0'
     implementation 'androidx.navigation:navigation-ui:2.5.0'
     implementation 'androidx.constraintlayout:constraintlayout-compose:1.0.1'
-    implementation 'androidx.wear.tiles:tiles-material:+'
+    implementation 'androidx.wear.tiles:tiles-material:1.1.0-beta01'
 
     implementation 'com.squareup.picasso:picasso:2.5.2'
 
