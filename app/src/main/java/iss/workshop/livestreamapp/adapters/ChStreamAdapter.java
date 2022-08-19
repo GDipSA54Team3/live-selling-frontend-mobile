@@ -111,7 +111,7 @@ public class ChStreamAdapter extends BaseAdapter {
             Button btnCheckStreams = view
                     .findViewById(R.id.bottom_container)
                     .findViewById(R.id.btn_check_stream);
-            btnCheckStreams.setText("Start stream");
+            btnCheckStreams.setText("Start");
 
             btnCheckStreams.setOnClickListener(new View.OnClickListener() {
                 @Override

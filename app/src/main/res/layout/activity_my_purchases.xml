@@ -13,35 +13,6 @@
         android:paddingRight="10dp"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="110dp"
-                android:layout_height="30dp"
-                android:padding="3dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:text="Total Purchase:" />
-
-            <TextView
-                android:id="@+id/total_Purchase"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@color/white"
-                android:hint="0"
-                android:gravity="center"
-                android:inputType="text"
-                android:textColorHint="@color/grey"
-                android:textSize="18dp"
-                android:textStyle="bold" />
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

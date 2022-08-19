@@ -47,7 +47,7 @@
                 android:layout_weight="1.5"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:background="#1EA471"
+                android:background="@color/green"
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 android:text="Order Confirmed"/>
