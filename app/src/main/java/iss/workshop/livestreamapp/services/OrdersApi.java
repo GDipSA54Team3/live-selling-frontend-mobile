@@ -6,6 +6,7 @@ import iss.workshop.livestreamapp.models.Orders;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -16,6 +17,7 @@ public interface OrdersApi {
     @GET("/api/orders/purchases/{userId}")
     Call<List<Orders>> getUserPurchases(@Path("userId") String userId);
 
+
     @GET("/api/orders/channelorders/{channelId}")
     Call<List<Orders>> getChannelOrders(@Path("channelId") String channelId);
 
@@ -25,4 +27,10 @@ public interface OrdersApi {
 
     @PUT("/api/orders/updateorderstatus/{orderId}/{status}")
     Call<ResponseBody> updateOrderStatus(@Path("orderId") String orderId, @Path("status") String status);
+
+    @GET("/channelordersuserpending/{userId}")
+    Call<List<Orders>> getChannelOrdersPendingByUserId(@Path("userId") String userId);
+
+    @GET("/channelordersuserhistory/{userId}")
+    Call<List<Orders>> getChannelOrdersHistory(@Path("userId") String userId);
 }

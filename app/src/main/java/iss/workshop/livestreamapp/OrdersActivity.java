@@ -18,9 +18,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
@@ -86,6 +88,57 @@ public class OrdersActivity extends AppCompatActivity implements IMenuAccess, IS
                 Toast.makeText(OrdersActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
             }
         });
+
+        /*
+        Button btnViewPending = findViewById(R.id.btn_view_pending);
+        btnViewPending.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RetroFitService rfServ = new RetroFitService("orders");
+                OrdersApi ordersAPI = rfServ.getRetrofit().create(OrdersApi.class);
+
+                ordersAPI.getChannelOrdersPendingByUserId(user.getId()).enqueue(new Callback<List<Orders>>() {
+                    @Override
+                    public void onResponse(Call<List<Orders>> call, Response<List<Orders>> response) {
+                        if(response.code() == 200) {
+                            populateOrdersList(response.body());
+                            Toast.makeText(OrdersActivity.this, response.body().size() + " orders found.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Orders>> call, Throwable t) {
+                        Toast.makeText(OrdersActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
+        Button btnViewAll = findViewById(R.id.btn_view_all);
+        btnViewAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RetroFitService rfServ = new RetroFitService("orders");
+                OrdersApi ordersAPI = rfServ.getRetrofit().create(OrdersApi.class);
+
+                ordersAPI.getChannelOrdersHistory(user.getId()).enqueue(new Callback<List<Orders>>() {
+                    @Override
+                    public void onResponse(Call<List<Orders>> call, Response<List<Orders>> response) {
+                        if(response.code() == 200) {
+                            populateOrdersList(response.body());
+                            Toast.makeText(OrdersActivity.this, response.body().size() + " orders found.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Orders>> call, Throwable t) {
+                        Toast.makeText(OrdersActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
+         */
     }
 
 

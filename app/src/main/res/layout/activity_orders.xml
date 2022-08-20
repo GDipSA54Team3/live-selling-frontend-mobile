@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:gravity="center"
-                android:textSize="11dp"
+                android:textSize="15dp"
                 android:backgroundTint="@color/light_Blue"
                 android:text="View Pending"/>
 
@@ -40,7 +40,7 @@
                 android:layout_height="40dp"
                 android:backgroundTint="@color/light_Blue"
                 android:gravity="center"
-                android:textSize="11dp"
+                android:textSize="15dp"
                 android:text="View All"/>
 
         </LinearLayout>
