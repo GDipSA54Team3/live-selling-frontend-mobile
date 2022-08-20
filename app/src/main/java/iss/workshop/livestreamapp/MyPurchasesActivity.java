@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
@@ -75,12 +76,6 @@ public class MyPurchasesActivity extends AppCompatActivity implements IMenuAcces
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.orderproduct_details_listview);
 
-        rlRefresh = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            if(result.getResultCode() == AppCompatActivity.RESULT_OK){
-                startActivity(getIntent());
-                finish();
-            }
-        });
 
         //fetch orders API
         RetroFitService rfServ = new RetroFitService("orders");
@@ -93,6 +88,8 @@ public class MyPurchasesActivity extends AppCompatActivity implements IMenuAcces
                     populatePurchaseList(response.body());
                     Toast.makeText(MyPurchasesActivity.this, response.body().size() +
                               " Orders found.", Toast.LENGTH_SHORT).show();
+                    TextView totalPurchase = findViewById(R.id.total_purchase);
+                    totalPurchase.setText(Integer.toString(response.body().size()));
                 }
             }
             @Override
