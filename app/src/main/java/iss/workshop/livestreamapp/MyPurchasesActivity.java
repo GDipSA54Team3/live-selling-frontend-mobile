@@ -92,7 +92,7 @@ public class MyPurchasesActivity extends AppCompatActivity implements IMenuAcces
                 if(response.code() == 200){
                     populatePurchaseList(response.body());
                     Toast.makeText(MyPurchasesActivity.this, response.body().size() +
-                            " Orders found.", Toast.LENGTH_SHORT).show();
+                              " Orders found.", Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
