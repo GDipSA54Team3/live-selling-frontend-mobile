@@ -420,7 +420,10 @@ public class MainActivity extends AppCompatActivity implements IStreamDetails {
             case "amandachong":
                 return getResources().getString(R.string.token_for_amandachong);
             default:
-                return getResources().getString(R.string.token_for_new_acct);
+                String userToken = "token_for_" + user.getUsername();
+                String packageName = getPackageName();
+                int resId = getResources().getIdentifier(userToken, "string", packageName);
+                return getResources().getString(resId);
         }
 
     }
