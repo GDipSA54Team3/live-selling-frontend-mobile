@@ -30,6 +30,7 @@ import iss.workshop.livestreamapp.models.Rating;
 import iss.workshop.livestreamapp.models.Stream;
 import iss.workshop.livestreamapp.models.User;
 import iss.workshop.livestreamapp.services.ChannelsApi;
+import iss.workshop.livestreamapp.services.DashboardApi;
 import iss.workshop.livestreamapp.services.RetroFitService;
 import iss.workshop.livestreamapp.services.UserApi;
 import retrofit2.Call;
@@ -50,7 +51,7 @@ public class ChannelProfileActivity extends AppCompatActivity implements IMenuAc
     private Button btnVerify;
     private TextView rateCount, showRating;
     private TextView channelName;
-    private Double ratingToDisplay;
+    private String ratingToDisplay;
     EditText review;
     float rateValue; String temp;
 
@@ -101,17 +102,17 @@ public class ChannelProfileActivity extends AppCompatActivity implements IMenuAc
 
         TextView avgRating = findViewById(R.id.rating);
 
-        RetroFitService rfServ = new RetroFitService("get-rating");
-        ChannelsApi channelAPI = rfServ.getRetrofit().create(ChannelsApi.class);
-        channelAPI.getChannelAvgRating(channelToView.getId()).enqueue(new Callback<Double>() {
+        RetroFitService rfServ = new RetroFitService("stream");
+        DashboardApi dashboardAPI = rfServ.getRetrofit().create(DashboardApi.class);
+        dashboardAPI.getUserAverageRating(channelToView.getUser().getId()).enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<Double> call, Response<Double> response) {
+            public void onResponse(Call<String> call, Response<String> response) {
                 ratingToDisplay = response.body();
-                avgRating.setText("AVERAGE RATING: " + Double.toString(ratingToDisplay));
+                avgRating.setText("AVERAGE RATING: " + ratingToDisplay + "/5");
             }
 
             @Override
-            public void onFailure(Call<Double> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
 
             }
         });

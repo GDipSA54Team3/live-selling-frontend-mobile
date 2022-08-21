@@ -75,7 +75,7 @@ public class ScheduleStreamActivity extends AppCompatActivity implements IMenuAc
                 DatePickerDialog datePickerDialog = new DatePickerDialog(ScheduleStreamActivity.this, android.R.style.Theme_DeviceDefault_Dialog, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int date) {
-                        dateTxt.setText(date +"/"+month+"/"+year );
+                        dateTxt.setText(date +"/"+ (month+1) +"/"+year );
                     }
                 }, mYear, mMonth, mDate);
                 datePickerDialog.show();
@@ -126,7 +126,7 @@ public class ScheduleStreamActivity extends AppCompatActivity implements IMenuAc
                 String str = sDate1 + " " + sTime1;
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy hh:mm a");
                 LocalDateTime schedule = LocalDateTime.parse(str, formatter);
-
+                LocalDateTime now = LocalDateTime.now();
                 if(schedule.isBefore(LocalDateTime.now())){
                     Toast.makeText(ScheduleStreamActivity.this, "Cannot schedule a stream earlier than now. Check the schedule again.", Toast.LENGTH_SHORT).show();
                 } else {
